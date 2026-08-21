@@ -429,11 +429,15 @@
               <textarea id="pDesc" placeholder="Describe your product — features, specs, what's in the box..."></textarea>
             </div>
             <div class="form-group form-group--full">
-              <label>Product images</label>
-              <div class="dash-dropzone">
+              <label>Product image</label>
+              <label class="dash-dropzone" for="pImage" style="cursor: pointer;">
                 <span class="dash-dropzone-icon">📤</span>
-                <p>Drag & drop images here, or click to browse</p>
-                <small>PNG or JPG, up to 5MB each</small>
+                <p>Click to choose an image</p>
+                <small>PNG or JPG, up to 5MB</small>
+              </label>
+              <input type="file" id="pImage" accept="image/*" style="display: none;">
+              <div id="pImagePreviewWrap" style="display: none; margin-top: 10px;">
+                <img id="pImagePreview" alt="Image preview" style="max-width: 180px; border-radius: 8px; border: 1px solid var(--border-soft);">
               </div>
             </div>
             <div class="form-group form-group--full">
@@ -881,13 +885,20 @@
       return '<span class="dash-badge dash-badge--success">Active</span>';
     }
 
+    function productThumb(p) {
+      if (p.image) {
+        return '<img src="' + p.image + '" alt="" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">';
+      }
+      return categoryEmoji(p.category);
+    }
+
     function productRow(p) {
       var sku = p.sku || 'SL-' + String(p._id || '').slice(-6);
       return (
         '<tr>' +
           '<td>' +
             '<div class="dash-product">' +
-              '<div class="dash-product-thumb">' + categoryEmoji(p.category) + '</div>' +
+              '<div class="dash-product-thumb">' + productThumb(p) + '</div>' +
               '<div>' +
                 '<div class="dash-product-name">' + escapeHtml(p.name) + '</div>' +
                 '<div class="dash-product-meta">SKU: ' + escapeHtml(sku) + '</div>' +
@@ -961,6 +972,23 @@
       }
     }
 
+    // Product image preview
+    var pImageInput = document.getElementById('pImage');
+    if (pImageInput) {
+      pImageInput.addEventListener('change', function() {
+        var wrap = document.getElementById('pImagePreviewWrap');
+        var img = document.getElementById('pImagePreview');
+        var file = this.files && this.files[0];
+        if (file) {
+          img.src = URL.createObjectURL(file);
+          wrap.style.display = 'block';
+        } else {
+          wrap.style.display = 'none';
+          img.removeAttribute('src');
+        }
+      });
+    }
+
     var addForm = document.getElementById('addProductForm');
     if (addForm) {
       addForm.addEventListener('submit', async function(e) {
@@ -976,6 +1004,7 @@
           sku: document.getElementById('pSku').value.trim(),
           description: document.getElementById('pDesc').value.trim(),
           featured: document.getElementById('pFeatured').checked,
+          image: '',
         };
 
         if (!payload.name || !payload.category || !payload.price || payload.price <= 0) {
@@ -986,6 +1015,26 @@
         btn.disabled = true;
         btn.textContent = 'Publishing...';
         try {
+          // Upload image to Cloudinary first if one is selected
+          var fileInput = document.getElementById('pImage');
+          if (fileInput && fileInput.files && fileInput.files.length) {
+            btn.textContent = 'Uploading image...';
+            var fd = new FormData();
+            fd.append('image', fileInput.files[0]);
+            var uploadRes = await fetch(API_BASE + '/products/upload', {
+              method: 'POST',
+              headers: { 'Authorization': 'Bearer ' + token },
+              body: fd,
+            });
+            var uploadData = await uploadRes.json();
+            if (!uploadData.success) {
+              showToast(uploadData.message || 'Image upload failed');
+              btn.disabled = false;
+              btn.textContent = 'Publish Product';
+              return;
+            }
+            payload.image = uploadData.data.imageUrl;
+          }
           var response = await fetch(API_BASE + '/products', {
             method: 'POST',
             headers: {
@@ -999,6 +1048,10 @@
             addForm.reset();
             document.getElementById('pCategory').value = 'Electronics';
             document.getElementById('pFeatured').checked = false;
+            var previewWrap = document.getElementById('pImagePreviewWrap');
+            if (previewWrap) previewWrap.style.display = 'none';
+            var resetFile = document.getElementById('pImage');
+            if (resetFile) resetFile.value = '';
             showToast('Product published! 🎉');
             loadProducts();
           } else {

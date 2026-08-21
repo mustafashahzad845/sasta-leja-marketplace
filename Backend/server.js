@@ -6,6 +6,8 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import dns from "node:dns";
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
 import userModel from "./models/userModel.js";
 import otpModel from "./models/otpModel.js";
 import productModel from "./models/productModel.js";
@@ -22,6 +24,38 @@ const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_sign_sasta_leja_bhai";
 const SMTP_EMAIL = process.env.SMTP_EMAIL || "haji08307@gmail.com";
 const SMTP_APP_PASS = process.env.SMTP_APP_PASS || "exnv hxbz lpxm quif";
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDE_NAME;
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
+
+cloudinary.config({
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
+});
+
+const productImageUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only image files are allowed"));
+    }
+    cb(null, true);
+  },
+});
+
+function uploadProductImage(req, res, next) {
+  productImageUpload.single("image")(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: "Image upload failed: " + err.message,
+      });
+    }
+    next();
+  });
+}
 
 mongoose
   .connect(URI)
@@ -344,6 +378,51 @@ app.post("/api/login", async (req, res) => {
 });
 
 // ===================== PRODUCT ROUTES (Seller) =====================
+
+app.post("/api/products/upload", authRequired, uploadProductImage, async (req, res) => {
+  try {
+    if (req.role !== "seller") {
+      return res.status(403).json({
+        success: false,
+        message: "Only sellers can upload images",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No image file provided",
+      });
+    }
+
+    if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Cloudinary is not configured on the server",
+      });
+    }
+
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "sasta-leja/products", resource_type: "image" },
+        (error, result) => (error ? reject(error) : resolve(result)),
+      );
+      stream.end(req.file.buffer);
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Image uploaded successfully",
+      data: { imageUrl: result.secure_url, publicId: result.public_id },
+    });
+  } catch (error) {
+    console.error("Image upload error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while uploading image",
+    });
+  }
+});
 
 app.post("/api/products", authRequired, async (req, res) => {
   try {
