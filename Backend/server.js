@@ -5,11 +5,17 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import dns from "node:dns";
 import userModel from "./models/userModel.js";
 
 dotenv.config();
 
-const URI = process.env.MONGODB_URI || "mongodb+srv://mustafashahzad1947:admin123@batch18.dxy4t5s.mongodb.net/";
+// Fix: force Node's DNS resolver to use Google/Cloudflare public DNS.
+// On some systems the default resolver fails SRV lookups for Atlas with
+// "querySrv ECONNREFUSED", which breaks the mongodb+srv connection.
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
+const URI = process.env.MONGODB_URI || "mongodb+srv://mustafashahzadmongodb_db_user:admin@cluster0.rs6shzr.mongodb.net/Sasta-Leja";
 const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_sign_sasta_leja_bhai";
 const SMTP_EMAIL = process.env.SMTP_EMAIL || "haji08307@gmail.com";
@@ -17,7 +23,7 @@ const SMTP_APP_PASS = process.env.SMTP_APP_PASS || "exnv hxbz lpxm quif";
 
 mongoose
   .connect(URI)
-  .then(() => console.log("MongoDB connected"))
+  .then(() => console.log("MongoDB connected to database:", mongoose.connection.db.databaseName))
   .catch((err) => console.error("MongoDB connection error:", err));
 
 const app = express();
@@ -135,7 +141,9 @@ app.post("/api/verify-email", async (req, res) => {
       });
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await userModel
+      .findOne({ email })
+      .select("+verificationCode +verificationCodeExpires");
     if (!user) {
       return res.status(404).json({
         success: false,

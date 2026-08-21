@@ -252,13 +252,11 @@
         const data = await response.json();
 
         if (data.success) {
-          if (data.data && data.data.token) {
-            localStorage.setItem('token', data.data.token);
-            localStorage.setItem('user', JSON.stringify(data.data));
-          }
-          showMessage('Email verified! Redirecting...', true);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          showMessage('Email verified! Please login to continue.', true);
           setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
           }, 1500);
         } else {
           showMessage(data.message || 'Verification failed', false);
