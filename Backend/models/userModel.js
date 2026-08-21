@@ -14,8 +14,6 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     role: { type: String, enum: ["buyer", "seller"], required: true },
     emailVerified: { type: Boolean, default: false },
-    verificationCode: { type: String, select: false },
-    verificationCodeExpires: { type: Date, select: false },
   },
   { timestamps: true, collection: "users" },
 );

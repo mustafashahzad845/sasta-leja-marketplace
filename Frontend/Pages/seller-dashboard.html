@@ -30,7 +30,7 @@
         <button class="dash-user-chip" aria-label="Account">
           <div class="dash-avatar">A</div>
           <div class="dash-user-chip-info">
-            <div class="dash-user-chip-name">Ameer Khan</div>
+            <div class="dash-user-chip-name" id="userChipName">Seller</div>
             <div class="dash-user-chip-role">Seller</div>
           </div>
         </button>
@@ -47,7 +47,7 @@
       </button>
       <button class="dash-nav-item" data-panel="products">
         <span class="dash-nav-icon">📦</span> My Products
-        <span class="dash-nav-count">24</span>
+        <span class="dash-nav-count" id="navProductCount">0</span>
       </button>
       <button class="dash-nav-item" data-panel="add">
         <span class="dash-nav-icon">➕</span> Add Product
@@ -69,7 +69,7 @@
       <div class="dash-sidebar-profile">
         <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px;">A</div>
         <div>
-          <div class="dash-sidebar-profile-name">Ameer Khan</div>
+          <div class="dash-sidebar-profile-name" id="sidebarName">Seller</div>
           <div class="dash-sidebar-profile-role">Verified Seller</div>
         </div>
       </div>
@@ -99,7 +99,7 @@
               <div class="dash-stat-icon">📦</div>
               <span class="dash-stat-delta dash-stat-delta--up">+3</span>
             </div>
-            <div class="dash-stat-value">24</div>
+            <div class="dash-stat-value" id="statProductCount">0</div>
             <div class="dash-stat-label">Active Products</div>
           </div>
           <div class="dash-stat">
@@ -260,7 +260,7 @@
               <thead>
                 <tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Sales</th><th>Status</th><th>Actions</th></tr>
               </thead>
-              <tbody>
+              <tbody id="productsBody">
                 <tr>
                   <td>
                     <div class="dash-product">
@@ -387,7 +387,7 @@
           </div>
         </div>
 
-        <form class="dash-card" novalidate>
+        <form class="dash-card" id="addProductForm" novalidate>
           <div class="dash-form-grid">
             <div class="form-group form-group--full">
               <label for="pName">Product name</label>
@@ -451,7 +451,7 @@
           </div>
           <div class="dash-form-actions">
             <button type="button" class="btn btn-secondary">Save Draft</button>
-            <button type="button" class="btn btn-primary" onclick="showToast('Product published! 🎉')">Publish Product</button>
+            <button type="submit" class="btn btn-primary" id="publishBtn">Publish Product</button>
           </div>
         </form>
       </section>
@@ -830,6 +830,190 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(function() { toastEl.classList.remove('show'); }, 2500);
     }
+  </script>
+
+  <script>
+    // ===================== PRODUCTS (live data) =====================
+    var API_BASE = 'http://localhost:4000/api';
+    var token = localStorage.getItem('token');
+    var currentUser = null;
+    try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
+
+    // Guard: only verified sellers can access this dashboard
+    if (!token || !currentUser || currentUser.role !== 'seller') {
+      window.location.href = 'login.html';
+    }
+
+    // Fill in the logged-in seller's name
+    if (currentUser) {
+      var firstName = (currentUser.fullName || 'Seller').split(' ')[0];
+      document.querySelectorAll('#userChipName, #sidebarName').forEach(function(el) {
+        el.textContent = currentUser.fullName;
+      });
+      var welcomeEl = document.querySelector('#panel-overview .dash-welcome h2');
+      if (welcomeEl) welcomeEl.innerHTML = 'Salaam, ' + firstName + ' <span>👋</span>';
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str == null ? '' : String(str);
+      return div.innerHTML;
+    }
+
+    function formatPrice(n) {
+      return '₹' + Number(n || 0).toLocaleString('en-IN');
+    }
+
+    function categoryEmoji(category) {
+      var c = (category || '').toLowerCase();
+      if (c.indexOf('electr') !== -1) return '🎧';
+      if (c.indexOf('fashion') !== -1 || c.indexOf('shoe') !== -1 || c.indexOf('cloth') !== -1) return '👟';
+      if (c.indexOf('beauty') !== -1) return '🧴';
+      if (c.indexOf('home') !== -1 || c.indexOf('lamp') !== -1) return '💡';
+      if (c.indexOf('sport') !== -1) return '🏏';
+      if (c.indexOf('book') !== -1) return '📚';
+      return '📦';
+    }
+
+    function statusBadge(p) {
+      if (p.stock === 0) return '<span class="dash-badge dash-badge--neutral">Out of Stock</span>';
+      if (p.stock <= 5) return '<span class="dash-badge dash-badge--danger">Low Stock</span>';
+      return '<span class="dash-badge dash-badge--success">Active</span>';
+    }
+
+    function productRow(p) {
+      var sku = p.sku || 'SL-' + String(p._id || '').slice(-6);
+      return (
+        '<tr>' +
+          '<td>' +
+            '<div class="dash-product">' +
+              '<div class="dash-product-thumb">' + categoryEmoji(p.category) + '</div>' +
+              '<div>' +
+                '<div class="dash-product-name">' + escapeHtml(p.name) + '</div>' +
+                '<div class="dash-product-meta">SKU: ' + escapeHtml(sku) + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</td>' +
+          '<td>' + escapeHtml(p.category) + '</td>' +
+          '<td class="dash-text-strong">' + formatPrice(p.price) + '</td>' +
+          '<td class="dash-text-muted">' + p.stock + '</td>' +
+          '<td>0</td>' +
+          '<td>' + statusBadge(p) + '</td>' +
+          '<td>' +
+            '<div class="dash-toolbar" style="flex-wrap: nowrap;">' +
+              '<button class="btn btn-secondary btn-sm">Edit</button>' +
+              '<button class="btn btn-ghost-danger btn-sm" data-delete="' + p._id + '">Delete</button>' +
+            '</div>' +
+          '</td>' +
+        '</tr>'
+      );
+    }
+
+    async function loadProducts() {
+      var tbody = document.getElementById('productsBody');
+      try {
+        var response = await fetch(API_BASE + '/products/my', {
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = 'login.html';
+          return;
+        }
+        var data = await response.json();
+        var products = (data.data || []).filter(Boolean);
+
+        document.querySelectorAll('#navProductCount, #statProductCount').forEach(function(el) {
+          el.textContent = products.length;
+        });
+
+        if (!products.length) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--muted);">No products yet. Click "+ Add Product" to publish your first listing.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = products.map(productRow).join('');
+        document.querySelectorAll('[data-delete]').forEach(function(btn) {
+          btn.addEventListener('click', function() { deleteProduct(this.dataset.delete); });
+        });
+      } catch (error) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!window.confirm('Delete this product?')) return;
+      try {
+        var response = await fetch(API_BASE + '/products/' + id, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        var data = await response.json();
+        if (data.success) {
+          showToast('Product deleted 🗑️');
+          loadProducts();
+        } else {
+          showToast(data.message || 'Failed to delete product');
+        }
+      } catch (error) {
+        showToast('Network error. Please try again.');
+      }
+    }
+
+    var addForm = document.getElementById('addProductForm');
+    if (addForm) {
+      addForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('publishBtn');
+        var payload = {
+          name: document.getElementById('pName').value.trim(),
+          category: document.getElementById('pCategory').value,
+          brand: document.getElementById('pBrand').value.trim(),
+          price: parseFloat(document.getElementById('pPrice').value),
+          oldPrice: parseFloat(document.getElementById('pOldPrice').value || 0),
+          stock: parseInt(document.getElementById('pStock').value || 0, 10),
+          sku: document.getElementById('pSku').value.trim(),
+          description: document.getElementById('pDesc').value.trim(),
+          featured: document.getElementById('pFeatured').checked,
+        };
+
+        if (!payload.name || !payload.category || !payload.price || payload.price <= 0) {
+          showToast('Please fill name, category and a valid price');
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Publishing...';
+        try {
+          var response = await fetch(API_BASE + '/products', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(payload),
+          });
+          var data = await response.json();
+          if (data.success) {
+            addForm.reset();
+            document.getElementById('pCategory').value = 'Electronics';
+            document.getElementById('pFeatured').checked = false;
+            showToast('Product published! 🎉');
+            loadProducts();
+          } else {
+            showToast(data.message || 'Failed to publish product');
+          }
+        } catch (error) {
+          showToast('Network error. Please try again.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Publish Product';
+        }
+      });
+    }
+
+    loadProducts();
   </script>
 </body>
 </html>

@@ -7,6 +7,8 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import dns from "node:dns";
 import userModel from "./models/userModel.js";
+import otpModel from "./models/otpModel.js";
+import productModel from "./models/productModel.js";
 
 dotenv.config();
 
@@ -46,6 +48,22 @@ function generateToken(userId, role) {
   return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: "7d" });
 }
 
+function authRequired(req, res, next) {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
+  if (!token) {
+    return res.status(401).json({ success: false, message: "Not authenticated" });
+  }
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.userId = decoded.userId;
+    req.role = decoded.role;
+    next();
+  } catch {
+    return res.status(401).json({ success: false, message: "Invalid or expired token" });
+  }
+}
+
 app.get("/", (req, res) => {
   res.json({ message: "Server is successfully running...", status: true });
 });
@@ -76,16 +94,19 @@ app.post("/api/signup", async (req, res) => {
       });
     }
 
-    const verificationCode = generateOTP();
-    const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+    const otp = await otpModel.create({
+      email,
+      code: generateOTP(),
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    });
+
+    const verificationCode = otp.code;
 
     const user = await userModel.create({
       fullName,
       email,
       password,
       role,
-      verificationCode,
-      verificationCodeExpires,
     });
 
     const token = generateToken(user._id, user.role);
@@ -119,7 +140,7 @@ app.post("/api/signup", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Account created! Please verify your email with the OTP sent.",
-      data: { token, email, verificationCodeExpires },
+      data: { token, email },
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -141,9 +162,22 @@ app.post("/api/verify-email", async (req, res) => {
       });
     }
 
-    const user = await userModel
-      .findOne({ email })
-      .select("+verificationCode +verificationCodeExpires");
+    const otp = await otpModel.findOne({ email, code: verificationCode });
+    if (!otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification code",
+      });
+    }
+
+    if (new Date() > otp.expiresAt) {
+      return res.status(400).json({
+        success: false,
+        message: "Verification code has expired",
+      });
+    }
+
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -158,31 +192,14 @@ app.post("/api/verify-email", async (req, res) => {
       });
     }
 
-    if (user.verificationCode !== verificationCode) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid verification code",
-      });
-    }
-
-    if (new Date() > user.verificationCodeExpires) {
-      return res.status(400).json({
-        success: false,
-        message: "Verification code has expired",
-      });
-    }
-
     user.emailVerified = true;
-    user.verificationCode = undefined;
-    user.verificationCodeExpires = undefined;
     await user.save();
-
-    const token = generateToken(user._id, user.role);
+    await otpModel.deleteOne({ _id: otp._id });
 
     res.status(200).json({
       success: true,
       message: "Email verified successfully! You can now login.",
-      data: { token, email: user.email, role: user.role },
+      data: { email: user.email, role: user.role },
     });
   } catch (error) {
     console.error("Verification error:", error);
@@ -219,12 +236,15 @@ app.post("/api/resend-otp", async (req, res) => {
       });
     }
 
-    const verificationCode = generateOTP();
-    const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+    await otpModel.deleteMany({ email });
 
-    user.verificationCode = verificationCode;
-    user.verificationCodeExpires = verificationCodeExpires;
-    await user.save();
+    const otp = await otpModel.create({
+      email,
+      code: generateOTP(),
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    });
+
+    const verificationCode = otp.code;
 
     const mailOptions = {
       from: SMTP_EMAIL,
@@ -319,6 +339,113 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error during login",
+    });
+  }
+});
+
+// ===================== PRODUCT ROUTES (Seller) =====================
+
+app.post("/api/products", authRequired, async (req, res) => {
+  try {
+    if (req.role !== "seller") {
+      return res.status(403).json({
+        success: false,
+        message: "Only sellers can add products",
+      });
+    }
+
+    const { name, category, brand, price, oldPrice, stock, sku, description, image, featured } = req.body;
+
+    if (!name || !category || price == null || stock == null) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, category, price and stock are required",
+      });
+    }
+
+    const product = await productModel.create({
+      seller: req.userId,
+      name,
+      category,
+      brand,
+      price,
+      oldPrice,
+      stock,
+      sku,
+      description,
+      image,
+      featured,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Product added successfully",
+      data: product,
+    });
+  } catch (error) {
+    console.error("Add product error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while adding product",
+    });
+  }
+});
+
+app.get("/api/products/my", authRequired, async (req, res) => {
+  try {
+    if (req.role !== "seller") {
+      return res.status(403).json({
+        success: false,
+        message: "Only sellers can view their products",
+      });
+    }
+
+    const products = await productModel
+      .find({ seller: req.userId })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    console.error("Get products error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching products",
+    });
+  }
+});
+
+app.delete("/api/products/:id", authRequired, async (req, res) => {
+  try {
+    if (req.role !== "seller") {
+      return res.status(403).json({
+        success: false,
+        message: "Only sellers can delete products",
+      });
+    }
+
+    const deleted = await productModel.findOneAndDelete({
+      _id: req.params.id,
+      seller: req.userId,
+    });
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete product error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting product",
     });
   }
 });
