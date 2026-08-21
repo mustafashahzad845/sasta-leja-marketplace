@@ -258,7 +258,7 @@
           <div class="dash-table-wrap">
             <table class="dash-table">
               <thead>
-                <tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Sales</th><th>Status</th><th>Actions</th></tr>
+                <tr><th>Product</th><th>Category</th><th>Condition</th><th>Location</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
               </thead>
               <tbody id="productsBody">
                 <tr>
@@ -402,7 +402,19 @@
                 <option>Beauty</option>
                 <option>Sports</option>
                 <option>Books</option>
+                <option>Other</option>
               </select>
+            </div>
+            <div class="form-group">
+              <label for="pCondition">Condition</label>
+              <select id="pCondition">
+                <option value="New">New</option>
+                <option value="Used">Used</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="pLocation">Location</label>
+              <input type="text" id="pLocation" placeholder="e.g. Lahore, Pakistan">
             </div>
             <div class="form-group">
               <label for="pBrand">Brand</label>
@@ -806,16 +818,24 @@
     document.querySelectorAll('[data-goto]').forEach(function(el) {
       el.addEventListener('click', function(e) {
         e.preventDefault();
-        var target = this.dataset.goto;
-        document.querySelectorAll('.dash-nav-item').forEach(function(i) {
-          i.classList.toggle('active', i.dataset.panel === target);
-        });
-        document.querySelectorAll('.dash-panel').forEach(function(p) {
-          p.classList.toggle('active', p.id === 'panel-' + target);
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        openPanel(this.dataset.goto);
       });
     });
+
+    // Open a panel by name
+    function openPanel(target) {
+      document.querySelectorAll('.dash-nav-item').forEach(function(i) {
+        i.classList.toggle('active', i.dataset.panel === target);
+      });
+      document.querySelectorAll('.dash-panel').forEach(function(p) {
+        p.classList.toggle('active', p.id === 'panel-' + target);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Honor #panel-<name> in the URL (e.g. seller-dashboard.html#panel-add)
+    var hashMatch = window.location.hash.match(/panel-([a-z]+)/);
+    if (hashMatch) openPanel(hashMatch[1]);
 
     // Filter chips
     document.querySelectorAll('.dash-filter').forEach(function(chip) {
@@ -906,9 +926,10 @@
             '</div>' +
           '</td>' +
           '<td>' + escapeHtml(p.category) + '</td>' +
+          '<td>' + (p.condition === 'Used' ? '<span class="dash-badge dash-badge--warning">Used</span>' : '<span class="dash-badge dash-badge--success">New</span>') + '</td>' +
+          '<td>' + escapeHtml(p.location || '—') + '</td>' +
           '<td class="dash-text-strong">' + formatPrice(p.price) + '</td>' +
           '<td class="dash-text-muted">' + p.stock + '</td>' +
-          '<td>0</td>' +
           '<td>' + statusBadge(p) + '</td>' +
           '<td>' +
             '<div class="dash-toolbar" style="flex-wrap: nowrap;">' +
@@ -940,7 +961,7 @@
         });
 
         if (!products.length) {
-          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--muted);">No products yet. Click "+ Add Product" to publish your first listing.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:var(--muted);">No products yet. Click "+ Add Product" to publish your first listing.</td></tr>';
           return;
         }
 
@@ -949,7 +970,7 @@
           btn.addEventListener('click', function() { deleteProduct(this.dataset.delete); });
         });
       } catch (error) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
       }
     }
 
@@ -997,6 +1018,8 @@
         var payload = {
           name: document.getElementById('pName').value.trim(),
           category: document.getElementById('pCategory').value,
+          condition: document.getElementById('pCondition').value,
+          location: document.getElementById('pLocation').value.trim(),
           brand: document.getElementById('pBrand').value.trim(),
           price: parseFloat(document.getElementById('pPrice').value),
           oldPrice: parseFloat(document.getElementById('pOldPrice').value || 0),
@@ -1007,8 +1030,16 @@
           image: '',
         };
 
-        if (!payload.name || !payload.category || !payload.price || payload.price <= 0) {
-          showToast('Please fill name, category and a valid price');
+        if (!payload.name || !payload.category || !payload.condition || !payload.location) {
+          showToast('Please fill product name, category, condition and location');
+          return;
+        }
+        if (!payload.price || payload.price <= 0) {
+          showToast('Please enter a valid price');
+          return;
+        }
+        if (!document.getElementById('pImage').files || !document.getElementById('pImage').files.length) {
+          showToast('Please upload a product image');
           return;
         }
 

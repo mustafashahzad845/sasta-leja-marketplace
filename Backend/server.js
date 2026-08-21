@@ -19,7 +19,7 @@ dotenv.config();
 // "querySrv ECONNREFUSED", which breaks the mongodb+srv connection.
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
-const URI = process.env.MONGODB_URI || "mongodb+srv://mustafashahzadmongodb_db_user:admin@cluster0.rs6shzr.mongodb.net/Sasta-Leja";
+const URI = process.env.MONGODB_URI ;
 const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_sign_sasta_leja_bhai";
 const SMTP_EMAIL = process.env.SMTP_EMAIL || "haji08307@gmail.com";
@@ -433,12 +433,19 @@ app.post("/api/products", authRequired, async (req, res) => {
       });
     }
 
-    const { name, category, brand, price, oldPrice, stock, sku, description, image, featured } = req.body;
+    const { name, category, condition, location, brand, price, oldPrice, stock, sku, description, image, featured } = req.body;
 
-    if (!name || !category || price == null || stock == null) {
+    if (!name || !category || !condition || !location || price == null || stock == null || !image) {
       return res.status(400).json({
         success: false,
-        message: "Name, category, price and stock are required",
+        message: "Name, category, condition, location, price, stock and image are required",
+      });
+    }
+
+    if (!["New", "Used"].includes(condition)) {
+      return res.status(400).json({
+        success: false,
+        message: "Condition must be either New or Used",
       });
     }
 
@@ -446,6 +453,8 @@ app.post("/api/products", authRequired, async (req, res) => {
       seller: req.userId,
       name,
       category,
+      condition,
+      location,
       brand,
       price,
       oldPrice,
@@ -492,6 +501,54 @@ app.get("/api/products/my", authRequired, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error while fetching products",
+    });
+  }
+});
+
+app.get("/api/products", async (req, res) => {
+  try {
+    const products = await productModel.find().sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    console.error("List products error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching products",
+    });
+  }
+});
+
+app.get("/api/products/:id", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product id",
+      });
+    }
+
+    const product = await productModel
+      .findById(req.params.id)
+      .populate("seller", "fullName");
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: product,
+    });
+  } catch (error) {
+    console.error("Get product error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching product",
     });
   }
 });

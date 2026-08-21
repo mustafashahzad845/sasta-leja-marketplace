@@ -25,6 +25,7 @@
       <div class="navbar-actions">
         <a href="login.html" class="btn btn-ghost" id="navSignIn">Sign In</a>
         <a href="signup.html" class="btn btn-primary" id="navGetStarted">Get Started</a>
+        <a href="seller-dashboard.html#panel-add" class="btn btn-primary" id="navAddProduct" style="display:none;">+ Add Product</a>
         <span id="navUserInfo" style="display:none; align-items:center; gap:10px;">
           <span id="navUserName" style="font-weight:600;"></span>
           <button class="btn btn-ghost" id="navLogout">Logout</button>
@@ -114,323 +115,8 @@
       <a href="#" class="view-all">View all →</a>
     </div>
 
-    <div class="product-grid" id="productGrid">
-      <!-- Product 1 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">📱</span>
-          <span class="product-card-badge">Hot</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Electronics</span>
-          <h3 class="product-card-title">Wireless Noise Cancelling Headphones Pro</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.8)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹2,499</span>
-            <span class="product-card-price-old">₹8,999</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">72% OFF</span>
-      </article>
-
-      <!-- Product 2 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">👟</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Fashion</span>
-          <h3 class="product-card-title">Ultra Light Running Shoes - Breathable Mesh</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.2)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹1,299</span>
-            <span class="product-card-price-old">₹3,499</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">63% OFF</span>
-      </article>
-
-      <!-- Product 3 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">⌚</span>
-          <span class="product-card-badge">New</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Electronics</span>
-          <h3 class="product-card-title">Smart Watch Series 7 - Fitness Tracker</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.9)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹4,999</span>
-            <span class="product-card-price-old">₹15,999</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">69% OFF</span>
-      </article>
-
-      <!-- Product 4 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">🎧</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Electronics</span>
-          <h3 class="product-card-title">Bluetooth Earbuds with 40hr Battery Life</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.6)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹899</span>
-            <span class="product-card-price-old">₹2,999</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">70% OFF</span>
-      </article>
-
-      <!-- Product 5 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">🎒</span>
-          <span class="product-card-badge">Sale</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Fashion</span>
-          <h3 class="product-card-title">Vintage Leather Backpack - Waterproof 25L</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.5)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹1,899</span>
-            <span class="product-card-price-old">₹5,499</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">65% OFF</span>
-      </article>
-
-      <!-- Product 6 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">💡</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Home & Living</span>
-          <h3 class="product-card-title">Smart LED Desk Lamp with Wireless Charger</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.7)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹1,599</span>
-            <span class="product-card-price-old">₹4,299</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">63% OFF</span>
-      </article>
-
-      <!-- Product 7 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">🧴</span>
-          <span class="product-card-badge">Trending</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Beauty</span>
-          <h3 class="product-card-title">Vitamin C Brightening Face Serum - 30ml</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.4)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹549</span>
-            <span class="product-card-price-old">₹1,299</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">58% OFF</span>
-      </article>
-
-      <!-- Product 8 -->
-      <article class="product-card" tabindex="0">
-        <div class="product-card-image">
-          <span class="product-card-image-placeholder">🎧</span>
-          <button class="product-card-wishlist" aria-label="Add to wishlist">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="product-card-body">
-          <span class="product-card-category">Electronics</span>
-          <h3 class="product-card-title">Portable Bluetooth Speaker - Waterproof IPX7</h3>
-          <div class="product-card-rating">
-            <span class="product-card-stars">
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>(4.9)</span>
-          </div>
-        </div>
-        <div class="product-card-footer">
-          <div>
-            <span class="product-card-price">₹1,199</span>
-            <span class="product-card-price-old">₹3,999</span>
-          </div>
-          <button class="product-card-add" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
-        <span class="product-card-discount">70% OFF</span>
-      </article>
-    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div id="productsStatus" style="display:none; text-align:center; padding:48px 20px; color:var(--muted);"></div>
   </section>
 
   <!-- Footer -->
@@ -484,7 +170,7 @@
   </footer>
 
   <script>
-    // Mobile menu
+    // ===================== NAV / UI =====================
     var mobileNav = document.getElementById('mobileNav');
     var menuBtn = document.querySelector('.mobile-menu-btn');
     var closeBtn = document.querySelector('.mobile-nav-close');
@@ -503,7 +189,7 @@
       document.body.style.overflow = '';
     });
 
-    // Category chips
+    // Category chips (visual toggle)
     var chips = document.querySelectorAll('.category-chip');
     chips.forEach(function(chip) {
       chip.addEventListener('click', function() {
@@ -516,35 +202,153 @@
       });
     });
 
-    // Wishlist toggle
-    document.querySelectorAll('.product-card-wishlist').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var svg = this.querySelector('svg');
-        if (this.style.color === 'rgb(239, 68, 68)') {
-          this.style.color = '';
-          svg.setAttribute('fill', 'none');
-        } else {
-          this.style.color = '#ef4444';
-          svg.setAttribute('fill', 'currentColor');
+    // ===================== PRODUCTS (live from backend) =====================
+    var API_BASE = 'http://localhost:4000/api';
+    var grid = document.getElementById('productGrid');
+    var status = document.getElementById('productsStatus');
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str == null ? '' : String(str);
+      return div.innerHTML;
+    }
+
+    function formatPrice(n) {
+      return '₹' + Number(n || 0).toLocaleString('en-IN');
+    }
+
+    function categoryEmoji(category) {
+      var c = (category || '').toLowerCase();
+      if (c.indexOf('electr') !== -1) return '📱';
+      if (c.indexOf('fashion') !== -1 || c.indexOf('shoe') !== -1 || c.indexOf('cloth') !== -1) return '👕';
+      if (c.indexOf('home') !== -1 || c.indexOf('furniture') !== -1 || c.indexOf('lamp') !== -1) return '🏠';
+      if (c.indexOf('beauty') !== -1) return '💄';
+      if (c.indexOf('sport') !== -1) return '🏃';
+      if (c.indexOf('book') !== -1) return '📚';
+      if (c.indexOf('game') !== -1) return '🎮';
+      if (c.indexOf('vehicle') !== -1 || c.indexOf('car') !== -1) return '🚗';
+      return '📦';
+    }
+
+    function discountLabel(oldPrice, price) {
+      if (!oldPrice || oldPrice <= price) return '';
+      var pct = Math.round((1 - price / oldPrice) * 100);
+      return pct + '% OFF';
+    }
+
+    function productCard(p) {
+      var image = p.image
+        ? '<img src="' + p.image + '" alt="' + escapeHtml(p.name) + '" loading="lazy">'
+        : '<span class="product-card-image-placeholder">' + categoryEmoji(p.category) + '</span>';
+
+      var badge = p.condition
+        ? '<span class="product-card-badge" style="background:' + (p.condition === 'Used' ? '#b45309' : '#10b981') + ';">' + escapeHtml(p.condition) + '</span>'
+        : '';
+
+      var oldPrice = (p.oldPrice && p.oldPrice > p.price)
+        ? '<span class="product-card-price-old">' + formatPrice(p.oldPrice) + '</span>'
+        : '';
+
+      var discount = discountLabel(p.oldPrice, p.price)
+        ? '<span class="product-card-discount">' + discountLabel(p.oldPrice, p.price) + '</span>'
+        : '';
+
+      return (
+        '<article class="product-card" tabindex="0" data-id="' + p._id + '">' +
+          '<div class="product-card-image">' + image + badge +
+            '<button class="product-card-wishlist" aria-label="Add to wishlist">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<div class="product-card-body">' +
+            '<span class="product-card-category">' + escapeHtml(p.category) + '</span>' +
+            '<h3 class="product-card-title">' + escapeHtml(p.name) + '</h3>' +
+            '<div class="product-card-meta">' +
+              '<span>📍 ' + escapeHtml(p.location || 'N/A') + '</span>' +
+              '<span>' + escapeHtml(p.condition || '') + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="product-card-footer">' +
+            '<div>' +
+              '<span class="product-card-price">' + formatPrice(p.price) + '</span>' + oldPrice +
+            '</div>' +
+            '<button class="product-card-add" aria-label="Add to cart">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+            '</button>' +
+          '</div>' + discount +
+        '</article>'
+      );
+    }
+
+    function setStatus(message) {
+      status.textContent = message;
+      status.style.display = 'block';
+    }
+
+    async function loadProducts() {
+      try {
+        var response = await fetch(API_BASE + '/products');
+        if (!response.ok) throw new Error('Bad response');
+        var data = await response.json();
+        var products = (data.data || []).filter(Boolean);
+        if (!products.length) {
+          setStatus('No products yet. Be the first to list one!');
+          return;
         }
-      });
+        status.style.display = 'none';
+        grid.innerHTML = products.map(productCard).join('');
+      } catch (error) {
+        setStatus('Could not load products. Is the server running?');
+      }
+    }
+
+    // Card click → detail page (ignore wishlist / add-to-cart clicks)
+    grid.addEventListener('click', function(e) {
+      var card = e.target.closest('.product-card');
+      if (!card) return;
+      if (e.target.closest('.product-card-wishlist') || e.target.closest('.product-card-add')) return;
+      window.location.href = 'product.html?id=' + card.dataset.id;
     });
 
-    // Add to cart feedback
-    document.querySelectorAll('.product-card-add').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var original = this.innerHTML;
-        this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-        this.style.background = '#10b981';
-        setTimeout(function() {
-          btn.innerHTML = original;
-          btn.style.background = '';
-        }, 1200);
-      });
+    // Keyboard: Enter opens the product
+    grid.addEventListener('keydown', function(e) {
+      if (e.key !== 'Enter') return;
+      var card = e.target.closest('.product-card');
+      if (card) window.location.href = 'product.html?id=' + card.dataset.id;
     });
-    // Auth state
+
+    // Wishlist toggle (delegated)
+    grid.addEventListener('click', function(e) {
+      var btn = e.target.closest('.product-card-wishlist');
+      if (!btn) return;
+      e.stopPropagation();
+      var svg = btn.querySelector('svg');
+      if (btn.style.color === 'rgb(239, 68, 68)') {
+        btn.style.color = '';
+        svg.setAttribute('fill', 'none');
+      } else {
+        btn.style.color = '#ef4444';
+        svg.setAttribute('fill', 'currentColor');
+      }
+    });
+
+    // Add to cart feedback (delegated)
+    grid.addEventListener('click', function(e) {
+      var btn = e.target.closest('.product-card-add');
+      if (!btn) return;
+      e.stopPropagation();
+      var original = btn.innerHTML;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      btn.style.background = '#10b981';
+      setTimeout(function() {
+        btn.innerHTML = original;
+        btn.style.background = '';
+      }, 1200);
+    });
+
+    loadProducts();
+
+    // ===================== AUTH STATE =====================
     var token = localStorage.getItem('token');
     var userStr = localStorage.getItem('user');
     var user = null;
@@ -553,12 +357,14 @@
     }
     var navSignIn = document.getElementById('navSignIn');
     var navGetStarted = document.getElementById('navGetStarted');
+    var navAddProduct = document.getElementById('navAddProduct');
     var navUserInfo = document.getElementById('navUserInfo');
     var navUserName = document.getElementById('navUserName');
     var navLogout = document.getElementById('navLogout');
     if (user) {
       if (navSignIn) navSignIn.style.display = 'none';
       if (navGetStarted) navGetStarted.style.display = 'none';
+      if (navAddProduct) navAddProduct.style.display = user.role === 'seller' ? '' : 'none';
       if (navUserInfo) navUserInfo.style.display = 'flex';
       if (navUserName) navUserName.textContent = user.fullName || user.email || 'User';
       if (navLogout) {
@@ -571,6 +377,7 @@
     } else {
       if (navSignIn) navSignIn.style.display = '';
       if (navGetStarted) navGetStarted.style.display = '';
+      if (navAddProduct) navAddProduct.style.display = 'none';
       if (navUserInfo) navUserInfo.style.display = 'none';
     }
   </script>
