@@ -6,3 +6,5 @@ const PORT = process.env.PORT
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET
 const CLOUDE_NAME = process.env.CLOUDE_NAME
+const SMTP_EMAIL = process.env.SMTP_EMAIL
+const SMTP_APP_PASS = process.env.SMTP_APP_PASS

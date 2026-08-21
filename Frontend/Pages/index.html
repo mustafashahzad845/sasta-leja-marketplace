@@ -23,8 +23,12 @@
       </ul>
 
       <div class="navbar-actions">
-        <a href="login.html" class="btn btn-ghost">Sign In</a>
-        <a href="signup.html" class="btn btn-primary">Get Started</a>
+        <a href="login.html" class="btn btn-ghost" id="navSignIn">Sign In</a>
+        <a href="signup.html" class="btn btn-primary" id="navGetStarted">Get Started</a>
+        <span id="navUserInfo" style="display:none; align-items:center; gap:10px;">
+          <span id="navUserName" style="font-weight:600;"></span>
+          <button class="btn btn-ghost" id="navLogout">Logout</button>
+        </span>
         <button class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"/>
@@ -540,6 +544,35 @@
         }, 1200);
       });
     });
+    // Auth state
+    var token = localStorage.getItem('token');
+    var userStr = localStorage.getItem('user');
+    var user = null;
+    if (token && userStr) {
+      try { user = JSON.parse(userStr); } catch(e) {}
+    }
+    var navSignIn = document.getElementById('navSignIn');
+    var navGetStarted = document.getElementById('navGetStarted');
+    var navUserInfo = document.getElementById('navUserInfo');
+    var navUserName = document.getElementById('navUserName');
+    var navLogout = document.getElementById('navLogout');
+    if (user) {
+      if (navSignIn) navSignIn.style.display = 'none';
+      if (navGetStarted) navGetStarted.style.display = 'none';
+      if (navUserInfo) navUserInfo.style.display = 'flex';
+      if (navUserName) navUserName.textContent = user.fullName || user.email || 'User';
+      if (navLogout) {
+        navLogout.addEventListener('click', function() {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.reload();
+        });
+      }
+    } else {
+      if (navSignIn) navSignIn.style.display = '';
+      if (navGetStarted) navGetStarted.style.display = '';
+      if (navUserInfo) navUserInfo.style.display = 'none';
+    }
   </script>
 </body>
 </html>

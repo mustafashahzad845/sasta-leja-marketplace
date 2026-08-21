@@ -71,8 +71,10 @@
             <a href="#">Forgot password?</a>
           </div>
 
-          <button type="submit" class="btn btn-primary">Sign In</button>
+          <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
         </form>
+
+        <div id="loginMessage" style="margin-top: 15px; text-align: center; display: none;"></div>
 
         <div class="auth-divider">
           <span>or continue with</span>
@@ -104,6 +106,11 @@
   </div>
 
   <script>
+    const API_BASE = 'http://localhost:4000/api';
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginMessage = document.getElementById('loginMessage');
+
     document.querySelectorAll('.password-toggle').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var target = document.getElementById(this.dataset.target);
@@ -115,6 +122,64 @@
           this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
         }
       });
+    });
+
+    function showMessage(message, isSuccess) {
+      loginMessage.style.display = 'block';
+      loginMessage.style.color = isSuccess ? '#10b981' : '#ef4444';
+      loginMessage.textContent = message;
+    }
+
+    function hideMessage() {
+      loginMessage.style.display = 'none';
+    }
+
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      hideMessage();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showMessage('Please enter email and password', false);
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Signing In...';
+
+      try {
+        const response = await fetch(`${API_BASE}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          if (data.data && data.data.token) {
+            localStorage.setItem('token', data.data.token);
+            localStorage.setItem('user', JSON.stringify(data.data.user));
+          }
+          showMessage('Login successful! Redirecting...', true);
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1000);
+        } else {
+          if (data.data && data.data.email) {
+            showMessage(data.message + ' Please verify your email first.', false);
+          } else {
+            showMessage(data.message || 'Login failed', false);
+          }
+        }
+      } catch (error) {
+        showMessage('Network error. Please try again.', false);
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Sign In';
+      }
     });
   </script>
 </body>
