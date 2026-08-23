@@ -392,6 +392,19 @@
       var sellerName = (p.seller && p.seller.fullName) || 'Sasta Leja Seller';
       var sellerInitial = escapeHtml(String(sellerName).trim().charAt(0).toUpperCase() || 'S');
 
+      var isOwner = false;
+      if (user && p.seller && p.seller._id) {
+        isOwner = (String(p.seller._id) === String(user.id));
+      }
+
+      var actionsHtml = '';
+      if (isOwner) {
+        actionsHtml = '<div class="dash-toolbar" style="flex-wrap: nowrap; margin-top: 16px;">' +
+          '<a href="seller-dashboard.html#panel-edit" class="btn btn-secondary btn-sm" data-edit-id="' + p._id + '">Edit Product</a>' +
+          '<button class="btn btn-ghost-danger btn-sm" data-delete-id="' + p._id + '">Delete Product</button>' +
+        '</div>';
+      }
+
       document.title = p.name + ' - Sasta Leja';
 
       card.innerHTML =
@@ -413,10 +426,53 @@
               '<div class="detail-seller-sub">Trusted marketplace seller</div>' +
             '</div>' +
           '</div>' +
+          actionsHtml +
         '</div>';
 
       card.style.display = 'grid';
       status.style.display = 'none';
+
+      // Wire owner actions
+      if (isOwner) {
+        var editBtn = card.querySelector('[data-edit-id]');
+        var deleteBtn = card.querySelector('[data-delete-id]');
+        if (editBtn) {
+          editBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var pid = this.dataset.editId;
+            if (window.confirm('Open edit form for this product?')) {
+              window.location.href = 'seller-dashboard.html#panel-edit';
+              try { localStorage.setItem('editProductId', pid); } catch (err) {}
+            }
+          });
+        }
+        if (deleteBtn) {
+          deleteBtn.addEventListener('click', function() {
+            var pid = this.dataset.deleteId;
+            if (window.confirm('Delete this product?')) {
+              deleteProductDirect(pid);
+            }
+          });
+        }
+      }
+    }
+
+    async function deleteProductDirect(id) {
+      try {
+        var response = await fetch(API_BASE + '/products/' + id, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        var data = await response.json();
+        if (data.success) {
+          showToast('Product deleted 🗑️');
+          window.location.href = 'seller-dashboard.html#panel-products';
+        } else {
+          showToast(data.message || 'Failed to delete product');
+        }
+      } catch (error) {
+        showToast('Network error. Please try again.');
+      }
     }
 
     loadProduct();
@@ -444,7 +500,7 @@
         navLogout.addEventListener('click', function() {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
-          window.location.reload();
+          window.location.href = 'login.html';
         });
       }
     } else {
@@ -453,6 +509,12 @@
       if (navAddProduct) navAddProduct.style.display = 'none';
       if (navUserInfo) navUserInfo.style.display = 'none';
     }
+
+    var ownerId = null;
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var pid = params.get('id');
+    } catch (e) {}
   </script>
 </body>
 </html>

@@ -617,4 +617,49 @@ app.delete("/api/products/:id", authRequired, async (req, res) => {
   }
 });
 
+app.put("/api/products/:id", authRequired, async (req, res) => {
+  try {
+    if (req.role !== "seller") {
+      return res.status(403).json({
+        success: false,
+        message: "Only sellers can update products",
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product id",
+      });
+    }
+
+    const { name, category, condition, location, brand, price, oldPrice, stock, sku, description, image, featured } = req.body;
+
+    const product = await productModel.findOneAndUpdate(
+      { _id: req.params.id, seller: req.userId },
+      { name, category, condition, location, brand, price, oldPrice, stock, sku, description, image, featured },
+      { new: true }
+    );
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: product,
+    });
+  } catch (error) {
+    console.error("Update product error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating product",
+    });
+  }
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

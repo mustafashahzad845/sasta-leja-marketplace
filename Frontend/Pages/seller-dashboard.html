@@ -65,25 +65,15 @@
     <!-- Sidebar -->
     <aside class="dash-sidebar" aria-label="Seller navigation">
       <div class="dash-sidebar-label">Seller Hub</div>
-      <button class="dash-nav-item active" data-panel="overview">
-        <span class="dash-nav-icon">📊</span> Overview
-      </button>
-      <button class="dash-nav-item" data-panel="products">
+      <button class="dash-nav-item active" data-panel="products">
         <span class="dash-nav-icon">📦</span> My Products
         <span class="dash-nav-count" id="navProductCount">0</span>
       </button>
       <button class="dash-nav-item" data-panel="add">
         <span class="dash-nav-icon">➕</span> Add Product
       </button>
-      <button class="dash-nav-item" data-panel="orders">
-        <span class="dash-nav-icon">🛍️</span> Orders
-        <span class="dash-nav-count">18</span>
-      </button>
-      <button class="dash-nav-item" data-panel="earnings">
-        <span class="dash-nav-icon">💰</span> Earnings
-      </button>
-      <button class="dash-nav-item" data-panel="reviews">
-        <span class="dash-nav-icon">⭐</span> Reviews
+      <button class="dash-nav-item" data-panel="edit">
+        <span class="dash-nav-icon">✏️</span> Edit Product
       </button>
       <button class="dash-nav-item" data-panel="settings">
         <span class="dash-nav-icon">⚙️</span> Settings
@@ -101,159 +91,8 @@
     <!-- Main -->
     <main class="dash-main">
 
-      <!-- ==================== OVERVIEW ==================== -->
-      <section class="dash-panel active" id="panel-overview">
-        <div class="dash-welcome">
-          <div class="dash-welcome-inner">
-            <div>
-              <h2>Salaam, Ameer <span>👋</span></h2>
-              <p>Here's what's happening in your store today. 4 new orders since morning!</p>
-            </div>
-            <div class="dash-welcome-actions">
-              <a href="#panel-add" class="btn btn-primary" data-goto="add">+ Add Product</a>
-              <a href="index.html" class="btn btn-white-ghost">View Store</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="dash-stats">
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">📦</div>
-              <span class="dash-stat-delta dash-stat-delta--up">+3</span>
-            </div>
-            <div class="dash-stat-value" id="statProductCount">0</div>
-            <div class="dash-stat-label">Active Products</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">🛍️</div>
-              <span class="dash-stat-delta dash-stat-delta--up">+12%</span>
-            </div>
-            <div class="dash-stat-value">312</div>
-            <div class="dash-stat-label">Orders This Month</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">💰</div>
-              <span class="dash-stat-delta dash-stat-delta--up">+8.4%</span>
-            </div>
-            <div class="dash-stat-value">₹1,84,500</div>
-            <div class="dash-stat-label">Total Earnings</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">⭐</div>
-              <span class="dash-stat-delta dash-stat-delta--up">+0.2</span>
-            </div>
-            <div class="dash-stat-value">4.7</div>
-            <div class="dash-stat-label">Avg. Rating</div>
-          </div>
-        </div>
-
-        <div class="dash-grid-2">
-          <div class="dash-card">
-            <div class="dash-card-header">
-              <div class="dash-card-title">Sales — Last 7 Days</div>
-              <a href="#panel-earnings" class="dash-card-link" data-goto="earnings">Details →</a>
-            </div>
-            <div class="dash-bars">
-              <div class="dash-bar" style="height: 35%;"></div>
-              <div class="dash-bar" style="height: 52%;"></div>
-              <div class="dash-bar" style="height: 40%;"></div>
-              <div class="dash-bar" style="height: 70%;"></div>
-              <div class="dash-bar" style="height: 58%;"></div>
-              <div class="dash-bar" style="height: 88%;"></div>
-              <div class="dash-bar" style="height: 64%;"></div>
-            </div>
-            <div class="dash-bars-labels">
-              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-            </div>
-          </div>
-
-          <div class="dash-card">
-            <div class="dash-card-header">
-              <div class="dash-card-title">⚠️ Low Stock Alert</div>
-              <a href="#panel-products" class="dash-card-link" data-goto="products">Restock →</a>
-            </div>
-            <div class="dash-product" style="padding: 10px 0; border-bottom: 1px solid var(--border-soft);">
-              <div class="dash-product-thumb">🎧</div>
-              <div style="flex:1; min-width:0;">
-                <div class="dash-product-name">Bluetooth Earbuds Pro</div>
-                <div class="dash-product-meta">Only 3 left</div>
-              </div>
-              <span class="dash-badge dash-badge--danger">Low</span>
-            </div>
-            <div class="dash-product" style="padding: 10px 0; border-bottom: 1px solid var(--border-soft);">
-              <div class="dash-product-thumb">⌚</div>
-              <div style="flex:1; min-width:0;">
-                <div class="dash-product-name">Smart Watch Series 7</div>
-                <div class="dash-product-meta">Only 2 left</div>
-              </div>
-              <span class="dash-badge dash-badge--danger">Low</span>
-            </div>
-            <div class="dash-product" style="padding: 10px 0;">
-              <div class="dash-product-thumb">👟</div>
-              <div style="flex:1; min-width:0;">
-                <div class="dash-product-name">Running Shoes - Size 42</div>
-                <div class="dash-product-meta">Only 5 left</div>
-              </div>
-              <span class="dash-badge dash-badge--warning">Low</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="dash-card">
-          <div class="dash-card-header">
-            <div class="dash-card-title">Recent Orders</div>
-            <a href="#panel-orders" class="dash-card-link" data-goto="orders">View all →</a>
-          </div>
-          <div class="dash-table-wrap">
-            <table class="dash-table">
-              <thead>
-                <tr><th>Order</th><th>Customer</th><th>Items</th><th>Date</th><th>Total</th><th>Status</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="dash-text-strong">#SL-3824</td>
-                  <td>Fatima Noor</td>
-                  <td>Smart Watch Series 7</td>
-                  <td class="dash-text-muted">21 Aug 2026</td>
-                  <td class="dash-text-strong">₹4,999</td>
-                  <td><span class="dash-badge dash-badge--warning">Packed</span></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3823</td>
-                  <td>Bilal Ahmed</td>
-                  <td>Wireless Headphones</td>
-                  <td class="dash-text-muted">21 Aug 2026</td>
-                  <td class="dash-text-strong">₹2,499</td>
-                  <td><span class="dash-badge dash-badge--success">Shipped</span></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3822</td>
-                  <td>Zainab Ali</td>
-                  <td>LED Desk Lamp</td>
-                  <td class="dash-text-muted">20 Aug 2026</td>
-                  <td class="dash-text-strong">₹1,599</td>
-                  <td><span class="dash-badge dash-badge--success">Delivered</span></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3821</td>
-                  <td>Hassan Raza</td>
-                  <td>Earbuds Pro + Charger</td>
-                  <td class="dash-text-muted">20 Aug 2026</td>
-                  <td class="dash-text-strong">₹1,198</td>
-                  <td><span class="dash-badge dash-badge--neutral">Pending</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
       <!-- ==================== MY PRODUCTS ==================== -->
-      <section class="dash-panel" id="panel-products">
+      <section class="dash-panel active" id="panel-products">
         <div class="dash-panel-header">
           <div>
             <div class="dash-eyebrow">Inventory</div>
@@ -263,18 +102,17 @@
           <div class="dash-toolbar">
             <div class="dash-search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="search" placeholder="Search products...">
+              <input type="search" id="productSearch" placeholder="Search products...">
             </div>
             <a href="#panel-add" class="btn btn-primary btn-sm" data-goto="add">+ Add Product</a>
           </div>
         </div>
 
         <div class="dash-filters">
-          <button class="dash-filter active">All</button>
-          <button class="dash-filter">Active</button>
-          <button class="dash-filter">Low Stock</button>
-          <button class="dash-filter">Out of Stock</button>
-          <button class="dash-filter">Draft</button>
+          <button class="dash-filter active" data-filter="all">All</button>
+          <button class="dash-filter" data-filter="active">Active</button>
+          <button class="dash-filter" data-filter="low">Low Stock</button>
+          <button class="dash-filter" data-filter="out">Out of Stock</button>
         </div>
 
         <div class="dash-card" style="padding: 8px 24px;">
@@ -284,116 +122,7 @@
                 <tr><th>Product</th><th>Category</th><th>Condition</th><th>Location</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
               </thead>
               <tbody id="productsBody">
-                <tr>
-                  <td>
-                    <div class="dash-product">
-                      <div class="dash-product-thumb">🎧</div>
-                      <div>
-                        <div class="dash-product-name">Bluetooth Earbuds Pro</div>
-                        <div class="dash-product-meta">SKU: SL-ERB-001</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Electronics</td>
-                  <td class="dash-text-strong">₹899</td>
-                  <td class="dash-text-muted">3</td>
-                  <td>212</td>
-                  <td><span class="dash-badge dash-badge--danger">Low Stock</span></td>
-                  <td>
-                    <div class="dash-toolbar" style="flex-wrap: nowrap;">
-                      <button class="btn btn-secondary btn-sm">Edit</button>
-                      <button class="btn btn-ghost-danger btn-sm">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="dash-product">
-                      <div class="dash-product-thumb">⌚</div>
-                      <div>
-                        <div class="dash-product-name">Smart Watch Series 7</div>
-                        <div class="dash-product-meta">SKU: SL-SW7-002</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Electronics</td>
-                  <td class="dash-text-strong">₹4,999</td>
-                  <td class="dash-text-muted">2</td>
-                  <td>98</td>
-                  <td><span class="dash-badge dash-badge--danger">Low Stock</span></td>
-                  <td>
-                    <div class="dash-toolbar" style="flex-wrap: nowrap;">
-                      <button class="btn btn-secondary btn-sm">Edit</button>
-                      <button class="btn btn-ghost-danger btn-sm">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="dash-product">
-                      <div class="dash-product-thumb">👟</div>
-                      <div>
-                        <div class="dash-product-name">Ultra Light Running Shoes</div>
-                        <div class="dash-product-meta">SKU: SL-SHO-004</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Fashion</td>
-                  <td class="dash-text-strong">₹1,299</td>
-                  <td class="dash-text-muted">46</td>
-                  <td>156</td>
-                  <td><span class="dash-badge dash-badge--success">Active</span></td>
-                  <td>
-                    <div class="dash-toolbar" style="flex-wrap: nowrap;">
-                      <button class="btn btn-secondary btn-sm">Edit</button>
-                      <button class="btn btn-ghost-danger btn-sm">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="dash-product">
-                      <div class="dash-product-thumb">🧴</div>
-                      <div>
-                        <div class="dash-product-name">Vitamin C Face Serum</div>
-                        <div class="dash-product-meta">SKU: SL-BTY-009</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Beauty</td>
-                  <td class="dash-text-strong">₹549</td>
-                  <td class="dash-text-muted">120</td>
-                  <td>78</td>
-                  <td><span class="dash-badge dash-badge--success">Active</span></td>
-                  <td>
-                    <div class="dash-toolbar" style="flex-wrap: nowrap;">
-                      <button class="btn btn-secondary btn-sm">Edit</button>
-                      <button class="btn btn-ghost-danger btn-sm">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="dash-product">
-                      <div class="dash-product-thumb">💡</div>
-                      <div>
-                        <div class="dash-product-name">Smart LED Desk Lamp</div>
-                        <div class="dash-product-meta">SKU: SL-LMP-011</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Home & Living</td>
-                  <td class="dash-text-strong">₹1,599</td>
-                  <td class="dash-text-muted">0</td>
-                  <td>64</td>
-                  <td><span class="dash-badge dash-badge--neutral">Out of Stock</span></td>
-                  <td>
-                    <div class="dash-toolbar" style="flex-wrap: nowrap;">
-                      <button class="btn btn-secondary btn-sm">Edit</button>
-                      <button class="btn btn-ghost-danger btn-sm">Delete</button>
-                    </div>
-                  </td>
-                </tr>
+                <tr><td colspan="8" style="text-align:center; padding:24px; color:var(--muted);">Loading products...</td></tr>
               </tbody>
             </table>
           </div>
@@ -406,7 +135,7 @@
           <div>
             <div class="dash-eyebrow">Inventory</div>
             <h1 class="dash-title">Add New Product</h1>
-            <p class="dash-subtitle">Fill in the details below. You can save a draft and publish later.</p>
+            <p class="dash-subtitle">Fill in the details below and publish your listing.</p>
           </div>
         </div>
 
@@ -489,266 +218,106 @@
             </div>
           </div>
           <div class="dash-form-actions">
-            <button type="button" class="btn btn-secondary">Save Draft</button>
+            <button type="button" class="btn btn-secondary" id="addSaveDraft">Save Draft</button>
             <button type="submit" class="btn btn-primary" id="publishBtn">Publish Product</button>
           </div>
         </form>
       </section>
 
-      <!-- ==================== ORDERS ==================== -->
-      <section class="dash-panel" id="panel-orders">
+      <!-- ==================== EDIT PRODUCT ==================== -->
+      <section class="dash-panel" id="panel-edit">
         <div class="dash-panel-header">
           <div>
-            <div class="dash-eyebrow">Fulfilment</div>
-            <h1 class="dash-title">Orders</h1>
-            <p class="dash-subtitle">Track and fulfil customer orders.</p>
+            <div class="dash-eyebrow">Inventory</div>
+            <h1 class="dash-title">Edit Product</h1>
+            <p class="dash-subtitle">Update product details. Image is optional — leave unchanged if not uploading a new one.</p>
           </div>
         </div>
 
-        <div class="dash-filters">
-          <button class="dash-filter active">All</button>
-          <button class="dash-filter">Pending</button>
-          <button class="dash-filter">Packed</button>
-          <button class="dash-filter">Shipped</button>
-          <button class="dash-filter">Delivered</button>
-        </div>
-
-        <div class="dash-card" style="padding: 8px 24px;">
-          <div class="dash-table-wrap">
-            <table class="dash-table">
-              <thead>
-                <tr><th>Order</th><th>Customer</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="dash-text-strong">#SL-3824</td>
-                  <td>Fatima Noor</td>
-                  <td class="dash-text-muted">21 Aug 2026</td>
-                  <td>Smart Watch Series 7</td>
-                  <td class="dash-text-strong">₹4,999</td>
-                  <td><span class="dash-badge dash-badge--warning">Packed</span></td>
-                  <td><button class="btn btn-secondary btn-sm">Mark Shipped</button></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3823</td>
-                  <td>Bilal Ahmed</td>
-                  <td class="dash-text-muted">21 Aug 2026</td>
-                  <td>Wireless Headphones</td>
-                  <td class="dash-text-strong">₹2,499</td>
-                  <td><span class="dash-badge dash-badge--success">Shipped</span></td>
-                  <td><button class="btn btn-secondary btn-sm">Mark Delivered</button></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3821</td>
-                  <td>Hassan Raza</td>
-                  <td class="dash-text-muted">20 Aug 2026</td>
-                  <td>Earbuds Pro + Charger</td>
-                  <td class="dash-text-strong">₹1,198</td>
-                  <td><span class="dash-badge dash-badge--neutral">Pending</span></td>
-                  <td><button class="btn btn-secondary btn-sm">Mark Packed</button></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3818</td>
-                  <td>Maryam Sheikh</td>
-                  <td class="dash-text-muted">19 Aug 2026</td>
-                  <td>Vitamin C Face Serum</td>
-                  <td class="dash-text-strong">₹549</td>
-                  <td><span class="dash-badge dash-badge--success">Delivered</span></td>
-                  <td><span class="dash-text-muted">Completed</span></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3815</td>
-                  <td>Usman Tariq</td>
-                  <td class="dash-text-muted">18 Aug 2026</td>
-                  <td>Running Shoes - Size 42</td>
-                  <td class="dash-text-strong">₹1,299</td>
-                  <td><span class="dash-badge dash-badge--success">Delivered</span></td>
-                  <td><span class="dash-text-muted">Completed</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== EARNINGS ==================== -->
-      <section class="dash-panel" id="panel-earnings">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Money</div>
-            <h1 class="dash-title">Earnings</h1>
-            <p class="dash-subtitle">Your revenue, payouts and commission at a glance.</p>
-          </div>
-          <button class="btn btn-primary" onclick="showToast('Withdrawal requested ✅')">Withdraw Funds</button>
-        </div>
-
-        <div class="dash-stats">
-          <div class="dash-stat">
-            <div class="dash-stat-top"><div class="dash-stat-icon">💰</div></div>
-            <div class="dash-stat-value">₹1,84,500</div>
-            <div class="dash-stat-label">Total Earnings</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top"><div class="dash-stat-icon">🏦</div><span class="dash-stat-delta dash-stat-delta--up">Available</span></div>
-            <div class="dash-stat-value">₹46,200</div>
-            <div class="dash-stat-label">Ready to Withdraw</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top"><div class="dash-stat-icon">⏳</div></div>
-            <div class="dash-stat-value">₹12,450</div>
-            <div class="dash-stat-label">Pending Settlement</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top"><div class="dash-stat-icon">🧾</div></div>
-            <div class="dash-stat-value">2.5%</div>
-            <div class="dash-stat-label">Commission</div>
-          </div>
-        </div>
-
-        <div class="dash-grid-2">
-          <div class="dash-card">
-            <div class="dash-card-header">
-              <div class="dash-card-title">Monthly Earnings</div>
-              <span class="dash-badge dash-badge--accent">2026</span>
+        <form class="dash-card" id="editProductForm" novalidate>
+          <input type="hidden" id="eProductId">
+          <div class="dash-form-grid">
+            <div class="form-group form-group--full">
+              <label for="eName">Product name</label>
+              <input type="text" id="eName" placeholder="e.g. Wireless Noise Cancelling Headphones Pro">
             </div>
-            <div class="dash-bars">
-              <div class="dash-bar" style="height: 40%;"></div>
-              <div class="dash-bar" style="height: 55%;"></div>
-              <div class="dash-bar" style="height: 48%;"></div>
-              <div class="dash-bar" style="height: 72%;"></div>
-              <div class="dash-bar" style="height: 62%;"></div>
-              <div class="dash-bar" style="height: 85%;"></div>
-              <div class="dash-bar" style="height: 78%;"></div>
-              <div class="dash-bar" style="height: 96%;"></div>
+            <div class="form-group">
+              <label for="eCategory">Category</label>
+              <select id="eCategory">
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home & Living</option>
+                <option>Beauty</option>
+                <option>Sports</option>
+                <option>Books</option>
+                <option>Other</option>
+              </select>
             </div>
-            <div class="dash-bars-labels">
-              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+            <div class="form-group">
+              <label for="eCondition">Condition</label>
+              <select id="eCondition">
+                <option value="New">New</option>
+                <option value="Used">Used</option>
+              </select>
             </div>
-          </div>
-
-          <div class="dash-card">
-            <div class="dash-card-header">
-              <div class="dash-card-title">Top Selling Products</div>
+            <div class="form-group">
+              <label for="eLocation">Location</label>
+              <input type="text" id="eLocation" placeholder="e.g. Lahore, Pakistan">
             </div>
-            <div style="margin-bottom: 14px;">
-              <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:6px;">
-                <span>Bluetooth Earbuds Pro</span><span class="dash-text-strong">₹1,91,000</span>
+            <div class="form-group">
+              <label for="eBrand">Brand</label>
+              <input type="text" id="eBrand" placeholder="e.g. SastaLeja">
+            </div>
+            <div class="form-group">
+              <label for="ePrice">Selling price (₹)</label>
+              <input type="number" id="ePrice" placeholder="2499">
+            </div>
+            <div class="form-group">
+              <label for="eOldPrice">Compare-at price (₹)</label>
+              <input type="number" id="eOldPrice" placeholder="8999">
+            </div>
+            <div class="form-group">
+              <label for="eStock">Stock quantity</label>
+              <input type="number" id="eStock" placeholder="50">
+            </div>
+            <div class="form-group">
+              <label for="eSku">SKU</label>
+              <input type="text" id="eSku" placeholder="SL-HDP-014">
+            </div>
+            <div class="form-group form-group--full">
+              <label for="eDesc">Description</label>
+              <textarea id="eDesc" placeholder="Describe your product — features, specs, what's in the box..."></textarea>
+            </div>
+            <div class="form-group form-group--full">
+              <label>Product image</label>
+              <label class="dash-dropzone" for="eImage" style="cursor: pointer;">
+                <span class="dash-dropzone-icon">📤</span>
+                <p>Click to choose a new image</p>
+                <small>PNG or JPG, up to 5MB. Leave empty to keep current image.</small>
+              </label>
+              <input type="file" id="eImage" accept="image/*" style="display: none;">
+              <div id="eImagePreviewWrap" style="display: none; margin-top: 10px;">
+                <img id="eImagePreview" alt="Image preview" style="max-width: 180px; border-radius: 8px; border: 1px solid var(--border-soft);">
               </div>
-              <div class="dash-progress"><span style="width: 100%;"></span></div>
             </div>
-            <div style="margin-bottom: 14px;">
-              <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:6px;">
-                <span>Smart Watch Series 7</span><span class="dash-text-strong">₹1,24,000</span>
-              </div>
-              <div class="dash-progress"><span style="width: 72%;"></span></div>
-            </div>
-            <div style="margin-bottom: 14px;">
-              <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:6px;">
-                <span>Running Shoes</span><span class="dash-text-strong">₹98,500</span>
-              </div>
-              <div class="dash-progress"><span style="width: 58%;"></span></div>
-            </div>
-            <div>
-              <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:6px;">
-                <span>LED Desk Lamp</span><span class="dash-text-strong">₹64,200</span>
-              </div>
-              <div class="dash-progress"><span style="width: 40%;"></span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== REVIEWS ==================== -->
-      <section class="dash-panel" id="panel-reviews">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Feedback</div>
-            <h1 class="dash-title">Reviews</h1>
-            <p class="dash-subtitle">What customers say about your products.</p>
-          </div>
-        </div>
-
-        <div class="dash-grid-2">
-          <div class="dash-card">
-            <div class="dash-card-header">
-              <div class="dash-card-title">Rating Breakdown</div>
-              <span class="dash-badge dash-badge--accent" style="font-size: 14px; padding: 6px 12px;">⭐ 4.7 / 5</span>
-            </div>
-            <div class="dash-rating-row">
-              <span class="dash-rating-row-label">5</span>
-              <div class="dash-progress"><span style="width: 82%;"></span></div>
-              <span class="dash-rating-row-count">196</span>
-            </div>
-            <div class="dash-rating-row">
-              <span class="dash-rating-row-label">4</span>
-              <div class="dash-progress"><span style="width: 12%;"></span></div>
-              <span class="dash-rating-row-count">29</span>
-            </div>
-            <div class="dash-rating-row">
-              <span class="dash-rating-row-label">3</span>
-              <div class="dash-progress"><span style="width: 4%;"></span></div>
-              <span class="dash-rating-row-count">9</span>
-            </div>
-            <div class="dash-rating-row">
-              <span class="dash-rating-row-label">2</span>
-              <div class="dash-progress"><span style="width: 1%;"></span></div>
-              <span class="dash-rating-row-count">3</span>
-            </div>
-            <div class="dash-rating-row">
-              <span class="dash-rating-row-label">1</span>
-              <div class="dash-progress"><span style="width: 1%;"></span></div>
-              <span class="dash-rating-row-count">2</span>
-            </div>
-          </div>
-
-          <div class="dash-card">
-            <div class="dash-card-title" style="margin-bottom: 6px;">Recent Reviews</div>
-            <div class="dash-review">
-              <div class="dash-review-head">
-                <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px;">F</div>
-                <div class="dash-review-name">Fatima Noor</div>
-                <span class="dash-stars" aria-label="5 out of 5">
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <div class="form-group form-group--full">
+              <label class="dash-field-row" style="border-bottom: none; padding: 4px 0;">
+                <span>
+                  <span class="dash-field-row-label">Featured product</span>
+                  <span class="dash-field-row-help">Show this product in the homepage "Trending deals"</span>
                 </span>
-                <span class="dash-review-date">2 days ago</span>
-              </div>
-              <p class="dash-review-text">"The watch is amazing for the price. Battery lasts a full week. Highly recommended!"</p>
-            </div>
-            <div class="dash-review">
-              <div class="dash-review-head">
-                <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px; background: linear-gradient(135deg, #6366f1, #818cf8);">B</div>
-                <div class="dash-review-name">Bilal Ahmed</div>
-                <span class="dash-stars" aria-label="4 out of 5">
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span class="dash-switch">
+                  <input type="checkbox" id="eFeatured">
+                  <span class="dash-switch-slider"></span>
                 </span>
-                <span class="dash-review-date">5 days ago</span>
-              </div>
-              <p class="dash-review-text">"Headphones sound great. Could be more comfortable for long sessions but value for money."</p>
-            </div>
-            <div class="dash-review">
-              <div class="dash-review-head">
-                <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px; background: linear-gradient(135deg, #10b981, #34d399);">Z</div>
-                <div class="dash-review-name">Zainab Ali</div>
-                <span class="dash-stars" aria-label="5 out of 5">
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </span>
-                <span class="dash-review-date">1 week ago</span>
-              </div>
-              <p class="dash-review-text">"Love the lamp! The wireless charging on top is a genius touch. Packaging was neat too."</p>
+              </label>
             </div>
           </div>
-        </div>
+          <div class="dash-form-actions">
+            <button type="button" class="btn btn-secondary" id="editCancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="updateBtn">Update Product</button>
+          </div>
+        </form>
       </section>
 
       <!-- ==================== SETTINGS ==================== -->
@@ -845,7 +414,6 @@
       });
     });
 
-    // Open a panel by name
     function openPanel(target) {
       document.querySelectorAll('.dash-nav-item').forEach(function(i) {
         i.classList.toggle('active', i.dataset.panel === target);
@@ -856,7 +424,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Honor #panel-<name> in the URL (e.g. seller-dashboard.html#panel-add)
+    // Honor #panel-<name> in the URL
     var hashMatch = window.location.hash.match(/panel-([a-z]+)/);
     if (hashMatch) openPanel(hashMatch[1]);
 
@@ -865,6 +433,7 @@
       chip.addEventListener('click', function() {
         this.parentElement.querySelectorAll('.dash-filter').forEach(function(c) { c.classList.remove('active'); });
         this.classList.add('active');
+        loadProducts();
       });
     });
 
@@ -922,12 +491,6 @@
 
         document.getElementById('popupEmail').textContent = u.email || '—';
         document.getElementById('popupJoined').textContent = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
-
-        var welcomeTitle = document.querySelector('#panel-overview .dash-welcome h2');
-        if (welcomeTitle) {
-          var firstName = (u.fullName || 'Seller').split(' ')[0];
-          welcomeTitle.innerHTML = 'Salaam, ' + firstName + ' <span>👋</span>';
-        }
       } catch (error) {
         console.error('Failed to load profile:', error);
       }
@@ -968,7 +531,7 @@
       window.location.href = 'login.html';
     });
 
-    // ===================== PRODUCTS (live data) =====================
+    // ===================== PRODUCTS (live data + CRUD) =====================
 
     function escapeHtml(str) {
       var div = document.createElement('div');
@@ -1025,7 +588,7 @@
           '<td>' + statusBadge(p) + '</td>' +
           '<td>' +
             '<div class="dash-toolbar" style="flex-wrap: nowrap;">' +
-              '<button class="btn btn-secondary btn-sm">Edit</button>' +
+              '<button class="btn btn-secondary btn-sm" data-edit="' + p._id + '">Edit</button>' +
               '<button class="btn btn-ghost-danger btn-sm" data-delete="' + p._id + '">Delete</button>' +
             '</div>' +
           '</td>' +
@@ -1035,8 +598,17 @@
 
     async function loadProducts() {
       var tbody = document.getElementById('productsBody');
+      var search = (document.getElementById('productSearch').value || '').trim().toLowerCase();
+      var filterBtn = document.querySelector('.dash-filter.active');
+      var filter = filterBtn ? filterBtn.dataset.filter : 'all';
+
       try {
-        var response = await fetch(API_BASE + '/products/my', {
+        var queryParts = [];
+        if (search) queryParts.push('search=' + encodeURIComponent(search));
+        if (filter && filter !== 'all') queryParts.push('filter=' + filter);
+        var qs = queryParts.length ? '?' + queryParts.join('&') : '';
+
+        var response = await fetch(API_BASE + '/products/my' + qs, {
           headers: { 'Authorization': 'Bearer ' + token },
         });
         if (response.status === 401) {
@@ -1048,7 +620,7 @@
         var data = await response.json();
         var products = (data.data || []).filter(Boolean);
 
-        document.querySelectorAll('#navProductCount, #statProductCount').forEach(function(el) {
+        document.querySelectorAll('#navProductCount').forEach(function(el) {
           el.textContent = products.length;
         });
 
@@ -1058,6 +630,9 @@
         }
 
         tbody.innerHTML = products.map(productRow).join('');
+        document.querySelectorAll('[data-edit]').forEach(function(btn) {
+          btn.addEventListener('click', function() { openEditProduct(this.dataset.edit); });
+        });
         document.querySelectorAll('[data-delete]').forEach(function(btn) {
           btn.addEventListener('click', function() { deleteProduct(this.dataset.delete); });
         });
@@ -1065,6 +640,13 @@
         tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
       }
     }
+
+    // Search debounce
+    var searchTimer = null;
+    document.getElementById('productSearch').addEventListener('input', function() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(loadProducts, 250);
+    });
 
     async function deleteProduct(id) {
       if (!window.confirm('Delete this product?')) return;
@@ -1085,7 +667,7 @@
       }
     }
 
-    // Product image preview
+    // Product image preview for add form
     var pImageInput = document.getElementById('pImage');
     if (pImageInput) {
       pImageInput.addEventListener('change', function() {
@@ -1102,6 +684,7 @@
       });
     }
 
+    // Add product form
     var addForm = document.getElementById('addProductForm');
     if (addForm) {
       addForm.addEventListener('submit', async function(e) {
@@ -1138,7 +721,6 @@
         btn.disabled = true;
         btn.textContent = 'Publishing...';
         try {
-          // Upload image to Cloudinary first if one is selected
           var fileInput = document.getElementById('pImage');
           if (fileInput && fileInput.files && fileInput.files.length) {
             btn.textContent = 'Uploading image...';
@@ -1177,6 +759,7 @@
             if (resetFile) resetFile.value = '';
             showToast('Product published! 🎉');
             loadProducts();
+            openPanel('products');
           } else {
             showToast(data.message || 'Failed to publish product');
           }
@@ -1185,6 +768,139 @@
         } finally {
           btn.disabled = false;
           btn.textContent = 'Publish Product';
+        }
+      });
+    }
+
+    // Edit product helpers
+    function openEditProduct(id) {
+      var tbody = document.getElementById('productsBody');
+      var row = tbody.querySelector('[data-edit="' + id + '"]');
+      if (!row) return;
+      var cells = row.querySelectorAll('td');
+      if (!cells.length) return;
+
+      document.getElementById('eProductId').value = id;
+      document.getElementById('eName').value = cells[0].textContent.trim();
+      document.getElementById('eCategory').value = (cells[1].textContent || '').trim();
+      document.getElementById('eCondition').value = (cells[2].textContent || '').trim();
+      document.getElementById('eLocation').value = (cells[3].textContent || '').trim();
+      document.getElementById('ePrice').value = '';
+      document.getElementById('eOldPrice').value = '';
+      document.getElementById('eStock').value = '';
+      document.getElementById('eSku').value = '';
+      document.getElementById('eDesc').value = '';
+      document.getElementById('eFeatured').checked = false;
+      document.getElementById('eImagePreviewWrap').style.display = 'none';
+
+      openPanel('edit');
+    }
+
+    document.getElementById('editCancel').addEventListener('click', function() {
+      openPanel('products');
+    });
+
+    var eImageInput = document.getElementById('eImage');
+    if (eImageInput) {
+      eImageInput.addEventListener('change', function() {
+        var wrap = document.getElementById('eImagePreviewWrap');
+        var img = document.getElementById('eImagePreview');
+        var file = this.files && this.files[0];
+        if (file) {
+          img.src = URL.createObjectURL(file);
+          wrap.style.display = 'block';
+        } else {
+          wrap.style.display = 'none';
+          img.removeAttribute('src');
+        }
+      });
+    }
+
+    var editForm = document.getElementById('editProductForm');
+    if (editForm) {
+      editForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var id = document.getElementById('eProductId').value.trim();
+        if (!id) {
+          showToast('No product selected for update');
+          return;
+        }
+
+        var payload = {
+          name: document.getElementById('eName').value.trim(),
+          category: document.getElementById('eCategory').value,
+          condition: document.getElementById('eCondition').value,
+          location: document.getElementById('eLocation').value.trim(),
+          brand: document.getElementById('eBrand').value.trim(),
+          price: parseFloat(document.getElementById('ePrice').value),
+          oldPrice: parseFloat(document.getElementById('eOldPrice').value || 0),
+          stock: parseInt(document.getElementById('eStock').value || 0, 10),
+          sku: document.getElementById('eSku').value.trim(),
+          description: document.getElementById('eDesc').value.trim(),
+          featured: document.getElementById('eFeatured').checked,
+          image: '',
+        };
+
+        if (!payload.name || !payload.category || !payload.condition || !payload.location) {
+          showToast('Please fill product name, category, condition and location');
+          return;
+        }
+        if (!payload.price || payload.price <= 0) {
+          showToast('Please enter a valid price');
+          return;
+        }
+
+        var btn = document.getElementById('updateBtn');
+        btn.disabled = true;
+        btn.textContent = 'Updating...';
+
+        try {
+          var fileInput = document.getElementById('eImage');
+          if (fileInput && fileInput.files && fileInput.files.length) {
+            btn.textContent = 'Uploading image...';
+            var fd = new FormData();
+            fd.append('image', fileInput.files[0]);
+            var uploadRes = await fetch(API_BASE + '/products/upload', {
+              method: 'POST',
+              headers: { 'Authorization': 'Bearer ' + token },
+              body: fd,
+            });
+            var uploadData = await uploadRes.json();
+            if (!uploadData.success) {
+              showToast(uploadData.message || 'Image upload failed');
+              btn.disabled = false;
+              btn.textContent = 'Update Product';
+              return;
+            }
+            payload.image = uploadData.data.imageUrl;
+          }
+
+          var response = await fetch(API_BASE + '/products/' + id, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(payload),
+          });
+          var data = await response.json();
+          if (data.success) {
+            showToast('Product updated ✅');
+            editForm.reset();
+            document.getElementById('eCategory').value = 'Electronics';
+            document.getElementById('eImagePreviewWrap').style.display = 'none';
+            var resetFile = document.getElementById('eImage');
+            if (resetFile) resetFile.value = '';
+            loadProducts();
+            openPanel('products');
+          } else {
+            showToast(data.message || 'Failed to update product');
+          }
+        } catch (error) {
+          showToast('Network error. Please try again.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Update Product';
         }
       });
     }
