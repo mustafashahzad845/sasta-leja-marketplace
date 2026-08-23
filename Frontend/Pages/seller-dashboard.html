@@ -18,6 +18,36 @@
       </a>
 
       <div class="navbar-actions">
+        <button class="dash-user-chip" id="userChipBtn" aria-label="Account" aria-haspopup="true">
+          <div class="dash-avatar" id="navAvatar">A</div>
+          <div class="dash-user-chip-info">
+            <div class="dash-user-chip-name" id="navUserName">Seller</div>
+            <div class="dash-user-chip-role">Seller</div>
+          </div>
+        </button>
+        <!-- Profile popup -->
+        <div class="dash-profile-popup" id="profilePopup" aria-hidden="true">
+          <div class="dash-profile-popup-inner">
+            <div class="dash-profile-popup-header">
+              <div class="dash-avatar dash-profile-avatar" id="popupAvatar">A</div>
+              <div>
+                <div class="dash-profile-popup-name" id="popupName">Seller</div>
+                <div class="dash-profile-popup-role" id="popupRole">Seller</div>
+              </div>
+            </div>
+            <div class="dash-profile-popup-body">
+              <div class="dash-profile-row">
+                <span class="dash-profile-label">Email</span>
+                <span class="dash-profile-value" id="popupEmail">—</span>
+              </div>
+              <div class="dash-profile-row">
+                <span class="dash-profile-label">Member since</span>
+                <span class="dash-profile-value" id="popupJoined">—</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm dash-profile-logout" id="popupLogout">Logout</button>
+          </div>
+        </div>
         <a href="index.html" class="btn btn-ghost">← Store</a>
         <button class="dash-icon-btn" aria-label="Notifications">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -27,13 +57,6 @@
           <span class="dash-dot"></span>
         </button>
         <a href="#panel-add" class="btn btn-primary" data-goto="add">+ Add Product</a>
-        <button class="dash-user-chip" aria-label="Account">
-          <div class="dash-avatar">A</div>
-          <div class="dash-user-chip-info">
-            <div class="dash-user-chip-name" id="userChipName">Seller</div>
-            <div class="dash-user-chip-role">Seller</div>
-          </div>
-        </button>
       </div>
     </div>
   </nav>
@@ -67,10 +90,10 @@
       </button>
 
       <div class="dash-sidebar-profile">
-        <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px;">A</div>
+        <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px;" id="sidebarAvatar">A</div>
         <div>
           <div class="dash-sidebar-profile-name" id="sidebarName">Seller</div>
-          <div class="dash-sidebar-profile-role">Verified Seller</div>
+          <div class="dash-sidebar-profile-role" id="sidebarRole">Verified Seller</div>
         </div>
       </div>
     </aside>
@@ -857,26 +880,95 @@
   </script>
 
   <script>
-    // ===================== PRODUCTS (live data) =====================
+    // Auth guard + profile for seller dashboard
     var API_BASE = 'http://localhost:4000/api';
     var token = localStorage.getItem('token');
     var currentUser = null;
     try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
 
-    // Guard: only verified sellers can access this dashboard
     if (!token || !currentUser || currentUser.role !== 'seller') {
       window.location.href = 'login.html';
     }
 
-    // Fill in the logged-in seller's name
-    if (currentUser) {
-      var firstName = (currentUser.fullName || 'Seller').split(' ')[0];
-      document.querySelectorAll('#userChipName, #sidebarName').forEach(function(el) {
-        el.textContent = currentUser.fullName;
-      });
-      var welcomeEl = document.querySelector('#panel-overview .dash-welcome h2');
-      if (welcomeEl) welcomeEl.innerHTML = 'Salaam, ' + firstName + ' <span>👋</span>';
+    async function loadUserProfile() {
+      try {
+        var response = await fetch(API_BASE + '/me', {
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = 'login.html';
+          return;
+        }
+        var data = await response.json();
+        if (!data.success || !data.data) return;
+
+        var u = data.data;
+        var initial = (u.fullName || 'S').trim().charAt(0).toUpperCase();
+
+        document.getElementById('navAvatar').textContent = initial;
+        document.getElementById('popupAvatar').textContent = initial;
+        document.getElementById('sidebarAvatar').textContent = initial;
+
+        document.getElementById('navUserName').textContent = u.fullName || 'Seller';
+        document.getElementById('popupName').textContent = u.fullName || 'Seller';
+        document.getElementById('sidebarName').textContent = u.fullName || 'Seller';
+
+        var roleLabel = u.role === 'seller' ? 'Seller' : 'Buyer';
+        document.querySelector('#userChipBtn .dash-user-chip-role').textContent = roleLabel;
+        document.getElementById('popupRole').textContent = roleLabel;
+        document.getElementById('sidebarRole').textContent = 'Verified Seller';
+
+        document.getElementById('popupEmail').textContent = u.email || '—';
+        document.getElementById('popupJoined').textContent = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+
+        var welcomeTitle = document.querySelector('#panel-overview .dash-welcome h2');
+        if (welcomeTitle) {
+          var firstName = (u.fullName || 'Seller').split(' ')[0];
+          welcomeTitle.innerHTML = 'Salaam, ' + firstName + ' <span>👋</span>';
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
     }
+
+    loadUserProfile();
+
+    // Profile popup toggle
+    var popup = document.getElementById('profilePopup');
+    var userChipBtn = document.getElementById('userChipBtn');
+    var popupLogout = document.getElementById('popupLogout');
+
+    function closePopup() {
+      popup.classList.remove('show');
+      popup.setAttribute('aria-hidden', 'true');
+    }
+
+    userChipBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = popup.classList.contains('show');
+      if (isOpen) {
+        closePopup();
+      } else {
+        popup.classList.add('show');
+        popup.setAttribute('aria-hidden', 'false');
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!popup.contains(e.target) && e.target !== userChipBtn && !userChipBtn.contains(e.target)) {
+        closePopup();
+      }
+    });
+
+    popupLogout.addEventListener('click', function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    });
+
+    // ===================== PRODUCTS (live data) =====================
 
     function escapeHtml(str) {
       var div = document.createElement('div');

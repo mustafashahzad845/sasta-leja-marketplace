@@ -165,8 +165,15 @@
           }
           showMessage('Login successful! Redirecting...', true);
           setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 1000);
+            var savedUser = data.data.user;
+            if (savedUser && savedUser.role === 'seller') {
+              window.location.href = 'seller-dashboard.html';
+            } else if (savedUser && savedUser.role === 'buyer') {
+              window.location.href = 'buyer-dashboard.html';
+            } else {
+              window.location.href = 'index.html';
+            }
+          }, 800);
         } else {
           if (data.data && data.data.email) {
             showMessage(data.message + ' Please verify your email first.', false);

@@ -18,6 +18,36 @@
       </a>
 
       <div class="navbar-actions">
+        <button class="dash-user-chip" id="userChipBtn" aria-label="Account" aria-haspopup="true">
+          <div class="dash-avatar" id="navAvatar">A</div>
+          <div class="dash-user-chip-info">
+            <div class="dash-user-chip-name" id="navUserName">Buyer</div>
+            <div class="dash-user-chip-role">Buyer</div>
+          </div>
+        </button>
+        <!-- Profile popup -->
+        <div class="dash-profile-popup" id="profilePopup" aria-hidden="true">
+          <div class="dash-profile-popup-inner">
+            <div class="dash-profile-popup-header">
+              <div class="dash-avatar dash-profile-avatar" id="popupAvatar">A</div>
+              <div>
+                <div class="dash-profile-popup-name" id="popupName">Buyer</div>
+                <div class="dash-profile-popup-role" id="popupRole">Buyer</div>
+              </div>
+            </div>
+            <div class="dash-profile-popup-body">
+              <div class="dash-profile-row">
+                <span class="dash-profile-label">Email</span>
+                <span class="dash-profile-value" id="popupEmail">—</span>
+              </div>
+              <div class="dash-profile-row">
+                <span class="dash-profile-label">Member since</span>
+                <span class="dash-profile-value" id="popupJoined">—</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm dash-profile-logout" id="popupLogout">Logout</button>
+          </div>
+        </div>
         <a href="index.html" class="btn btn-ghost">← Store</a>
         <button class="dash-icon-btn" aria-label="Notifications">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -33,13 +63,6 @@
           </svg>
           <span class="dash-dot"></span>
         </a>
-        <button class="dash-user-chip" aria-label="Account">
-          <div class="dash-avatar">A</div>
-          <div class="dash-user-chip-info">
-            <div class="dash-user-chip-name">Ayesha Malik</div>
-            <div class="dash-user-chip-role">Buyer</div>
-          </div>
-        </button>
       </div>
     </div>
   </nav>
@@ -71,10 +94,10 @@
       </button>
 
       <div class="dash-sidebar-profile">
-        <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px;">A</div>
+        <div class="dash-avatar" style="width: 34px; height: 34px; font-size: 13px;" id="sidebarAvatar">A</div>
         <div>
-          <div class="dash-sidebar-profile-name">Ayesha Malik</div>
-          <div class="dash-sidebar-profile-role">Member since 2024</div>
+          <div class="dash-sidebar-profile-name" id="sidebarName">Buyer</div>
+          <div class="dash-sidebar-profile-role" id="sidebarRole">Member since 2024</div>
         </div>
       </div>
     </aside>
@@ -87,7 +110,7 @@
         <div class="dash-welcome">
           <div class="dash-welcome-inner">
             <div>
-              <h2>Salaam, Ayesha <span>👋</span></h2>
+              <h2 id="welcomeTitle">Salaam, Buyer <span>👋</span></h2>
               <p>You've saved <strong style="color: var(--accent);">₹18,240</strong> with Sasta Leja this month. Keep it up!</p>
             </div>
             <div class="dash-welcome-actions">
@@ -727,6 +750,96 @@
   <div class="dash-toast" id="dashToast"></div>
 
   <script>
+    // Auth guard for buyer dashboard
+    var API_BASE = 'http://localhost:4000/api';
+    var token = localStorage.getItem('token');
+    var currentUser = null;
+    try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
+
+    if (!token || !currentUser || currentUser.role !== 'buyer') {
+      window.location.href = 'login.html';
+    }
+
+    // Fetch fresh user data
+    async function loadUserProfile() {
+      try {
+        var response = await fetch(API_BASE + '/me', {
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = 'login.html';
+          return;
+        }
+        var data = await response.json();
+        if (!data.success || !data.data) return;
+
+        var u = data.data;
+        var initial = (u.fullName || 'B').trim().charAt(0).toUpperCase();
+
+        document.getElementById('navAvatar').textContent = initial;
+        document.getElementById('popupAvatar').textContent = initial;
+        document.getElementById('sidebarAvatar').textContent = initial;
+
+        document.getElementById('navUserName').textContent = u.fullName || 'Buyer';
+        document.getElementById('popupName').textContent = u.fullName || 'Buyer';
+        document.getElementById('sidebarName').textContent = u.fullName || 'Buyer';
+
+        var roleLabel = u.role === 'seller' ? 'Seller' : 'Buyer';
+        document.querySelector('#userChipBtn .dash-user-chip-role').textContent = roleLabel;
+        document.getElementById('popupRole').textContent = roleLabel;
+        document.getElementById('sidebarRole').textContent = 'Member since ' + (u.createdAt ? new Date(u.createdAt).getFullYear() : '2024');
+
+        document.getElementById('popupEmail').textContent = u.email || '—';
+        document.getElementById('popupJoined').textContent = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+
+        var welcomeTitle = document.getElementById('welcomeTitle');
+        if (welcomeTitle) {
+          var firstName = (u.fullName || 'Buyer').split(' ')[0];
+          welcomeTitle.innerHTML = 'Salaam, ' + firstName + ' <span>👋</span>';
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    }
+
+    loadUserProfile();
+
+    // Profile popup toggle
+    var popup = document.getElementById('profilePopup');
+    var userChipBtn = document.getElementById('userChipBtn');
+    var popupLogout = document.getElementById('popupLogout');
+
+    function closePopup() {
+      popup.classList.remove('show');
+      popup.setAttribute('aria-hidden', 'true');
+    }
+
+    userChipBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = popup.classList.contains('show');
+      if (isOpen) {
+        closePopup();
+      } else {
+        popup.classList.add('show');
+        popup.setAttribute('aria-hidden', 'false');
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!popup.contains(e.target) && e.target !== userChipBtn && !userChipBtn.contains(e.target)) {
+        closePopup();
+      }
+    });
+
+    popupLogout.addEventListener('click', function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    });
+
+    // Existing dashboard JS
     // Sidebar / nav tab switching
     document.querySelectorAll('.dash-nav-item').forEach(function(item) {
       item.addEventListener('click', function() {

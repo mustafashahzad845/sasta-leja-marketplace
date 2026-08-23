@@ -355,30 +355,57 @@
     if (token && userStr) {
       try { user = JSON.parse(userStr); } catch(e) {}
     }
-    var navSignIn = document.getElementById('navSignIn');
-    var navGetStarted = document.getElementById('navGetStarted');
-    var navAddProduct = document.getElementById('navAddProduct');
-    var navUserInfo = document.getElementById('navUserInfo');
-    var navUserName = document.getElementById('navUserName');
-    var navLogout = document.getElementById('navLogout');
-    if (user) {
-      if (navSignIn) navSignIn.style.display = 'none';
-      if (navGetStarted) navGetStarted.style.display = 'none';
-      if (navAddProduct) navAddProduct.style.display = user.role === 'seller' ? '' : 'none';
-      if (navUserInfo) navUserInfo.style.display = 'flex';
-      if (navUserName) navUserName.textContent = user.fullName || user.email || 'User';
+
+    if (token && user) {
+      (async function() {
+        try {
+          var response = await fetch('http://localhost:4000/api/me', {
+            headers: { 'Authorization': 'Bearer ' + token },
+          });
+          if (response.ok) {
+            var data = await response.json();
+            if (data.success && data.data) {
+              var role = data.data.role;
+              if (role === 'seller') {
+                window.location.href = 'seller-dashboard.html';
+                return;
+              } else if (role === 'buyer') {
+                window.location.href = 'buyer-dashboard.html';
+                return;
+              }
+            }
+          } else if (response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+          }
+        } catch (e) {
+          // network error — stay on index page
+        }
+        updateNav();
+      })();
+    } else {
+      updateNav();
+    }
+
+    function updateNav() {
+      var currentToken = localStorage.getItem('token');
+      var currentUserStr = localStorage.getItem('user');
+      var currentUser = null;
+      if (currentToken && currentUserStr) {
+        try { currentUser = JSON.parse(currentUserStr); } catch(e) {}
+      }
+      if (navSignIn) navSignIn.style.display = currentUser ? 'none' : '';
+      if (navGetStarted) navGetStarted.style.display = currentUser ? 'none' : '';
+      if (navAddProduct) navAddProduct.style.display = (currentUser && currentUser.role === 'seller') ? '' : 'none';
+      if (navUserInfo) navUserInfo.style.display = currentUser ? 'flex' : 'none';
+      if (navUserName) navUserName.textContent = (currentUser && currentUser.fullName) || (currentUser && currentUser.email) || 'User';
       if (navLogout) {
-        navLogout.addEventListener('click', function() {
+        navLogout.onclick = function() {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           window.location.reload();
-        });
+        };
       }
-    } else {
-      if (navSignIn) navSignIn.style.display = '';
-      if (navGetStarted) navGetStarted.style.display = '';
-      if (navAddProduct) navAddProduct.style.display = 'none';
-      if (navUserInfo) navUserInfo.style.display = 'none';
     }
   </script>
 </body>

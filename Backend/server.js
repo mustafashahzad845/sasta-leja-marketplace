@@ -529,6 +529,29 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
+app.get("/api/me", authRequired, async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        emailVerified: user.emailVerified,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Get me error:", error);
+    res.status(500).json({ success: false, message: "Server error while fetching user" });
+  }
+});
+
 app.get("/api/products/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
