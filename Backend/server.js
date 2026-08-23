@@ -441,12 +441,12 @@ app.post("/api/products", authRequired, async (req, res) => {
       });
     }
 
-    const { name, category, condition, location, brand, price, oldPrice, stock, sku, description, image, featured } = req.body;
+    const { name, category, condition, location, brand, price, description, image, featured } = req.body;
 
-    if (!name || !category || !condition || !location || price == null || stock == null || !image) {
+    if (!name || !category || !condition || !location || price == null || !image) {
       return res.status(400).json({
         success: false,
-        message: "Name, category, condition, location, price, stock and image are required",
+        message: "Name, category, condition, location, price and image are required",
       });
     }
 
@@ -465,9 +465,6 @@ app.post("/api/products", authRequired, async (req, res) => {
       location,
       brand,
       price,
-      oldPrice,
-      stock,
-      sku,
       description,
       image,
       featured,
@@ -633,11 +630,11 @@ app.put("/api/products/:id", authRequired, async (req, res) => {
       });
     }
 
-    const { name, category, condition, location, brand, price, oldPrice, stock, sku, description, image, featured } = req.body;
+    const { name, category, condition, location, brand, price, description, image, featured } = req.body;
 
     const product = await productModel.findOneAndUpdate(
       { _id: req.params.id, seller: req.userId },
-      { name, category, condition, location, brand, price, oldPrice, stock, sku, description, image, featured },
+      { name, category, condition, location, brand, price, description, image, featured },
       { new: true }
     );
 

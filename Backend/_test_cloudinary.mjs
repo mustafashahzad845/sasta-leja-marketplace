@@ -41,17 +41,15 @@ if (uploadData.success && uploadData.data.imageUrl) {
   const createRes = await fetch(BASE + "/products", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-    body: JSON.stringify({
-      name: "Cloudinary E2E Test",
-      category: "Electronics",
-      condition: "New",
-      location: "Karachi",
-      price: 500,
-      oldPrice: 800,
-      stock: 10,
-      description: "Live end-to-end test of image->cloudinary + product->db",
-      image: uploadData.data.imageUrl,
-    }),
+      body: JSON.stringify({
+        name: "Cloudinary E2E Test",
+        category: "Electronics",
+        condition: "New",
+        location: "Karachi",
+        price: 500,
+        description: "Live end-to-end test of image->cloudinary + product->db",
+        image: uploadData.data.imageUrl,
+      }),
   });
   const createData = await createRes.json();
   console.log("CREATE      ->", createRes.status, "success:", !!createData.success);

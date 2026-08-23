@@ -66,17 +66,25 @@
     <aside class="dash-sidebar" aria-label="Seller navigation">
       <div class="dash-sidebar-label">Seller Hub</div>
       <button class="dash-nav-item active" data-panel="products">
-        <span class="dash-nav-icon">📦</span> My Products
+        <span class="dash-nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.5 16.5 7.5C16.5 5.5 15 4 13 4H11C9 4 7.5 5.5 7.5 7.5L7.5 9.5"/><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span> My Products
         <span class="dash-nav-count" id="navProductCount">0</span>
       </button>
       <button class="dash-nav-item" data-panel="add">
-        <span class="dash-nav-icon">➕</span> Add Product
+        <span class="dash-nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span> Add Product
       </button>
       <button class="dash-nav-item" data-panel="edit">
-        <span class="dash-nav-icon">✏️</span> Edit Product
+        <span class="dash-nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+        </span> Edit Product
       </button>
       <button class="dash-nav-item" data-panel="settings">
-        <span class="dash-nav-icon">⚙️</span> Settings
+        <span class="dash-nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span> Settings
       </button>
 
       <div class="dash-sidebar-profile">
@@ -97,7 +105,7 @@
           <div>
             <div class="dash-eyebrow">Inventory</div>
             <h1 class="dash-title">My Products</h1>
-            <p class="dash-subtitle">Manage your listings, stock and pricing.</p>
+             <p class="dash-subtitle">Manage your listings and pricing.</p>
           </div>
           <div class="dash-toolbar">
             <div class="dash-search">
@@ -111,18 +119,16 @@
         <div class="dash-filters">
           <button class="dash-filter active" data-filter="all">All</button>
           <button class="dash-filter" data-filter="active">Active</button>
-          <button class="dash-filter" data-filter="low">Low Stock</button>
-          <button class="dash-filter" data-filter="out">Out of Stock</button>
         </div>
 
         <div class="dash-card" style="padding: 8px 24px;">
           <div class="dash-table-wrap">
             <table class="dash-table">
               <thead>
-                <tr><th>Product</th><th>Category</th><th>Condition</th><th>Location</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
+                <tr><th>Product</th><th>Category</th><th>Condition</th><th>Location</th><th>Price</th><th>Status</th><th>Actions</th></tr>
               </thead>
               <tbody id="productsBody">
-                <tr><td colspan="8" style="text-align:center; padding:24px; color:var(--muted);">Loading products...</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:24px; color:var(--muted);">Loading products...</td></tr>
               </tbody>
             </table>
           </div>
@@ -176,18 +182,6 @@
               <label for="pPrice">Selling price (₹)</label>
               <input type="number" id="pPrice" placeholder="2499">
             </div>
-            <div class="form-group">
-              <label for="pOldPrice">Compare-at price (₹)</label>
-              <input type="number" id="pOldPrice" placeholder="8999">
-            </div>
-            <div class="form-group">
-              <label for="pStock">Stock quantity</label>
-              <input type="number" id="pStock" placeholder="50">
-            </div>
-            <div class="form-group">
-              <label for="pSku">SKU</label>
-              <input type="text" id="pSku" placeholder="SL-HDP-014">
-            </div>
             <div class="form-group form-group--full">
               <label for="pDesc">Description</label>
               <textarea id="pDesc" placeholder="Describe your product — features, specs, what's in the box..."></textarea>
@@ -195,7 +189,9 @@
             <div class="form-group form-group--full">
               <label>Product image</label>
               <label class="dash-dropzone" for="pImage" style="cursor: pointer;">
-                <span class="dash-dropzone-icon">📤</span>
+                <span class="dash-dropzone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
                 <p>Click to choose an image</p>
                 <small>PNG or JPG, up to 5MB</small>
               </label>
@@ -272,18 +268,6 @@
               <label for="ePrice">Selling price (₹)</label>
               <input type="number" id="ePrice" placeholder="2499">
             </div>
-            <div class="form-group">
-              <label for="eOldPrice">Compare-at price (₹)</label>
-              <input type="number" id="eOldPrice" placeholder="8999">
-            </div>
-            <div class="form-group">
-              <label for="eStock">Stock quantity</label>
-              <input type="number" id="eStock" placeholder="50">
-            </div>
-            <div class="form-group">
-              <label for="eSku">SKU</label>
-              <input type="text" id="eSku" placeholder="SL-HDP-014">
-            </div>
             <div class="form-group form-group--full">
               <label for="eDesc">Description</label>
               <textarea id="eDesc" placeholder="Describe your product — features, specs, what's in the box..."></textarea>
@@ -291,7 +275,9 @@
             <div class="form-group form-group--full">
               <label>Product image</label>
               <label class="dash-dropzone" for="eImage" style="cursor: pointer;">
-                <span class="dash-dropzone-icon">📤</span>
+                <span class="dash-dropzone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
                 <p>Click to choose a new image</p>
                 <small>PNG or JPG, up to 5MB. Leave empty to keep current image.</small>
               </label>
@@ -356,7 +342,7 @@
               </div>
             </div>
             <div class="dash-form-actions">
-              <button type="button" class="btn btn-primary" onclick="showToast('Settings saved ✅')">Save Changes</button>
+              <button type="button" class="btn btn-primary" onclick="showToast('Settings saved')">Save Changes</button>
             </div>
           </form>
 
@@ -371,8 +357,8 @@
             </div>
             <div class="dash-field-row">
               <span>
-                <span class="dash-field-row-label">Low stock alerts</span>
-                <span class="dash-field-row-help">Email me when stock drops below 10 units</span>
+                <span class="dash-field-row-label">Listing alerts</span>
+                <span class="dash-field-row-help">Email me when a listing gets a new review</span>
               </span>
               <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
             </div>
@@ -544,19 +530,10 @@
     }
 
     function categoryEmoji(category) {
-      var c = (category || '').toLowerCase();
-      if (c.indexOf('electr') !== -1) return '🎧';
-      if (c.indexOf('fashion') !== -1 || c.indexOf('shoe') !== -1 || c.indexOf('cloth') !== -1) return '👟';
-      if (c.indexOf('beauty') !== -1) return '🧴';
-      if (c.indexOf('home') !== -1 || c.indexOf('lamp') !== -1) return '💡';
-      if (c.indexOf('sport') !== -1) return '🏏';
-      if (c.indexOf('book') !== -1) return '📚';
-      return '📦';
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
     }
 
     function statusBadge(p) {
-      if (p.stock === 0) return '<span class="dash-badge dash-badge--neutral">Out of Stock</span>';
-      if (p.stock <= 5) return '<span class="dash-badge dash-badge--danger">Low Stock</span>';
       return '<span class="dash-badge dash-badge--success">Active</span>';
     }
 
@@ -568,7 +545,6 @@
     }
 
     function productRow(p) {
-      var sku = p.sku || 'SL-' + String(p._id || '').slice(-6);
       return (
         '<tr>' +
           '<td>' +
@@ -576,7 +552,6 @@
               '<div class="dash-product-thumb">' + productThumb(p) + '</div>' +
               '<div>' +
                 '<div class="dash-product-name">' + escapeHtml(p.name) + '</div>' +
-                '<div class="dash-product-meta">SKU: ' + escapeHtml(sku) + '</div>' +
               '</div>' +
             '</div>' +
           '</td>' +
@@ -584,7 +559,6 @@
           '<td>' + (p.condition === 'Used' ? '<span class="dash-badge dash-badge--warning">Used</span>' : '<span class="dash-badge dash-badge--success">New</span>') + '</td>' +
           '<td>' + escapeHtml(p.location || '—') + '</td>' +
           '<td class="dash-text-strong">' + formatPrice(p.price) + '</td>' +
-          '<td class="dash-text-muted">' + p.stock + '</td>' +
           '<td>' + statusBadge(p) + '</td>' +
           '<td>' +
             '<div class="dash-toolbar" style="flex-wrap: nowrap;">' +
@@ -625,7 +599,7 @@
         });
 
         if (!products.length) {
-          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:var(--muted);">No products yet. Click "+ Add Product" to publish your first listing.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--muted);">No products yet. Click "+ Add Product" to publish your first listing.</td></tr>';
           return;
         }
 
@@ -637,7 +611,7 @@
           btn.addEventListener('click', function() { deleteProduct(this.dataset.delete); });
         });
       } catch (error) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
       }
     }
 
@@ -657,7 +631,7 @@
         });
         var data = await response.json();
         if (data.success) {
-          showToast('Product deleted 🗑️');
+          showToast('Product deleted');
           loadProducts();
         } else {
           showToast(data.message || 'Failed to delete product');
@@ -697,9 +671,6 @@
           location: document.getElementById('pLocation').value.trim(),
           brand: document.getElementById('pBrand').value.trim(),
           price: parseFloat(document.getElementById('pPrice').value),
-          oldPrice: parseFloat(document.getElementById('pOldPrice').value || 0),
-          stock: parseInt(document.getElementById('pStock').value || 0, 10),
-          sku: document.getElementById('pSku').value.trim(),
           description: document.getElementById('pDesc').value.trim(),
           featured: document.getElementById('pFeatured').checked,
           image: '',
@@ -757,7 +728,7 @@
             if (previewWrap) previewWrap.style.display = 'none';
             var resetFile = document.getElementById('pImage');
             if (resetFile) resetFile.value = '';
-            showToast('Product published! 🎉');
+            showToast('Product published');
             loadProducts();
             openPanel('products');
           } else {
@@ -786,9 +757,6 @@
       document.getElementById('eCondition').value = (cells[2].textContent || '').trim();
       document.getElementById('eLocation').value = (cells[3].textContent || '').trim();
       document.getElementById('ePrice').value = '';
-      document.getElementById('eOldPrice').value = '';
-      document.getElementById('eStock').value = '';
-      document.getElementById('eSku').value = '';
       document.getElementById('eDesc').value = '';
       document.getElementById('eFeatured').checked = false;
       document.getElementById('eImagePreviewWrap').style.display = 'none';
@@ -833,9 +801,6 @@
           location: document.getElementById('eLocation').value.trim(),
           brand: document.getElementById('eBrand').value.trim(),
           price: parseFloat(document.getElementById('ePrice').value),
-          oldPrice: parseFloat(document.getElementById('eOldPrice').value || 0),
-          stock: parseInt(document.getElementById('eStock').value || 0, 10),
-          sku: document.getElementById('eSku').value.trim(),
           description: document.getElementById('eDesc').value.trim(),
           featured: document.getElementById('eFeatured').checked,
           image: '',
@@ -885,7 +850,7 @@
           });
           var data = await response.json();
           if (data.success) {
-            showToast('Product updated ✅');
+            showToast('Product updated');
             editForm.reset();
             document.getElementById('eCategory').value = 'Electronics';
             document.getElementById('eImagePreviewWrap').style.display = 'none';
