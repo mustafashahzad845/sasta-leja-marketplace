@@ -22,8 +22,8 @@ dns.setServers(["8.8.8.8", "1.1.1.1"]);
 const URI = process.env.MONGODB_URI ;
 const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_sign_sasta_leja_bhai";
-const SMTP_EMAIL = process.env.SMTP_EMAIL || "haji08307@gmail.com";
-const SMTP_APP_PASS = process.env.SMTP_APP_PASS || "exnv hxbz lpxm quif";
+const SMTP_EMAIL = process.env.SMTP_EMAIL ;
+const SMTP_APP_PASS = process.env.SMTP_APP_PASS
 const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDE_NAME;
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
@@ -150,26 +150,30 @@ app.post("/api/signup", async (req, res) => {
       to: email,
       subject: "Verify Your Email - Sasta Leja",
       html: `
-        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f8fafc; border-radius: 12px;">
-          <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px;">Sasta Leja</h1>
-            <p style="color: rgba(255,255,255,0.9); margin-top: 8px;">Verify Your Email Address</p>
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fffbf5; border-radius: 12px;">
+          <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: #f97316; margin: 0; font-size: 28px; font-weight: 800;">Sasta Leja</h1>
+            <p style="color: rgba(255,255,255,0.85); margin-top: 8px; font-weight: 500;">Verify Your Email Address</p>
           </div>
-          <div style="background: white; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi <strong>${fullName}</strong>,</p>
-            <p style="color: #475569; font-size: 15px; line-height: 1.6;">Thanks for signing up! Use the OTP below to verify your email address. This OTP will expire in <strong>10 minutes</strong>.</p>
-            <div style="background: #f1f5f9; border: 2px dashed #6366f1; border-radius: 8px; padding: 20px; text-align: center; margin: 25px 0;">
-              <p style="color: #64748b; font-size: 13px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;">Your Verification Code</p>
-              <p style="font-size: 36px; font-weight: bold; color: #6366f1; letter-spacing: 8px; margin: 0;">${verificationCode}</p>
+          <div style="background: #ffffff; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);">
+            <p style="color: #0f172a; font-size: 16px; line-height: 1.6;">Hi <strong>${fullName}</strong>,</p>
+            <p style="color: #1e293b; font-size: 15px; line-height: 1.6; margin-top: 12px;">Thanks for signing up! Use the OTP below to verify your email address. This OTP will expire in <strong>10 minutes</strong>.</p>
+            <div style="background: #fff7ed; border: 2px dashed #f97316; border-radius: 8px; padding: 20px; text-align: center; margin: 25px 0;">
+              <p style="color: #64748b; font-size: 13px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Your Verification Code</p>
+              <p style="font-size: 36px; font-weight: 800; color: #f97316; letter-spacing: 8px; margin: 0;">${verificationCode}</p>
             </div>
-            <p style="color: #94a3b8; font-size: 13px; line-height: 1.5;">If you did not create an account, please ignore this email.</p>
+            <p style="color: #64748b; font-size: 13px; line-height: 1.5;">If you did not create an account, please ignore this email.</p>
           </div>
           <p style="text-align: center; color: #94a3b8; font-size: 12px; margin-top: 20px;">&copy; 2026 Sasta Leja. All rights reserved.</p>
         </div>
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (emailError) {
+      console.error("Signup email error:", emailError);
+    }
 
     res.status(201).json({
       success: true,
@@ -285,17 +289,17 @@ app.post("/api/resend-otp", async (req, res) => {
       to: email,
       subject: "New Verification Code - Sasta Leja",
       html: `
-        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f8fafc; border-radius: 12px;">
-          <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px;">Sasta Leja</h1>
-            <p style="color: rgba(255,255,255,0.9); margin-top: 8px;">New Verification Code</p>
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fffbf5; border-radius: 12px;">
+          <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: #f97316; margin: 0; font-size: 28px; font-weight: 800;">Sasta Leja</h1>
+            <p style="color: rgba(255,255,255,0.85); margin-top: 8px; font-weight: 500;">New Verification Code</p>
           </div>
-          <div style="background: white; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi <strong>${user.fullName}</strong>,</p>
-            <p style="color: #475569; font-size: 15px; line-height: 1.6;">Here is your new verification code. This OTP will expire in <strong>10 minutes</strong>.</p>
-            <div style="background: #f1f5f9; border: 2px dashed #6366f1; border-radius: 8px; padding: 20px; text-align: center; margin: 25px 0;">
-              <p style="color: #64748b; font-size: 13px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;">Your Verification Code</p>
-              <p style="font-size: 36px; font-weight: bold; color: #6366f1; letter-spacing: 8px; margin: 0;">${verificationCode}</p>
+          <div style="background: #ffffff; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);">
+            <p style="color: #0f172a; font-size: 16px; line-height: 1.6;">Hi <strong>${user.fullName}</strong>,</p>
+            <p style="color: #1e293b; font-size: 15px; line-height: 1.6; margin-top: 12px;">Here is your new verification code. This OTP will expire in <strong>10 minutes</strong>.</p>
+            <div style="background: #fff7ed; border: 2px dashed #f97316; border-radius: 8px; padding: 20px; text-align: center; margin: 25px 0;">
+              <p style="color: #64748b; font-size: 13px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Your Verification Code</p>
+              <p style="font-size: 36px; font-weight: 800; color: #f97316; letter-spacing: 8px; margin: 0;">${verificationCode}</p>
             </div>
           </div>
           <p style="text-align: center; color: #94a3b8; font-size: 12px; margin-top: 20px;">&copy; 2026 Sasta Leja. All rights reserved.</p>
@@ -303,7 +307,11 @@ app.post("/api/resend-otp", async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (emailError) {
+      console.error("Resend OTP email error:", emailError);
+    }
 
     res.status(200).json({
       success: true,
