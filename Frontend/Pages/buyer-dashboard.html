@@ -316,7 +316,7 @@
       var qs = queryParts.length ? '?' + queryParts.join('&') : '';
 
       try {
-        var response = await fetch(API_BASE + '/products' + qs);
+        var response = await fetch(API_BASE + '/products/all' + qs);
         if (!response.ok) throw new Error('Bad response');
         var data = await response.json();
         var products = (data.data || []).filter(Boolean);

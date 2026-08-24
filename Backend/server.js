@@ -524,24 +524,29 @@ app.get("/api/products/my", authRequired, async (req, res) => {
   }
 });
 
+// Shared query builder for listing all products with optional filters
+function listAllProducts(req) {
+  const { category, condition, sort } = req.query;
+
+  const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const caseInsensitive = (value) => ({
+    $regex: new RegExp("^" + escapeRegExp(value) + "$", "i"),
+  });
+
+  const query = {};
+  if (category) query.category = caseInsensitive(category);
+  if (condition) query.condition = caseInsensitive(condition);
+
+  let sortOptions = { createdAt: -1 };
+  if (sort === "price_desc") sortOptions = { price: -1 };
+  else if (sort === "price_asc") sortOptions = { price: 1 };
+
+  return productModel.find(query).sort(sortOptions);
+}
+
 app.get("/api/products", async (req, res) => {
   try {
-    const { category, condition, sort } = req.query;
-
-    const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const caseInsensitive = (value) => ({
-      $regex: new RegExp("^" + escapeRegExp(value) + "$", "i"),
-    });
-
-    const query = {};
-    if (category) query.category = caseInsensitive(category);
-    if (condition) query.condition = caseInsensitive(condition);
-
-    let sortOptions = { createdAt: -1 };
-    if (sort === "price_desc") sortOptions = { price: -1 };
-    else if (sort === "price_asc") sortOptions = { price: 1 };
-
-    const products = await productModel.find(query).sort(sortOptions);
+    const products = await listAllProducts(req);
     res.status(200).json({
       success: true,
       data: products,
@@ -551,6 +556,23 @@ app.get("/api/products", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error while fetching products",
+    });
+  }
+});
+
+// Dedicated endpoint to fetch every product from the collection
+app.get("/api/products/all", async (req, res) => {
+  try {
+    const products = await listAllProducts(req);
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    console.error("List all products error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching all products",
     });
   }
 });
