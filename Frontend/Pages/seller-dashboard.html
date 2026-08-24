@@ -283,7 +283,7 @@
               </label>
             </div>
           </div>
-          <div class="dash-form-actions">
+          <div class="dash-form-actions" id="editFormActions" style="display: none;">
             <button type="button" class="btn btn-secondary" id="editCancel">Cancel</button>
             <button type="submit" class="btn btn-primary" id="updateBtn">Update Product</button>
           </div>
@@ -896,6 +896,7 @@
           }
 
           openPanel('edit');
+          document.getElementById('editFormActions').style.display = 'block';
         })
         .catch(function(err) {
           if (err.message === 'Unauthorized') return;
@@ -913,6 +914,7 @@
             document.getElementById('eFeatured').checked = false;
             document.getElementById('eImagePreviewWrap').style.display = 'none';
             openPanel('edit');
+            document.getElementById('editFormActions').style.display = 'block';
           } else {
             showToast('Could not load product details');
           }
@@ -920,6 +922,7 @@
     }
 
     document.getElementById('editCancel').addEventListener('click', function() {
+      document.getElementById('editFormActions').style.display = 'none';
       openPanel('products');
     });
 
@@ -1008,6 +1011,7 @@
             editForm.reset();
             document.getElementById('eCategory').value = 'Electronics';
             document.getElementById('eImagePreviewWrap').style.display = 'none';
+            document.getElementById('editFormActions').style.display = 'none';
             var resetFile = document.getElementById('eImage');
             if (resetFile) resetFile.value = '';
             loadProducts();
