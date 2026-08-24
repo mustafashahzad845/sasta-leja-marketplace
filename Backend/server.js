@@ -410,12 +410,12 @@ app.post("/api/products/upload", authRequired, uploadProductImage, async (req, r
       });
     }
 
-    const result = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "sasta-leja/products", resource_type: "image" },
-        (error, result) => (error ? reject(error) : resolve(result)),
-      );
-      stream.end(req.file.buffer);
+    const base64 = req.file.buffer.toString("base64");
+    const dataUri = `data:${req.file.mimetype};base64,${base64}`;
+
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "sasta-leja/products",
+      resource_type: "image",
     });
 
     res.status(200).json({
@@ -427,7 +427,7 @@ app.post("/api/products/upload", authRequired, uploadProductImage, async (req, r
     console.error("Image upload error:", error);
     res.status(500).json({
       success: false,
-      message: "Server error while uploading image",
+      message: error.message || "Server error while uploading image",
     });
   }
 });
