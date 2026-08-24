@@ -878,8 +878,23 @@
         })
         .catch(function(err) {
           if (err.message === 'Unauthorized') return;
-          console.error('Failed to load product:', err);
-          showToast('Could not load product details: ' + (err.message || 'Network error'));
+          console.error('Failed to load product via API, using table fallback:', err);
+          var cells = row.querySelectorAll('td');
+          if (cells.length >= 5) {
+            document.getElementById('eName').value = (cells[0].textContent || '').trim();
+            document.getElementById('eCategory').value = (cells[1].textContent || '').trim();
+            document.getElementById('eCondition').value = (cells[2].textContent || '').trim().replace('New', 'New').replace('Used', 'Used');
+            document.getElementById('eLocation').value = (cells[3].textContent || '').trim();
+            var rawPrice = (cells[4].textContent || '').trim();
+            document.getElementById('ePrice').value = rawPrice.replace(/[^\d.]/g, '');
+            document.getElementById('eDesc').value = '';
+            document.getElementById('eBrand').value = '';
+            document.getElementById('eFeatured').checked = false;
+            document.getElementById('eImagePreviewWrap').style.display = 'none';
+            openPanel('edit');
+          } else {
+            showToast('Could not load product details');
+          }
         });
     }
 
