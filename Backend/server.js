@@ -683,9 +683,24 @@ app.put("/api/products/:id", authRequired, async (req, res) => {
 
     const { name, category, condition, location, brand, price, description, image, featured, draft } = req.body;
 
+    const updateData = {
+      name,
+      category,
+      condition,
+      location,
+      brand,
+      price,
+      description,
+      featured,
+      draft,
+    };
+    if (image && String(image).trim()) {
+      updateData.image = image;
+    }
+
     const product = await productModel.findOneAndUpdate(
       { _id: req.params.id, seller: req.userId },
-      { name, category, condition, location, brand, price, description, image, featured, draft },
+      { $set: updateData },
       { new: true }
     );
 
