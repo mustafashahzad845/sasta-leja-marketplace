@@ -401,9 +401,17 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Honor #panel-<name> in the URL
+    // Honor #panel-<name> in the URL, but default to products
     var hashMatch = window.location.hash.match(/panel-([a-z]+)/);
-    if (hashMatch) openPanel(hashMatch[1]);
+    if (hashMatch) {
+      var panelNames = ['products', 'add', 'edit', 'settings'];
+      if (panelNames.indexOf(hashMatch[1]) !== -1) {
+        openPanel(hashMatch[1]);
+      }
+    }
+    if (!document.querySelector('.dash-panel.active')) {
+      openPanel('products');
+    }
 
     // Category filter chips
     var currentCategory = 'all';
