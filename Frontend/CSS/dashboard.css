@@ -1368,3 +1368,85 @@
     animation: none;
   }
 }
+
+/* ============ Product detail popup ============ */
+
+.dash-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: dashFadeIn 0.2s ease-out;
+}
+
+.dash-popup-overlay.show {
+  display: flex;
+}
+
+.dash-popup {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  position: relative;
+}
+
+.dash-popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all var(--transition);
+  z-index: 10;
+}
+
+.dash-popup-close:hover {
+  background: var(--border-soft);
+  color: var(--ink);
+}
+
+.dash-popup-body {
+  padding-top: 8px;
+}
+
+/* ============ Eye icon button ============ */
+
+.dash-eye-btn {
+  padding: 6px 8px;
+  min-width: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-eye-btn:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ============ Draft badge ============ */
+
+.dash-badge--warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+

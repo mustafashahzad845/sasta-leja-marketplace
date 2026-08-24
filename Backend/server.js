@@ -441,7 +441,7 @@ app.post("/api/products", authRequired, async (req, res) => {
       });
     }
 
-    const { name, category, condition, location, brand, price, description, image, featured } = req.body;
+    const { name, category, condition, location, brand, price, description, image, featured, draft } = req.body;
 
     if (!name || !category || !condition || !location || price == null || !image) {
       return res.status(400).json({
@@ -467,7 +467,8 @@ app.post("/api/products", authRequired, async (req, res) => {
       price,
       description,
       image,
-      featured,
+      featured: featured || false,
+      draft: draft || false,
     });
 
     res.status(201).json({
@@ -493,8 +494,14 @@ app.get("/api/products/my", authRequired, async (req, res) => {
       });
     }
 
+    const { category } = req.query;
+    const query = { seller: req.userId };
+    if (category) {
+      query.category = category;
+    }
+
     const products = await productModel
-      .find({ seller: req.userId })
+      .find(query)
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -630,11 +637,11 @@ app.put("/api/products/:id", authRequired, async (req, res) => {
       });
     }
 
-    const { name, category, condition, location, brand, price, description, image, featured } = req.body;
+    const { name, category, condition, location, brand, price, description, image, featured, draft } = req.body;
 
     const product = await productModel.findOneAndUpdate(
       { _id: req.params.id, seller: req.userId },
-      { name, category, condition, location, brand, price, description, image, featured },
+      { name, category, condition, location, brand, price, description, image, featured, draft },
       { new: true }
     );
 

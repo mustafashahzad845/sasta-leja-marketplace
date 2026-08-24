@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String, default: "" },
     image: { type: String, default: "" },
     featured: { type: Boolean, default: false },
+    draft: { type: Boolean, default: false },
   },
   { timestamps: true, collection: "products" },
 );

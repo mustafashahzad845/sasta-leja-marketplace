@@ -48,7 +48,6 @@
             <button class="btn btn-secondary btn-sm dash-profile-logout" id="popupLogout">Logout</button>
           </div>
         </div>
-        <a href="index.html" class="btn btn-ghost">← Store</a>
         <button class="dash-icon-btn" aria-label="Notifications">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -75,16 +74,6 @@
         <span class="dash-nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </span> Add Product
-      </button>
-      <button class="dash-nav-item" data-panel="edit">
-        <span class="dash-nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-        </span> Edit Product
-      </button>
-      <button class="dash-nav-item" data-panel="settings">
-        <span class="dash-nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-        </span> Settings
       </button>
 
       <div class="dash-sidebar-profile">
@@ -117,8 +106,14 @@
         </div>
 
         <div class="dash-filters">
-          <button class="dash-filter active" data-filter="all">All</button>
-          <button class="dash-filter" data-filter="active">Active</button>
+          <button class="dash-filter active" data-category="all">All</button>
+          <button class="dash-filter" data-category="Electronics">Electronics</button>
+          <button class="dash-filter" data-category="Fashion">Fashion</button>
+          <button class="dash-filter" data-category="Home & Living">Home & Living</button>
+          <button class="dash-filter" data-category="Beauty">Beauty</button>
+          <button class="dash-filter" data-category="Sports">Sports</button>
+          <button class="dash-filter" data-category="Books">Books</button>
+          <button class="dash-filter" data-category="Other">Other</button>
         </div>
 
         <div class="dash-card" style="padding: 8px 24px;">
@@ -200,183 +195,25 @@
                 <img id="pImagePreview" alt="Image preview" style="max-width: 180px; border-radius: 8px; border: 1px solid var(--border-soft);">
               </div>
             </div>
-            <div class="form-group form-group--full">
-              <label class="dash-field-row" style="border-bottom: none; padding: 4px 0;">
-                <span>
-                  <span class="dash-field-row-label">Featured product</span>
-                  <span class="dash-field-row-help">Show this product in the homepage "Trending deals"</span>
-                </span>
-                <span class="dash-switch">
-                  <input type="checkbox" id="pFeatured">
-                  <span class="dash-switch-slider"></span>
-                </span>
-              </label>
-            </div>
           </div>
           <div class="dash-form-actions">
-            <button type="button" class="btn btn-secondary" id="addSaveDraft">Save Draft</button>
+            <button type="button" class="btn btn-secondary" id="addSaveDraft">ड्राफ्ट में सहेजें</button>
             <button type="submit" class="btn btn-primary" id="publishBtn">Publish Product</button>
           </div>
         </form>
-      </section>
-
-      <!-- ==================== EDIT PRODUCT ==================== -->
-      <section class="dash-panel" id="panel-edit">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Inventory</div>
-            <h1 class="dash-title">Edit Product</h1>
-            <p class="dash-subtitle">Update product details. Image is optional — leave unchanged if not uploading a new one.</p>
-          </div>
-        </div>
-
-        <form class="dash-card" id="editProductForm" novalidate>
-          <input type="hidden" id="eProductId">
-          <div class="dash-form-grid">
-            <div class="form-group form-group--full">
-              <label for="eName">Product name</label>
-              <input type="text" id="eName" placeholder="e.g. Wireless Noise Cancelling Headphones Pro">
-            </div>
-            <div class="form-group">
-              <label for="eCategory">Category</label>
-              <select id="eCategory">
-                <option>Electronics</option>
-                <option>Fashion</option>
-                <option>Home & Living</option>
-                <option>Beauty</option>
-                <option>Sports</option>
-                <option>Books</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="eCondition">Condition</label>
-              <select id="eCondition">
-                <option value="New">New</option>
-                <option value="Used">Used</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="eLocation">Location</label>
-              <input type="text" id="eLocation" placeholder="e.g. Lahore, Pakistan">
-            </div>
-            <div class="form-group">
-              <label for="eBrand">Brand</label>
-              <input type="text" id="eBrand" placeholder="e.g. SastaLeja">
-            </div>
-            <div class="form-group">
-              <label for="ePrice">Selling price (₹)</label>
-              <input type="number" id="ePrice" placeholder="2499">
-            </div>
-            <div class="form-group form-group--full">
-              <label for="eDesc">Description</label>
-              <textarea id="eDesc" placeholder="Describe your product — features, specs, what's in the box..."></textarea>
-            </div>
-            <div class="form-group form-group--full">
-              <label>Product image</label>
-              <label class="dash-dropzone" for="eImage" style="cursor: pointer;">
-                <span class="dash-dropzone-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </span>
-                <p>Click to choose a new image</p>
-                <small>PNG or JPG, up to 5MB. Leave empty to keep current image.</small>
-              </label>
-              <input type="file" id="eImage" accept="image/*" style="display: none;">
-              <div id="eImagePreviewWrap" style="display: none; margin-top: 10px;">
-                <img id="eImagePreview" alt="Image preview" style="max-width: 180px; border-radius: 8px; border: 1px solid var(--border-soft);">
-              </div>
-            </div>
-            <div class="form-group form-group--full">
-              <label class="dash-field-row" style="border-bottom: none; padding: 4px 0;">
-                <span>
-                  <span class="dash-field-row-label">Featured product</span>
-                  <span class="dash-field-row-help">Show this product in the homepage "Trending deals"</span>
-                </span>
-                <span class="dash-switch">
-                  <input type="checkbox" id="eFeatured">
-                  <span class="dash-switch-slider"></span>
-                </span>
-              </label>
-            </div>
-          </div>
-          <div class="dash-form-actions">
-            <button type="button" class="btn btn-secondary" id="editCancel">Cancel</button>
-            <button type="submit" class="btn btn-primary" id="updateBtn">Update Product</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- ==================== SETTINGS ==================== -->
-      <section class="dash-panel" id="panel-settings">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Preferences</div>
-            <h1 class="dash-title">Store Settings</h1>
-            <p class="dash-subtitle">Manage your store profile and preferences.</p>
-          </div>
-        </div>
-
-        <div class="dash-grid-2">
-          <form class="dash-card" novalidate>
-            <div class="dash-card-title" style="margin-bottom: 18px;">Store Profile</div>
-            <div class="dash-form-grid">
-              <div class="form-group">
-                <label for="sName">Store name</label>
-                <input type="text" id="sName" value="Ameer's Gadget Hub">
-              </div>
-              <div class="form-group">
-                <label for="sEmail">Contact email</label>
-                <input type="email" id="sEmail" value="ameer.gadgets@example.com">
-              </div>
-              <div class="form-group">
-                <label for="sPhone">Phone</label>
-                <input type="tel" id="sPhone" value="+92 300 1234567">
-              </div>
-              <div class="form-group">
-                <label for="sCity">City</label>
-                <input type="text" id="sCity" value="Lahore">
-              </div>
-              <div class="form-group form-group--full">
-                <label for="sAbout">About your store</label>
-                <textarea id="sAbout">Genuine electronics and accessories at honest prices. Same-day dispatch in Lahore, nationwide delivery in 2-4 days.</textarea>
-              </div>
-            </div>
-            <div class="dash-form-actions">
-              <button type="button" class="btn btn-primary" onclick="showToast('Settings saved')">Save Changes</button>
-            </div>
-          </form>
-
-          <div class="dash-card">
-            <div class="dash-card-title" style="margin-bottom: 6px;">Preferences</div>
-            <div class="dash-field-row">
-              <span>
-                <span class="dash-field-row-label">Auto-accept orders</span>
-                <span class="dash-field-row-help">Accept new orders without manual review</span>
-              </span>
-              <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
-            </div>
-            <div class="dash-field-row">
-              <span>
-                <span class="dash-field-row-label">Listing alerts</span>
-                <span class="dash-field-row-help">Email me when a listing gets a new review</span>
-              </span>
-              <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
-            </div>
-            <div class="dash-field-row">
-              <span>
-                <span class="dash-field-row-label">New review notifications</span>
-                <span class="dash-field-row-help">Notify me when a product gets a new review</span>
-              </span>
-              <span class="dash-switch"><input type="checkbox"><span class="dash-switch-slider"></span></span>
-            </div>
-          </div>
-        </div>
       </section>
 
     </main>
   </div>
 
   <div class="dash-toast" id="dashToast"></div>
+
+  <div class="dash-popup-overlay" id="productDetailOverlay" aria-hidden="true">
+    <div class="dash-popup" id="productDetailPopup">
+      <button class="dash-popup-close" id="productDetailClose" aria-label="Close">&times;</button>
+      <div class="dash-popup-body" id="productDetailBody"></div>
+    </div>
+  </div>
 
   <script>
     // Sidebar / nav tab switching
@@ -414,14 +251,35 @@
     var hashMatch = window.location.hash.match(/panel-([a-z]+)/);
     if (hashMatch) openPanel(hashMatch[1]);
 
-    // Filter chips
+    // Category filter chips
+    var currentCategory = 'all';
     document.querySelectorAll('.dash-filter').forEach(function(chip) {
       chip.addEventListener('click', function() {
-        this.parentElement.querySelectorAll('.dash-filter').forEach(function(c) { c.classList.remove('active'); });
+        document.querySelectorAll('.dash-filter').forEach(function(c) { c.classList.remove('active'); });
         this.classList.add('active');
+        currentCategory = this.dataset.category;
+        if (currentCategory === 'all') {
+          history.replaceState(null, '', window.location.pathname + window.location.hash);
+        } else {
+          history.replaceState(null, '', '?category=' + encodeURIComponent(currentCategory) + window.location.hash);
+        }
         loadProducts();
       });
     });
+
+    // Restore category from URL on load
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var cat = params.get('category');
+      if (cat) {
+        currentCategory = cat;
+        var chip = document.querySelector('.dash-filter[data-category="' + cat + '"]');
+        if (chip) {
+          document.querySelectorAll('.dash-filter').forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+        }
+      }
+    })();
 
     // Toast
     var toastEl = document.getElementById('dashToast');
@@ -526,14 +384,74 @@
     }
 
     function formatPrice(n) {
-      return '₹' + Number(n || 0).toLocaleString('en-IN');
+      return 'Rs ' + Number(n || 0).toLocaleString('en-IN');
     }
 
     function categoryEmoji(category) {
       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
     }
 
+    function viewProductDetail(id) {
+      var popup = document.getElementById('productDetailOverlay');
+      var body = document.getElementById('productDetailBody');
+      body.innerHTML = '<p style="text-align:center; padding: 24px; color: var(--muted);">Loading...</p>';
+      popup.classList.add('show');
+      popup.setAttribute('aria-hidden', 'false');
+
+      fetch(API_BASE + '/products/' + id, {
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (!data.success || !data.data) {
+            body.innerHTML = '<p style="text-align:center; padding: 24px; color: #ef4444;">Product not found</p>';
+            return;
+          }
+          var p = data.data;
+          var imageHtml = p.image
+            ? '<img src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.name) + '" style="width:100%; max-height:300px; object-fit:cover; border-radius:12px; margin-bottom:16px;">'
+            : '<div style="width:100%; height:200px; background:var(--surface); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">' + categoryEmoji(p.category) + '</div>';
+
+          var conditionLabel = p.condition === 'Used' ? 'Used' : 'New';
+          var conditionBadge = p.condition === 'Used'
+            ? '<span class="dash-badge dash-badge--warning">Used</span>'
+            : '<span class="dash-badge dash-badge--success">New</span>';
+
+          var statusLabel = p.draft ? '<span class="dash-badge dash-badge--warning">Draft</span>' : '<span class="dash-badge dash-badge--success">Active</span>';
+
+          body.innerHTML =
+            imageHtml +
+            '<span class="dash-badge" style="background:var(--accent-soft); color:var(--accent); margin-bottom:8px;">' + escapeHtml(p.category) + '</span>' +
+            '<h2 style="margin: 8px 0; font-size:20px; font-weight:700; color:var(--ink);">' + escapeHtml(p.name) + '</h2>' +
+            '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">' +
+              conditionBadge + ' ' + statusLabel +
+            '</div>' +
+            '<div style="font-size:22px; font-weight:800; color:var(--accent); margin-bottom:8px;">' + formatPrice(p.price) + '</div>' +
+            (p.brand ? '<div style="color:var(--ink-soft); margin-bottom:6px;"><strong>Brand:</strong> ' + escapeHtml(p.brand) + '</div>' : '') +
+            (p.location ? '<div style="color:var(--ink-soft); margin-bottom:6px;"><strong>Location:</strong> ' + escapeHtml(p.location) + '</div>' : '') +
+            (p.description ? '<hr style="border-color:var(--border-soft); margin:12px 0;"><p style="color:var(--ink-soft); line-height:1.6; font-size:14px;">' + escapeHtml(p.description) + '</p>' : '');
+        })
+        .catch(function() {
+          body.innerHTML = '<p style="text-align:center; padding: 24px; color:#ef4444;">Could not load product details.</p>';
+        });
+    }
+
+    document.getElementById('productDetailClose').addEventListener('click', function() {
+      document.getElementById('productDetailOverlay').classList.remove('show');
+      document.getElementById('productDetailOverlay').setAttribute('aria-hidden', 'true');
+    });
+
+    document.getElementById('productDetailOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('show');
+        this.setAttribute('aria-hidden', 'true');
+      }
+    });
+
     function statusBadge(p) {
+      if (p.draft) {
+        return '<span class="dash-badge dash-badge--warning">Draft</span>';
+      }
       return '<span class="dash-badge dash-badge--success">Active</span>';
     }
 
@@ -562,6 +480,9 @@
           '<td>' + statusBadge(p) + '</td>' +
           '<td>' +
             '<div class="dash-toolbar" style="flex-wrap: nowrap;">' +
+              '<button class="btn btn-ghost btn-sm dash-eye-btn" data-view="' + p._id + '" aria-label="View product details" title="View details">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>' +
+              '</button>' +
               '<button class="btn btn-secondary btn-sm" data-edit="' + p._id + '">Edit</button>' +
               '<button class="btn btn-ghost-danger btn-sm" data-delete="' + p._id + '">Delete</button>' +
             '</div>' +
@@ -573,13 +494,11 @@
     async function loadProducts() {
       var tbody = document.getElementById('productsBody');
       var search = (document.getElementById('productSearch').value || '').trim().toLowerCase();
-      var filterBtn = document.querySelector('.dash-filter.active');
-      var filter = filterBtn ? filterBtn.dataset.filter : 'all';
 
       try {
         var queryParts = [];
         if (search) queryParts.push('search=' + encodeURIComponent(search));
-        if (filter && filter !== 'all') queryParts.push('filter=' + filter);
+        if (currentCategory && currentCategory !== 'all') queryParts.push('category=' + encodeURIComponent(currentCategory));
         var qs = queryParts.length ? '?' + queryParts.join('&') : '';
 
         var response = await fetch(API_BASE + '/products/my' + qs, {
@@ -599,7 +518,7 @@
         });
 
         if (!products.length) {
-          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--muted);">No products yet. Click "+ Add Product" to publish your first listing.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--muted);">No products found in this category.</td></tr>';
           return;
         }
 
@@ -609,6 +528,9 @@
         });
         document.querySelectorAll('[data-delete]').forEach(function(btn) {
           btn.addEventListener('click', function() { deleteProduct(this.dataset.delete); });
+        });
+        document.querySelectorAll('[data-view]').forEach(function(btn) {
+          btn.addEventListener('click', function() { viewProductDetail(this.dataset.view); });
         });
       } catch (error) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#ef4444;">Could not load products. Is the server running?</td></tr>';
@@ -664,34 +586,45 @@
       addForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         var btn = document.getElementById('publishBtn');
-        var payload = {
-          name: document.getElementById('pName').value.trim(),
-          category: document.getElementById('pCategory').value,
-          condition: document.getElementById('pCondition').value,
-          location: document.getElementById('pLocation').value.trim(),
-          brand: document.getElementById('pBrand').value.trim(),
-          price: parseFloat(document.getElementById('pPrice').value),
-          description: document.getElementById('pDesc').value.trim(),
-          featured: document.getElementById('pFeatured').checked,
-          image: '',
-        };
+        await saveProduct(false);
+      });
 
-        if (!payload.name || !payload.category || !payload.condition || !payload.location) {
-          showToast('Please fill product name, category, condition and location');
-          return;
-        }
-        if (!payload.price || payload.price <= 0) {
-          showToast('Please enter a valid price');
-          return;
-        }
-        if (!document.getElementById('pImage').files || !document.getElementById('pImage').files.length) {
-          showToast('Please upload a product image');
-          return;
-        }
+      document.getElementById('addSaveDraft').addEventListener('click', async function() {
+        await saveProduct(true);
+      });
+    }
 
-        btn.disabled = true;
-        btn.textContent = 'Publishing...';
-        try {
+    async function saveProduct(isDraft) {
+      var btn = document.getElementById('publishBtn');
+      var payload = {
+        name: document.getElementById('pName').value.trim(),
+        category: document.getElementById('pCategory').value,
+        condition: document.getElementById('pCondition').value,
+        location: document.getElementById('pLocation').value.trim(),
+        brand: document.getElementById('pBrand').value.trim(),
+        price: parseFloat(document.getElementById('pPrice').value),
+        description: document.getElementById('pDesc').value.trim(),
+        draft: isDraft,
+        image: '',
+      };
+
+      if (!payload.name || !payload.category || !payload.condition || !payload.location) {
+        showToast('Please fill product name, category, condition and location');
+        return;
+      }
+      if (!payload.price || payload.price <= 0) {
+        showToast('Please enter a valid price');
+        return;
+      }
+      if (!isDraft && (!document.getElementById('pImage').files || !document.getElementById('pImage').files.length)) {
+        showToast('Please upload a product image');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = isDraft ? 'Saving draft...' : 'Publishing...';
+      try {
+        if (!isDraft) {
           var fileInput = document.getElementById('pImage');
           if (fileInput && fileInput.files && fileInput.files.length) {
             btn.textContent = 'Uploading image...';
@@ -711,36 +644,44 @@
             }
             payload.image = uploadData.data.imageUrl;
           }
-          var response = await fetch(API_BASE + '/products', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify(payload),
-          });
-          var data = await response.json();
-          if (data.success) {
-            addForm.reset();
-            document.getElementById('pCategory').value = 'Electronics';
-            document.getElementById('pFeatured').checked = false;
-            var previewWrap = document.getElementById('pImagePreviewWrap');
-            if (previewWrap) previewWrap.style.display = 'none';
-            var resetFile = document.getElementById('pImage');
-            if (resetFile) resetFile.value = '';
-            showToast('Product published');
-            loadProducts();
-            openPanel('products');
-          } else {
-            showToast(data.message || 'Failed to publish product');
-          }
-        } catch (error) {
-          showToast('Network error. Please try again.');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Publish Product';
+        } else {
+          payload.image = '';
         }
-      });
+
+        var endpoint = '/products';
+        var method = 'POST';
+        var response = await fetch(API_BASE + endpoint, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
+          body: JSON.stringify(payload),
+        });
+        var data = await response.json();
+        if (data.success) {
+          addForm.reset();
+          document.getElementById('pCategory').value = 'Electronics';
+          var previewWrap = document.getElementById('pImagePreviewWrap');
+          if (previewWrap) previewWrap.style.display = 'none';
+          var resetFile = document.getElementById('pImage');
+          if (resetFile) resetFile.value = '';
+          if (isDraft) {
+            showToast('Aapka data draft mein store ho gaya hai');
+          } else {
+            showToast('Product published');
+          }
+          loadProducts();
+          openPanel('products');
+        } else {
+          showToast(data.message || (isDraft ? 'Failed to save draft' : 'Failed to publish product'));
+        }
+      } catch (error) {
+        showToast('Network error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Publish Product';
+      }
     }
 
     // Edit product helpers

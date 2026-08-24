@@ -400,7 +400,7 @@
       var actionsHtml = '';
       if (isOwner) {
         actionsHtml = '<div class="dash-toolbar" style="flex-wrap: nowrap; margin-top: 16px;">' +
-          '<a href="seller-dashboard.html#panel-edit" class="btn btn-secondary btn-sm" data-edit-id="' + p._id + '">Edit Product</a>' +
+          '<a href="seller-dashboard.html#panel-products" class="btn btn-secondary btn-sm">Manage Products</a>' +
           '<button class="btn btn-ghost-danger btn-sm" data-delete-id="' + p._id + '">Delete Product</button>' +
         '</div>';
       }
@@ -434,18 +434,7 @@
 
       // Wire owner actions
       if (isOwner) {
-        var editBtn = card.querySelector('[data-edit-id]');
         var deleteBtn = card.querySelector('[data-delete-id]');
-        if (editBtn) {
-          editBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            var pid = this.dataset.editId;
-            if (window.confirm('Open edit form for this product?')) {
-              window.location.href = 'seller-dashboard.html#panel-edit';
-              try { localStorage.setItem('editProductId', pid); } catch (err) {}
-            }
-          });
-        }
         if (deleteBtn) {
           deleteBtn.addEventListener('click', function() {
             var pid = this.dataset.deleteId;
