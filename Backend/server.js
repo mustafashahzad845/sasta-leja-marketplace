@@ -501,10 +501,13 @@ app.get("/api/products/my", authRequired, async (req, res) => {
       });
     }
 
-    const { category } = req.query;
+    const { category, search } = req.query;
     const query = { seller: req.userId };
     if (category) {
-      query.category = category;
+      query.category = caseInsensitive(category);
+    }
+    if (search) {
+      query.$or = searchFilter(search);
     }
 
     const products = await productModel
@@ -524,24 +527,43 @@ app.get("/api/products/my", authRequired, async (req, res) => {
   }
 });
 
-// Shared query builder for listing all products with optional filters
+// Shared helpers for building safe MongoDB query filters
+function escapeRegExp(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function caseInsensitive(value) {
+  return { $regex: new RegExp("^" + escapeRegExp(value) + "$", "i") };
+}
+
+function searchFilter(search) {
+  const searchRegex = new RegExp(escapeRegExp(search), "i");
+  return [{ name: searchRegex }, { brand: searchRegex }];
+}
+
+// Shared query builder for listing all published products with optional filters:
+// ?category=Electronics&condition=New&search=headphones&sort=price_asc&limit=4
 function listAllProducts(req) {
-  const { category, condition, sort } = req.query;
+  const { category, condition, search, sort, limit } = req.query;
 
-  const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const caseInsensitive = (value) => ({
-    $regex: new RegExp("^" + escapeRegExp(value) + "$", "i"),
-  });
-
-  const query = {};
+  // Drafts are private to the seller and must never appear on public listings
+  const query = { draft: { $ne: true } };
   if (category) query.category = caseInsensitive(category);
   if (condition) query.condition = caseInsensitive(condition);
+  if (search) query.$or = searchFilter(search);
 
   let sortOptions = { createdAt: -1 };
   if (sort === "price_desc") sortOptions = { price: -1 };
   else if (sort === "price_asc") sortOptions = { price: 1 };
 
-  return productModel.find(query).sort(sortOptions);
+  const mongoQuery = productModel.find(query).sort(sortOptions);
+
+  const parsedLimit = Number.parseInt(limit, 10);
+  if (!Number.isNaN(parsedLimit) && parsedLimit > 0) {
+    mongoQuery.limit(Math.min(parsedLimit, 50));
+  }
+
+  return mongoQuery;
 }
 
 app.get("/api/products", async (req, res) => {

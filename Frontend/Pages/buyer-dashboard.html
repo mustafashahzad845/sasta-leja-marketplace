@@ -102,13 +102,18 @@
         </div>
 
         <div class="dash-toolbar" style="margin-bottom: 18px;">
+          <div class="dash-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="productSearch" placeholder="Search products...">
+          </div>
           <select id="conditionFilter" class="dash-filter-select" aria-label="Filter by condition">
             <option value="all" selected>All Conditions</option>
             <option value="New">New</option>
             <option value="Used">Used</option>
           </select>
           <select id="priceSort" class="dash-filter-select" aria-label="Sort by price">
-            <option value="price_asc" selected>Price: Low to High</option>
+            <option value="default" selected>Sort: Newest First</option>
+            <option value="price_asc">Price: Low to High</option>
             <option value="price_desc">Price: High to Low</option>
           </select>
         </div>
@@ -286,7 +291,20 @@
     }
 
     function setStatus(message) {
-      if (!status) return;
+      if (!status) {
+        // Fallback: create status div if missing (for robustness)
+        var parent = grid.parentElement;
+        if (parent) {
+          var fallback = document.createElement('div');
+          fallback.id = 'buyerProductsStatus';
+          fallback.style.cssText = 'display:block; text-align:center; padding:24px; color:var(--muted); font-size:14px;';
+          parent.insertBefore(fallback, grid);
+          status = fallback;
+        } else {
+          console.log('Status element not found, skipping message');
+          return;
+        }
+      }
       status.textContent = message;
       status.style.display = 'block';
     }
@@ -298,9 +316,28 @@
         document.querySelectorAll('.dash-filter[data-category]').forEach(function(c) { c.classList.remove('active'); });
         this.classList.add('active');
         currentCategory = this.dataset.category;
+        if (currentCategory === 'all') {
+          history.replaceState(null, '', window.location.pathname);
+        } else {
+          history.replaceState(null, '', '?category=' + encodeURIComponent(currentCategory));
+        }
         loadProducts();
       });
     });
+
+    // Restore category from URL on load (same behaviour as the seller dashboard)
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var cat = params.get('category');
+      if (cat) {
+        currentCategory = cat;
+        var chip = document.querySelector('.dash-filter[data-category="' + cat + '"]');
+        if (chip) {
+          document.querySelectorAll('.dash-filter[data-category]').forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+        }
+      }
+    })();
 
     // Condition + price-sort dropdowns
     var conditionFilter = document.getElementById('conditionFilter');
@@ -309,10 +346,27 @@
     if (priceSort) priceSort.addEventListener('change', loadProducts);
 
     async function loadProducts() {
+      // Safely get status element — create fallback if missing
+      if (!status) {
+        var parent = grid.parentElement;
+        if (parent) {
+          status = document.createElement('div');
+          status.id = 'buyerProductsStatus';
+          status.style.cssText = 'display:none; text-align:center; padding:48px 20px; color:var(--muted);';
+          parent.insertBefore(status, grid);
+        } else {
+          status = { style: { display: 'none' }, textContent: '' }; // dummy object
+        }
+      }
+      setStatus('Loading products...');
+      var searchInput = document.getElementById('productSearch');
+      var search = searchInput ? (searchInput.value || '').trim() : '';
+
       var queryParts = [];
       if (currentCategory && currentCategory !== 'all') queryParts.push('category=' + encodeURIComponent(currentCategory));
       if (conditionFilter && conditionFilter.value && conditionFilter.value !== 'all') queryParts.push('condition=' + encodeURIComponent(conditionFilter.value));
       if (priceSort && priceSort.value && priceSort.value !== 'default') queryParts.push('sort=' + encodeURIComponent(priceSort.value));
+      if (search) queryParts.push('search=' + encodeURIComponent(search));
       var qs = queryParts.length ? '?' + queryParts.join('&') : '';
 
       try {
@@ -331,6 +385,16 @@
         grid.innerHTML = '';
         setStatus('Could not load products. Is the server running?');
       }
+    }
+
+    // Search debounce (same pattern as the seller dashboard)
+    var searchTimer = null;
+    var buyerSearchInput = document.getElementById('productSearch');
+    if (buyerSearchInput) {
+      buyerSearchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(loadProducts, 250);
+      });
     }
 
     // Card click → product detail (ignore wishlist / add-to-cart clicks)
