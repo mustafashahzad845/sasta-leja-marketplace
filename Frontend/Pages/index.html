@@ -25,7 +25,6 @@
       <div class="navbar-actions">
         <a href="login.html" class="btn btn-ghost" id="navSignIn">Sign In</a>
         <a href="signup.html" class="btn btn-primary" id="navGetStarted">Get Started</a>
-        <a href="seller-dashboard.html#panel-add" class="btn btn-primary" id="navAddProduct" style="display:none;">+ Add Product</a>
         <span id="navUserInfo" style="display:none; align-items:center; gap:10px;">
           <span id="navUserName" style="font-weight:600;"></span>
           <button class="btn btn-ghost" id="navLogout">Logout</button>
@@ -73,38 +72,14 @@
   <!-- Categories -->
   <section class="categories" aria-label="Shop by category">
     <div class="category-chips" role="tablist">
-      <button class="category-chip active" role="tab" aria-selected="true">
-        <span class="category-chip-icon">🔥</span>
-        All Deals
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">📱</span>
-        Electronics
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">👕</span>
-        Fashion
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">🏠</span>
-        Home & Living
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">💄</span>
-        Beauty
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">🏃</span>
-        Sports
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">📚</span>
-        Books
-      </button>
-      <button class="category-chip" role="tab" aria-selected="false">
-        <span class="category-chip-icon">🎮</span>
-        Gaming
-      </button>
+      <button class="category-chip active" data-category="all" role="tab" aria-selected="true">All</button>
+      <button class="category-chip" data-category="Electronics" role="tab" aria-selected="false">Electronics</button>
+      <button class="category-chip" data-category="Fashion" role="tab" aria-selected="false">Fashion</button>
+      <button class="category-chip" data-category="Home & Living" role="tab" aria-selected="false">Home & Living</button>
+      <button class="category-chip" data-category="Beauty" role="tab" aria-selected="false">Beauty</button>
+      <button class="category-chip" data-category="Sports" role="tab" aria-selected="false">Sports</button>
+      <button class="category-chip" data-category="Books" role="tab" aria-selected="false">Books</button>
+      <button class="category-chip" data-category="Other" role="tab" aria-selected="false">Other</button>
     </div>
   </section>
 
@@ -117,6 +92,11 @@
 
     <div class="product-grid" id="productGrid"></div>
     <div id="productsStatus" style="display:none; text-align:center; padding:48px 20px; color:var(--muted);"></div>
+
+    <div id="viewAllWrap" style="display:none; text-align:center; margin-top:28px;">
+      <p id="viewAllText" style="color:var(--muted); margin:0 0 14px;"></p>
+      <a href="login.html" id="viewAllBtn" class="btn btn-primary">Login to see all products</a>
+    </div>
   </section>
 
   <!-- Footer -->
@@ -189,7 +169,8 @@
       document.body.style.overflow = '';
     });
 
-    // Category chips (visual toggle)
+    // Category chips
+    var currentCategory = 'all';
     var chips = document.querySelectorAll('.category-chip');
     chips.forEach(function(chip) {
       chip.addEventListener('click', function() {
@@ -199,6 +180,8 @@
         });
         this.classList.add('active');
         this.setAttribute('aria-selected', 'true');
+        currentCategory = this.dataset.category || 'all';
+        loadProducts(currentCategory);
       });
     });
 
@@ -275,21 +258,51 @@
       status.style.display = 'block';
     }
 
-    async function loadProducts() {
+    async function loadProducts(category) {
       try {
-        var response = await fetch(API_BASE + '/products');
+        var qs = '?limit=4';
+        if (category && category !== 'all') {
+          qs += '&category=' + encodeURIComponent(category);
+        }
+        var response = await fetch(API_BASE + '/products' + qs);
         if (!response.ok) throw new Error('Bad response');
         var data = await response.json();
         var products = (data.data || []).filter(Boolean);
         if (!products.length) {
-          setStatus('No products yet. Be the first to list one!');
+          setStatus('No products found in this category.');
           return;
         }
         status.style.display = 'none';
         grid.innerHTML = products.map(productCard).join('');
+        updateViewAll();
       } catch (error) {
         setStatus('Could not load products. Is the server running?');
       }
+    }
+
+    function updateViewAll() {
+      var wrap = document.getElementById('viewAllWrap');
+      var text = document.getElementById('viewAllText');
+      var btn = document.getElementById('viewAllBtn');
+      var viewAllLink = document.querySelector('.view-all');
+
+      var currentToken = localStorage.getItem('token');
+      var currentUser = null;
+      try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
+
+      if (currentToken && currentUser && currentUser.role === 'buyer') {
+        btn.textContent = 'View all products →';
+        btn.href = 'buyer-dashboard.html';
+        if (text) text.textContent = 'You are logged in — explore every product on Sasta Leja.';
+        if (viewAllLink) viewAllLink.href = 'buyer-dashboard.html';
+      } else {
+        btn.textContent = 'Login to see all products';
+        btn.href = 'login.html';
+        if (text) text.textContent = 'Want more? Login to browse every product on Sasta Leja.';
+        if (viewAllLink) viewAllLink.href = 'login.html';
+      }
+
+      wrap.style.display = 'block';
     }
 
     // Card click → detail page (ignore wishlist / add-to-cart clicks)
@@ -374,7 +387,6 @@
       }
       if (navSignIn) navSignIn.style.display = currentUser ? 'none' : '';
       if (navGetStarted) navGetStarted.style.display = currentUser ? 'none' : '';
-      if (navAddProduct) navAddProduct.style.display = (currentUser && currentUser.role === 'seller') ? '' : 'none';
       if (navUserInfo) navUserInfo.style.display = currentUser ? 'flex' : 'none';
       if (navUserName) navUserName.textContent = (currentUser && currentUser.fullName) || (currentUser && currentUser.email) || 'User';
       if (navLogout) {
