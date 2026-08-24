@@ -106,6 +106,22 @@
   </div>
 
   <script>
+    (function() {
+      var token = localStorage.getItem('token');
+      var userStr = localStorage.getItem('user');
+      var user = null;
+      if (token && userStr) {
+        try { user = JSON.parse(userStr); } catch(e) {}
+      }
+      if (token && user) {
+        if (user.role === 'seller') {
+          window.location.href = 'seller-dashboard.html';
+        } else {
+          window.location.href = 'index.html';
+        }
+      }
+    })();
+
     const API_BASE = 'http://localhost:4000/api';
     const loginForm = document.getElementById('loginForm');
     const loginBtn = document.getElementById('loginBtn');

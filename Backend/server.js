@@ -443,10 +443,10 @@ app.post("/api/products", authRequired, async (req, res) => {
 
     const { name, category, condition, location, brand, price, description, image, featured, draft } = req.body;
 
-    if (!name || !category || !condition || !location || price == null || !image) {
+    if (!name || !category || !condition || !location || price == null) {
       return res.status(400).json({
         success: false,
-        message: "Name, category, condition, location, price and image are required",
+        message: "Name, category, condition, location and price are required",
       });
     }
 
@@ -454,6 +454,13 @@ app.post("/api/products", authRequired, async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Condition must be either New or Used",
+      });
+    }
+
+    if (!draft && !image) {
+      return res.status(400).json({
+        success: false,
+        message: "Image is required to publish a product",
       });
     }
 
@@ -519,7 +526,22 @@ app.get("/api/products/my", authRequired, async (req, res) => {
 
 app.get("/api/products", async (req, res) => {
   try {
-    const products = await productModel.find().sort({ createdAt: -1 });
+    const { category, condition, sort } = req.query;
+
+    const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const caseInsensitive = (value) => ({
+      $regex: new RegExp("^" + escapeRegExp(value) + "$", "i"),
+    });
+
+    const query = {};
+    if (category) query.category = caseInsensitive(category);
+    if (condition) query.condition = caseInsensitive(condition);
+
+    let sortOptions = { createdAt: -1 };
+    if (sort === "price_desc") sortOptions = { price: -1 };
+    else if (sort === "price_asc") sortOptions = { price: 1 };
+
+    const products = await productModel.find(query).sort(sortOptions);
     res.status(200).json({
       success: true,
       data: products,

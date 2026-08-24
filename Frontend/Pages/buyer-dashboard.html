@@ -56,13 +56,6 @@
           </svg>
           <span class="dash-dot"></span>
         </button>
-        <a href="#panel-cart" class="dash-icon-btn" aria-label="Cart" data-goto="cart">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-          <span class="dash-dot"></span>
-        </a>
       </div>
     </div>
   </nav>
@@ -73,24 +66,6 @@
       <div class="dash-sidebar-label">My Account</div>
       <button class="dash-nav-item active" data-panel="overview">
         <span class="dash-nav-icon">🏠</span> Overview
-      </button>
-      <button class="dash-nav-item" data-panel="orders">
-        <span class="dash-nav-icon">🛍️</span> My Orders
-        <span class="dash-nav-count">12</span>
-      </button>
-      <button class="dash-nav-item" data-panel="wishlist">
-        <span class="dash-nav-icon">❤️</span> Wishlist
-        <span class="dash-nav-count">8</span>
-      </button>
-      <button class="dash-nav-item" data-panel="cart">
-        <span class="dash-nav-icon">🛒</span> Cart
-        <span class="dash-nav-count">3</span>
-      </button>
-      <button class="dash-nav-item" data-panel="addresses">
-        <span class="dash-nav-icon">📍</span> Addresses
-      </button>
-      <button class="dash-nav-item" data-panel="settings">
-        <span class="dash-nav-icon">⚙️</span> Settings
       </button>
 
       <div class="dash-sidebar-profile">
@@ -107,640 +82,40 @@
 
       <!-- ==================== OVERVIEW ==================== -->
       <section class="dash-panel active" id="panel-overview">
-        <div class="dash-welcome">
-          <div class="dash-welcome-inner">
-            <div>
-              <h2 id="welcomeTitle">Salaam, Buyer <span>👋</span></h2>
-              <p>You've saved <strong style="color: var(--accent);">₹18,240</strong> with Sasta Leja this month. Keep it up!</p>
-            </div>
-            <div class="dash-welcome-actions">
-              <a href="index.html" class="btn btn-primary">Browse Deals</a>
-              <a href="#panel-orders" class="btn btn-white-ghost" data-goto="orders">Track Order</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="dash-stats">
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">🛍️</div>
-              <span class="dash-stat-delta dash-stat-delta--up">+3</span>
-            </div>
-            <div class="dash-stat-value">12</div>
-            <div class="dash-stat-label">Total Orders</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">🚚</div>
-            </div>
-            <div class="dash-stat-value">2</div>
-            <div class="dash-stat-label">In Transit</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">❤️</div>
-            </div>
-            <div class="dash-stat-value">8</div>
-            <div class="dash-stat-label">Wishlist Items</div>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top">
-              <div class="dash-stat-icon">💸</div>
-              <span class="dash-stat-delta dash-stat-delta--up">₹18,240</span>
-            </div>
-            <div class="dash-stat-value">₹1,42,600</div>
-            <div class="dash-stat-label">Total Spent</div>
-          </div>
-        </div>
-
-        <div class="dash-card">
-          <div class="dash-card-header">
-            <div class="dash-card-title">Recommended For You</div>
-            <a href="index.html" class="dash-card-link">View all →</a>
-          </div>
-          <div class="product-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
-
-            <article class="product-card" tabindex="0">
-              <div class="product-card-image">
-                <span class="product-card-image-placeholder">🎧</span>
-                <span class="product-card-badge">Hot</span>
-                <button class="product-card-wishlist" aria-label="Add to wishlist">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-              </div>
-              <div class="product-card-body">
-                <span class="product-card-category">Electronics</span>
-                <h3 class="product-card-title">Wireless Noise Cancelling Headphones Pro</h3>
-                <div class="product-card-rating">
-                  <span class="product-card-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  </span>
-                  <span>(4.8)</span>
-                </div>
-              </div>
-              <div class="product-card-footer">
-                <div>
-                  <span class="product-card-price">₹2,499</span>
-                  <span class="product-card-price-old">₹8,999</span>
-                </div>
-                <button class="product-card-add" aria-label="Add to cart">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </button>
-              </div>
-              <span class="product-card-discount">72% OFF</span>
-            </article>
-
-            <article class="product-card" tabindex="0">
-              <div class="product-card-image">
-                <span class="product-card-image-placeholder">⌚</span>
-                <span class="product-card-badge">New</span>
-                <button class="product-card-wishlist" aria-label="Add to wishlist">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-              </div>
-              <div class="product-card-body">
-                <span class="product-card-category">Electronics</span>
-                <h3 class="product-card-title">Smart Watch Series 7 - Fitness Tracker</h3>
-                <div class="product-card-rating">
-                  <span class="product-card-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  </span>
-                  <span>(4.9)</span>
-                </div>
-              </div>
-              <div class="product-card-footer">
-                <div>
-                  <span class="product-card-price">₹4,999</span>
-                  <span class="product-card-price-old">₹15,999</span>
-                </div>
-                <button class="product-card-add" aria-label="Add to cart">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </button>
-              </div>
-              <span class="product-card-discount">69% OFF</span>
-            </article>
-
-            <article class="product-card" tabindex="0">
-              <div class="product-card-image">
-                <span class="product-card-image-placeholder">👟</span>
-                <button class="product-card-wishlist" aria-label="Add to wishlist">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-              </div>
-              <div class="product-card-body">
-                <span class="product-card-category">Fashion</span>
-                <h3 class="product-card-title">Ultra Light Running Shoes - Breathable Mesh</h3>
-                <div class="product-card-rating">
-                  <span class="product-card-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  </span>
-                  <span>(4.2)</span>
-                </div>
-              </div>
-              <div class="product-card-footer">
-                <div>
-                  <span class="product-card-price">₹1,299</span>
-                  <span class="product-card-price-old">₹3,499</span>
-                </div>
-                <button class="product-card-add" aria-label="Add to cart">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </button>
-              </div>
-              <span class="product-card-discount">63% OFF</span>
-            </article>
-
-            <article class="product-card" tabindex="0">
-              <div class="product-card-image">
-                <span class="product-card-image-placeholder">🎒</span>
-                <span class="product-card-badge">Sale</span>
-                <button class="product-card-wishlist" aria-label="Add to wishlist">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-              </div>
-              <div class="product-card-body">
-                <span class="product-card-category">Fashion</span>
-                <h3 class="product-card-title">Vintage Leather Backpack - Waterproof 25L</h3>
-                <div class="product-card-rating">
-                  <span class="product-card-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  </span>
-                  <span>(4.5)</span>
-                </div>
-              </div>
-              <div class="product-card-footer">
-                <div>
-                  <span class="product-card-price">₹1,899</span>
-                  <span class="product-card-price-old">₹5,499</span>
-                </div>
-                <button class="product-card-add" aria-label="Add to cart">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </button>
-              </div>
-              <span class="product-card-discount">65% OFF</span>
-            </article>
-
-          </div>
-        </div>
-
-        <div class="dash-card">
-          <div class="dash-card-header">
-            <div class="dash-card-title">Recent Orders</div>
-            <a href="#panel-orders" class="dash-card-link" data-goto="orders">View all →</a>
-          </div>
-          <div class="dash-table-wrap">
-            <table class="dash-table">
-              <thead>
-                <tr><th>Order</th><th>Items</th><th>Date</th><th>Total</th><th>Status</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="dash-text-strong">#SL-3842</td>
-                  <td>Smart Watch Series 7</td>
-                  <td class="dash-text-muted">18 Aug 2026</td>
-                  <td class="dash-text-strong">₹4,999</td>
-                  <td><span class="dash-badge dash-badge--success">Shipped</span></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3820</td>
-                  <td>Earbuds Pro + Charger</td>
-                  <td class="dash-text-muted">12 Aug 2026</td>
-                  <td class="dash-text-strong">₹1,198</td>
-                  <td><span class="dash-badge dash-badge--success">Delivered</span></td>
-                </tr>
-                <tr>
-                  <td class="dash-text-strong">#SL-3798</td>
-                  <td>LED Desk Lamp</td>
-                  <td class="dash-text-muted">02 Aug 2026</td>
-                  <td class="dash-text-strong">₹1,599</td>
-                  <td><span class="dash-badge dash-badge--success">Delivered</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== MY ORDERS ==================== -->
-      <section class="dash-panel" id="panel-orders">
         <div class="dash-panel-header">
           <div>
-            <div class="dash-eyebrow">Shopping</div>
-            <h1 class="dash-title">My Orders</h1>
-            <p class="dash-subtitle">Track delivery and review past purchases.</p>
+            <div class="dash-eyebrow">Marketplace</div>
+            <h1 class="dash-title">All Products</h1>
+            <p class="dash-subtitle">Browse every product available on Sasta Leja.</p>
           </div>
         </div>
 
         <div class="dash-filters">
-          <button class="dash-filter active">All</button>
-          <button class="dash-filter">In Transit</button>
-          <button class="dash-filter">Delivered</button>
-          <button class="dash-filter">Cancelled</button>
+          <button class="dash-filter active" data-category="all">All</button>
+          <button class="dash-filter" data-category="Electronics">Electronics</button>
+          <button class="dash-filter" data-category="Fashion">Fashion</button>
+          <button class="dash-filter" data-category="Home & Living">Home & Living</button>
+          <button class="dash-filter" data-category="Beauty">Beauty</button>
+          <button class="dash-filter" data-category="Sports">Sports</button>
+          <button class="dash-filter" data-category="Books">Books</button>
+          <button class="dash-filter" data-category="Other">Other</button>
         </div>
 
-        <div class="dash-card">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
-            <div class="dash-product">
-              <div class="dash-product-thumb">⌚</div>
-              <div>
-                <div class="dash-product-name">Order #SL-3842</div>
-                <div class="dash-product-meta">Smart Watch Series 7 · 18 Aug 2026 · <span class="dash-text-strong">₹4,999</span></div>
-              </div>
-            </div>
-            <span class="dash-badge dash-badge--accent">In Transit</span>
-          </div>
-          <div class="dash-timeline">
-            <div class="dash-timeline-step done">
-              <div class="dash-timeline-dot">✓</div>
-              <div class="dash-timeline-label">Ordered</div>
-            </div>
-            <div class="dash-timeline-step done">
-              <div class="dash-timeline-dot">✓</div>
-              <div class="dash-timeline-label">Packed</div>
-            </div>
-            <div class="dash-timeline-step current">
-              <div class="dash-timeline-dot">🚚</div>
-              <div class="dash-timeline-label">Shipped</div>
-            </div>
-            <div class="dash-timeline-step">
-              <div class="dash-timeline-dot"></div>
-              <div class="dash-timeline-label">Delivered</div>
-            </div>
-          </div>
-          <div class="dash-form-actions" style="justify-content:flex-start;">
-            <button class="btn btn-secondary btn-sm" onclick="showToast('We are on it! Tracking will be live soon 🚚')">Track Order</button>
-            <button class="btn btn-ghost-danger btn-sm" onclick="showToast('Order cancelled')">Cancel Order</button>
-          </div>
+        <div class="dash-toolbar" style="margin-bottom: 18px;">
+          <select id="conditionFilter" class="dash-filter-select" aria-label="Filter by condition">
+            <option value="all" selected>All Conditions</option>
+            <option value="New">New</option>
+            <option value="Used">Used</option>
+          </select>
+          <select id="priceSort" class="dash-filter-select" aria-label="Sort by price">
+            <option value="price_asc" selected>Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+          </select>
         </div>
 
-        <div class="dash-card">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
-            <div class="dash-product">
-              <div class="dash-product-thumb">🎧</div>
-              <div>
-                <div class="dash-product-name">Order #SL-3820</div>
-                <div class="dash-product-meta">Earbuds Pro + Charger · 12 Aug 2026 · <span class="dash-text-strong">₹1,198</span></div>
-              </div>
-            </div>
-            <span class="dash-badge dash-badge--success">Delivered</span>
-          </div>
-          <div class="dash-form-actions" style="justify-content:flex-start;">
-            <button class="btn btn-secondary btn-sm" onclick="showToast('Thanks for the feedback ⭐')">Write a Review</button>
-            <button class="btn btn-secondary btn-sm" onclick="showToast('Reorder added to cart 🛒')">Reorder</button>
-          </div>
-        </div>
-
-        <div class="dash-card">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
-            <div class="dash-product">
-              <div class="dash-product-thumb">💡</div>
-              <div>
-                <div class="dash-product-name">Order #SL-3798</div>
-                <div class="dash-product-meta">LED Desk Lamp · 02 Aug 2026 · <span class="dash-text-strong">₹1,599</span></div>
-              </div>
-            </div>
-            <span class="dash-badge dash-badge--success">Delivered</span>
-          </div>
-          <div class="dash-form-actions" style="justify-content:flex-start;">
-            <button class="btn btn-secondary btn-sm" onclick="showToast('Thanks for the feedback ⭐')">Write a Review</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== WISHLIST ==================== -->
-      <section class="dash-panel" id="panel-wishlist">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Saved For Later</div>
-            <h1 class="dash-title">Wishlist</h1>
-            <p class="dash-subtitle">8 items saved. We'll alert you when prices drop.</p>
-          </div>
-        </div>
-
-        <div class="dash-grid-3">
-
-          <article class="product-card" tabindex="0">
-            <div class="product-card-image">
-              <span class="product-card-image-placeholder">🎧</span>
-              <button class="product-card-wishlist" style="color: var(--danger);" aria-label="Remove from wishlist">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </button>
-            </div>
-            <div class="product-card-body">
-              <span class="product-card-category">Electronics</span>
-              <h3 class="product-card-title">Wireless Noise Cancelling Headphones Pro</h3>
-            </div>
-            <div class="product-card-footer">
-              <div>
-                <span class="product-card-price">₹2,499</span>
-                <span class="product-card-price-old">₹8,999</span>
-              </div>
-              <button class="product-card-add" aria-label="Add to cart">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" tabindex="0">
-            <div class="product-card-image">
-              <span class="product-card-image-placeholder">🎒</span>
-              <button class="product-card-wishlist" style="color: var(--danger);" aria-label="Remove from wishlist">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </button>
-            </div>
-            <div class="product-card-body">
-              <span class="product-card-category">Fashion</span>
-              <h3 class="product-card-title">Vintage Leather Backpack - Waterproof 25L</h3>
-            </div>
-            <div class="product-card-footer">
-              <div>
-                <span class="product-card-price">₹1,899</span>
-                <span class="product-card-price-old">₹5,499</span>
-              </div>
-              <button class="product-card-add" aria-label="Add to cart">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" tabindex="0">
-            <div class="product-card-image">
-              <span class="product-card-image-placeholder">📚</span>
-              <button class="product-card-wishlist" style="color: var(--danger);" aria-label="Remove from wishlist">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </button>
-            </div>
-            <div class="product-card-body">
-              <span class="product-card-category">Books</span>
-              <h3 class="product-card-title">Atomic Habits - James Clear</h3>
-            </div>
-            <div class="product-card-footer">
-              <div>
-                <span class="product-card-price">₹399</span>
-                <span class="product-card-price-old">₹999</span>
-              </div>
-              <button class="product-card-add" aria-label="Add to cart">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" tabindex="0">
-            <div class="product-card-image">
-              <span class="product-card-image-placeholder">🏃</span>
-              <button class="product-card-wishlist" style="color: var(--danger);" aria-label="Remove from wishlist">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </button>
-            </div>
-            <div class="product-card-body">
-              <span class="product-card-category">Sports</span>
-              <h3 class="product-card-title">Pro Yoga Mat - Non Slip 6mm</h3>
-            </div>
-            <div class="product-card-footer">
-              <div>
-                <span class="product-card-price">₹799</span>
-                <span class="product-card-price-old">₹1,999</span>
-              </div>
-              <button class="product-card-add" aria-label="Add to cart">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              </button>
-            </div>
-          </article>
-
-        </div>
-      </section>
-
-      <!-- ==================== CART ==================== -->
-      <section class="dash-panel" id="panel-cart">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Checkout</div>
-            <h1 class="dash-title">Your Cart</h1>
-            <p class="dash-subtitle">3 items ready for checkout.</p>
-          </div>
-        </div>
-
-        <div class="dash-grid-2">
-          <div class="dash-card">
-            <div class="dash-card-title" style="margin-bottom: 4px;">Cart Items</div>
-
-            <div class="dash-cart-row">
-              <div class="dash-product-thumb">🎧</div>
-              <div style="flex:1; min-width:0;">
-                <div class="dash-product-name">Wireless Noise Cancelling Headphones Pro</div>
-                <div class="dash-product-meta">Ameer's Gadget Hub</div>
-                <div style="margin-top:6px;" class="dash-cart-qty">
-                  <button aria-label="Decrease">−</button>
-                  <span>1</span>
-                  <button aria-label="Increase">+</button>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div class="dash-text-strong">₹2,499</div>
-                <div class="dash-product-meta" style="text-decoration: line-through;">₹8,999</div>
-              </div>
-            </div>
-
-            <div class="dash-cart-row">
-              <div class="dash-product-thumb">🎧</div>
-              <div style="flex:1; min-width:0;">
-                <div class="dash-product-name">Bluetooth Earbuds Pro</div>
-                <div class="dash-product-meta">Ameer's Gadget Hub</div>
-                <div style="margin-top:6px;" class="dash-cart-qty">
-                  <button aria-label="Decrease">−</button>
-                  <span>2</span>
-                  <button aria-label="Increase">+</button>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div class="dash-text-strong">₹1,798</div>
-                <div class="dash-product-meta" style="text-decoration: line-through;">₹5,998</div>
-              </div>
-            </div>
-
-            <div class="dash-cart-row">
-              <div class="dash-product-thumb">🧴</div>
-              <div style="flex:1; min-width:0;">
-                <div class="dash-product-name">Vitamin C Brightening Face Serum</div>
-                <div class="dash-product-meta">Glow Beauty Co.</div>
-                <div style="margin-top:6px;" class="dash-cart-qty">
-                  <button aria-label="Decrease">−</button>
-                  <span>1</span>
-                  <button aria-label="Increase">+</button>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div class="dash-text-strong">₹549</div>
-                <div class="dash-product-meta" style="text-decoration: line-through;">₹1,299</div>
-              </div>
-            </div>
-
-            <div class="dash-form-actions" style="justify-content:flex-start;">
-              <a href="index.html" class="btn btn-secondary btn-sm">← Continue Shopping</a>
-            </div>
-          </div>
-
-          <div class="dash-card">
-            <div class="dash-card-title" style="margin-bottom: 6px;">Order Summary</div>
-
-            <div class="dash-coupon">🎟️ Coupon applied: <strong>SALE10</strong> — 10% off</div>
-
-            <div class="dash-summary-row">
-              <span>Subtotal</span>
-              <span class="dash-text-strong">₹4,846</span>
-            </div>
-            <div class="dash-summary-row">
-              <span>Discount (SALE10)</span>
-              <span style="color: var(--success); font-weight: 600;">−₹485</span>
-            </div>
-            <div class="dash-summary-row">
-              <span>Shipping</span>
-              <span style="color: var(--success); font-weight: 600;">Free</span>
-            </div>
-            <div class="dash-summary-row dash-summary-row--total">
-              <span>Total</span>
-              <span>₹4,361</span>
-            </div>
-            <div class="dash-product-meta" style="margin: 8px 0 14px;">You're saving ₹10,451 on this order 🎉</div>
-
-            <button class="btn btn-primary" style="width:100%;" onclick="showToast('Order placed! 🎉')">Proceed to Checkout</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== ADDRESSES ==================== -->
-      <section class="dash-panel" id="panel-addresses">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Delivery</div>
-            <h1 class="dash-title">Saved Addresses</h1>
-            <p class="dash-subtitle">Where we should deliver your orders.</p>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="showToast('Add address form (demo) 🏠')">+ Add New</button>
-        </div>
-
-        <div class="dash-grid-3">
-          <div class="dash-address-card dash-address-card--default">
-            <div class="dash-address-name">🏠 Home
-              <span class="dash-badge dash-badge--accent">Default</span>
-            </div>
-            <p class="dash-address-text">
-              Ayesha Malik<br>
-              House 12, Street 5, Gulberg III,<br>
-              Lahore, Punjab 54000<br>
-              +92 321 9876543
-            </p>
-            <div class="dash-toolbar">
-              <button class="btn btn-secondary btn-sm">Edit</button>
-              <button class="btn btn-ghost-danger btn-sm">Remove</button>
-            </div>
-          </div>
-
-          <div class="dash-address-card">
-            <div class="dash-address-name">🏢 Office</div>
-            <p class="dash-address-text">
-              Ayesha Malik<br>
-              Office 402, Arfa Software Technology Park,<br>
-              Lahore, Punjab 54000<br>
-              +92 321 9876543
-            </p>
-            <div class="dash-toolbar">
-              <button class="btn btn-secondary btn-sm">Edit</button>
-              <button class="btn btn-ghost-danger btn-sm">Remove</button>
-            </div>
-          </div>
-
-          <div class="dash-address-card">
-            <div class="dash-address-name">🏠 Parent's Place</div>
-            <p class="dash-address-text">
-              Ayesha Malik<br>
-              Village Bara Pattar, Tehsil Daska,<br>
-              Sialkot, Punjab 51010<br>
-              +92 300 1122334
-            </p>
-            <div class="dash-toolbar">
-              <button class="btn btn-secondary btn-sm">Edit</button>
-              <button class="btn btn-ghost-danger btn-sm">Remove</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== SETTINGS ==================== -->
-      <section class="dash-panel" id="panel-settings">
-        <div class="dash-panel-header">
-          <div>
-            <div class="dash-eyebrow">Preferences</div>
-            <h1 class="dash-title">Account Settings</h1>
-            <p class="dash-subtitle">Update your profile, password and notifications.</p>
-          </div>
-        </div>
-
-        <div class="dash-grid-2">
-          <form class="dash-card" novalidate>
-            <div class="dash-card-title" style="margin-bottom: 18px;">Profile</div>
-            <div class="dash-form-grid">
-              <div class="form-group">
-                <label for="bName">Full name</label>
-                <input type="text" id="bName" value="Ayesha Malik">
-              </div>
-              <div class="form-group">
-                <label for="bEmail">Email</label>
-                <input type="email" id="bEmail" value="ayesha.malik@example.com">
-              </div>
-              <div class="form-group">
-                <label for="bPhone">Phone</label>
-                <input type="tel" id="bPhone" value="+92 321 9876543">
-              </div>
-              <div class="form-group">
-                <label for="bCity">City</label>
-                <input type="text" id="bCity" value="Lahore">
-              </div>
-            </div>
-            <div class="dash-form-actions">
-              <button type="button" class="btn btn-primary" onclick="showToast('Profile saved ✅')">Save Changes</button>
-            </div>
-          </form>
-
-          <div class="dash-card">
-            <div class="dash-card-title" style="margin-bottom: 18px;">Notifications</div>
-            <div class="dash-field-row">
-              <span>
-                <span class="dash-field-row-label">Order updates</span>
-                <span class="dash-field-row-help">Status changes, dispatch and delivery alerts</span>
-              </span>
-              <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
-            </div>
-            <div class="dash-field-row">
-              <span>
-                <span class="dash-field-row-label">Price drops</span>
-                <span class="dash-field-row-help">When a wishlist item gets cheaper</span>
-              </span>
-              <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
-            </div>
-            <div class="dash-field-row">
-              <span>
-                <span class="dash-field-row-label">Deals & promotions</span>
-                <span class="dash-field-row-help">Weekly deals and offers newsletter</span>
-              </span>
-              <span class="dash-switch"><input type="checkbox"><span class="dash-switch-slider"></span></span>
-            </div>
-          </div>
+        <div class="dash-card" style="padding: 24px;">
+          <div class="product-grid" id="buyerProductGrid"></div>
+          <div id="buyerProductsStatus" style="display:none; text-align:center; padding:48px 20px; color:var(--muted);"></div>
         </div>
       </section>
 
@@ -793,12 +168,6 @@
 
         document.getElementById('popupEmail').textContent = u.email || '—';
         document.getElementById('popupJoined').textContent = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
-
-        var welcomeTitle = document.getElementById('welcomeTitle');
-        if (welcomeTitle) {
-          var firstName = (u.fullName || 'Buyer').split(' ')[0];
-          welcomeTitle.innerHTML = 'Salaam, ' + firstName + ' <span>👋</span>';
-        }
       } catch (error) {
         console.error('Failed to load profile:', error);
       }
@@ -839,7 +208,6 @@
       window.location.href = 'login.html';
     });
 
-    // Existing dashboard JS
     // Sidebar / nav tab switching
     document.querySelectorAll('.dash-nav-item').forEach(function(item) {
       item.addEventListener('click', function() {
@@ -853,66 +221,161 @@
       });
     });
 
-    // Buttons that jump to a panel (data-goto)
-    document.querySelectorAll('[data-goto]').forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        e.preventDefault();
-        var target = this.dataset.goto;
-        document.querySelectorAll('.dash-nav-item').forEach(function(i) {
-          i.classList.toggle('active', i.dataset.panel === target);
-        });
-        document.querySelectorAll('.dash-panel').forEach(function(p) {
-          p.classList.toggle('active', p.id === 'panel-' + target);
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    });
+    // ===================== ALL PRODUCTS (live from backend) =====================
 
-    // Filter chips
-    document.querySelectorAll('.dash-filter').forEach(function(chip) {
+    var grid = document.getElementById('buyerProductGrid');
+    var status = document.getElementById('buyerProductsStatus');
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str == null ? '' : String(str);
+      return div.innerHTML;
+    }
+
+    function formatPrice(n) {
+      return 'Rs ' + Number(n || 0).toLocaleString('en-IN');
+    }
+
+    function categoryEmoji(category) {
+      var c = (category || '').toLowerCase();
+      if (c.indexOf('electr') !== -1) return '📱';
+      if (c.indexOf('fashion') !== -1 || c.indexOf('shoe') !== -1 || c.indexOf('cloth') !== -1) return '👕';
+      if (c.indexOf('home') !== -1 || c.indexOf('furniture') !== -1 || c.indexOf('lamp') !== -1) return '🏠';
+      if (c.indexOf('beauty') !== -1) return '💄';
+      if (c.indexOf('sport') !== -1) return '🏃';
+      if (c.indexOf('book') !== -1) return '📚';
+      if (c.indexOf('game') !== -1) return '🎮';
+      if (c.indexOf('vehicle') !== -1 || c.indexOf('car') !== -1) return '🚗';
+      return '📦';
+    }
+
+    function productCard(p) {
+      var image = p.image
+        ? '<img src="' + p.image + '" alt="' + escapeHtml(p.name) + '" loading="lazy">'
+        : '<span class="product-card-image-placeholder">' + categoryEmoji(p.category) + '</span>';
+
+      var badge = p.condition
+        ? '<span class="product-card-badge" style="background:' + (p.condition === 'Used' ? '#b45309' : '#10b981') + ';">' + escapeHtml(p.condition) + '</span>'
+        : '';
+
+      return (
+        '<article class="product-card" tabindex="0" data-id="' + p._id + '">' +
+          '<div class="product-card-image">' + image + badge +
+            '<button class="product-card-wishlist" aria-label="Add to wishlist">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<div class="product-card-body">' +
+            '<span class="product-card-category">' + escapeHtml(p.category) + '</span>' +
+            '<h3 class="product-card-title">' + escapeHtml(p.name) + '</h3>' +
+            '<div class="product-card-meta">' +
+              '<span>📍 ' + escapeHtml(p.location || 'N/A') + '</span>' +
+              '<span>' + escapeHtml(p.condition || '') + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="product-card-footer">' +
+            '<div>' +
+              '<span class="product-card-price">' + formatPrice(p.price) + '</span>' +
+            '</div>' +
+            '<button class="product-card-add" aria-label="Add to cart">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+            '</button>' +
+          '</div>' +
+        '</article>'
+      );
+    }
+
+    function setStatus(message) {
+      if (!status) return;
+      status.textContent = message;
+      status.style.display = 'block';
+    }
+
+    // Category filter chips (same categories as the seller dashboard)
+    var currentCategory = 'all';
+    document.querySelectorAll('.dash-filter[data-category]').forEach(function(chip) {
       chip.addEventListener('click', function() {
-        this.parentElement.querySelectorAll('.dash-filter').forEach(function(c) { c.classList.remove('active'); });
+        document.querySelectorAll('.dash-filter[data-category]').forEach(function(c) { c.classList.remove('active'); });
         this.classList.add('active');
+        currentCategory = this.dataset.category;
+        loadProducts();
       });
     });
 
-    // Wishlist / add-to-cart micro feedback (from index.html)
-    document.querySelectorAll('.product-card-wishlist').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var svg = this.querySelector('svg');
-        if (this.style.color === 'rgb(239, 68, 68)') {
-          this.style.color = '';
-          svg.setAttribute('fill', 'none');
-        } else {
-          this.style.color = '#ef4444';
-          svg.setAttribute('fill', 'currentColor');
+    // Condition + price-sort dropdowns
+    var conditionFilter = document.getElementById('conditionFilter');
+    var priceSort = document.getElementById('priceSort');
+    if (conditionFilter) conditionFilter.addEventListener('change', loadProducts);
+    if (priceSort) priceSort.addEventListener('change', loadProducts);
+
+    async function loadProducts() {
+      var queryParts = [];
+      if (currentCategory && currentCategory !== 'all') queryParts.push('category=' + encodeURIComponent(currentCategory));
+      if (conditionFilter && conditionFilter.value && conditionFilter.value !== 'all') queryParts.push('condition=' + encodeURIComponent(conditionFilter.value));
+      if (priceSort && priceSort.value && priceSort.value !== 'default') queryParts.push('sort=' + encodeURIComponent(priceSort.value));
+      var qs = queryParts.length ? '?' + queryParts.join('&') : '';
+
+      try {
+        var response = await fetch(API_BASE + '/products' + qs);
+        if (!response.ok) throw new Error('Bad response');
+        var data = await response.json();
+        var products = (data.data || []).filter(Boolean);
+        if (!products.length) {
+          grid.innerHTML = '';
+          setStatus('No products found. Try changing the filters.');
+          return;
         }
-      });
-    });
-    document.querySelectorAll('.product-card-add').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var original = this.innerHTML;
-        this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-        this.style.background = '#10b981';
-        showToast('Added to cart 🛒');
-        setTimeout(function() {
-          btn.innerHTML = original;
-          btn.style.background = '';
-        }, 1200);
-      });
+        status.style.display = 'none';
+        grid.innerHTML = products.map(productCard).join('');
+      } catch (error) {
+        grid.innerHTML = '';
+        setStatus('Could not load products. Is the server running?');
+      }
+    }
+
+    // Card click → product detail (ignore wishlist / add-to-cart clicks)
+    grid.addEventListener('click', function(e) {
+      var card = e.target.closest('.product-card');
+      if (!card) return;
+      if (e.target.closest('.product-card-wishlist') || e.target.closest('.product-card-add')) return;
+      window.location.href = 'product.html?id=' + card.dataset.id;
     });
 
-    // Cart quantity steppers
-    document.querySelectorAll('.dash-cart-qty button').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var span = this.parentElement.querySelector('span');
-        var val = parseInt(span.textContent, 10);
-        if (this.getAttribute('aria-label') === 'Increase') val += 1;
-        else val = Math.max(0, val - 1);
-        span.textContent = val;
-      });
+    // Keyboard: Enter opens the product
+    grid.addEventListener('keydown', function(e) {
+      if (e.key !== 'Enter') return;
+      var card = e.target.closest('.product-card');
+      if (card) window.location.href = 'product.html?id=' + card.dataset.id;
+    });
+
+    // Wishlist toggle (delegated)
+    grid.addEventListener('click', function(e) {
+      var btn = e.target.closest('.product-card-wishlist');
+      if (!btn) return;
+      e.stopPropagation();
+      var svg = btn.querySelector('svg');
+      if (btn.style.color === 'rgb(239, 68, 68)') {
+        btn.style.color = '';
+        svg.setAttribute('fill', 'none');
+      } else {
+        btn.style.color = '#ef4444';
+        svg.setAttribute('fill', 'currentColor');
+      }
+    });
+
+    // Add to cart feedback (delegated)
+    grid.addEventListener('click', function(e) {
+      var btn = e.target.closest('.product-card-add');
+      if (!btn) return;
+      e.stopPropagation();
+      var original = btn.innerHTML;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      btn.style.background = '#10b981';
+      showToast('Added to cart 🛒');
+      setTimeout(function() {
+        btn.innerHTML = original;
+        btn.style.background = '';
+      }, 1200);
     });
 
     // Toast
@@ -924,6 +387,8 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(function() { toastEl.classList.remove('show'); }, 2500);
     }
+
+    loadProducts();
   </script>
 </body>
 </html>

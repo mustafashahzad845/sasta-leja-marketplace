@@ -203,6 +203,147 @@
         </form>
       </section>
 
+      <!-- ==================== EDIT PRODUCT ==================== -->
+      <section class="dash-panel" id="panel-edit">
+        <div class="dash-panel-header">
+          <div>
+            <div class="dash-eyebrow">Inventory</div>
+            <h1 class="dash-title">Edit Product</h1>
+            <p class="dash-subtitle">Update product details. Image is optional — leave unchanged if not uploading a new one.</p>
+          </div>
+        </div>
+
+        <form class="dash-card" id="editProductForm" novalidate>
+          <input type="hidden" id="eProductId">
+          <div class="dash-form-grid">
+            <div class="form-group form-group--full">
+              <label for="eName">Product name</label>
+              <input type="text" id="eName" placeholder="e.g. Wireless Noise Cancelling Headphones Pro">
+            </div>
+            <div class="form-group">
+              <label for="eCategory">Category</label>
+              <select id="eCategory">
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home & Living</option>
+                <option>Beauty</option>
+                <option>Sports</option>
+                <option>Books</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="eCondition">Condition</label>
+              <select id="eCondition">
+                <option value="New">New</option>
+                <option value="Used">Used</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="eLocation">Location</label>
+              <input type="text" id="eLocation" placeholder="e.g. Lahore, Pakistan">
+            </div>
+            <div class="form-group">
+              <label for="eBrand">Brand</label>
+              <input type="text" id="eBrand" placeholder="e.g. SastaLeja">
+            </div>
+            <div class="form-group">
+              <label for="ePrice">Selling price (₹)</label>
+              <input type="number" id="ePrice" placeholder="2499">
+            </div>
+            <div class="form-group form-group--full">
+              <label for="eDesc">Description</label>
+              <textarea id="eDesc" placeholder="Describe your product — features, specs, what's in the box..."></textarea>
+            </div>
+            <div class="form-group form-group--full">
+              <label>Product image</label>
+              <label class="dash-dropzone" for="eImage" style="cursor: pointer;">
+                <span class="dash-dropzone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <p>Click to choose a new image</p>
+                <small>PNG or JPG, up to 5MB. Leave empty to keep current image.</small>
+              </label>
+              <input type="file" id="eImage" accept="image/*" style="display: none;">
+              <div id="eImagePreviewWrap" style="display: none; margin-top: 10px;">
+                <img id="eImagePreview" alt="Image preview" style="max-width: 180px; border-radius: 8px; border: 1px solid var(--border-soft);">
+              </div>
+            </div>
+          </div>
+          <div class="dash-form-actions">
+            <button type="button" class="btn btn-secondary" id="editCancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="updateBtn">Update Product</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ==================== SETTINGS ==================== -->
+      <section class="dash-panel" id="panel-settings">
+        <div class="dash-panel-header">
+          <div>
+            <div class="dash-eyebrow">Preferences</div>
+            <h1 class="dash-title">Store Settings</h1>
+            <p class="dash-subtitle">Manage your store profile and preferences.</p>
+          </div>
+        </div>
+
+        <div class="dash-grid-2">
+          <form class="dash-card" novalidate>
+            <div class="dash-card-title" style="margin-bottom: 18px;">Store Profile</div>
+            <div class="dash-form-grid">
+              <div class="form-group">
+                <label for="sName">Store name</label>
+                <input type="text" id="sName" value="Ameer's Gadget Hub">
+              </div>
+              <div class="form-group">
+                <label for="sEmail">Contact email</label>
+                <input type="email" id="sEmail" value="ameer.gadgets@example.com">
+              </div>
+              <div class="form-group">
+                <label for="sPhone">Phone</label>
+                <input type="tel" id="sPhone" value="+92 300 1234567">
+              </div>
+              <div class="form-group">
+                <label for="sCity">City</label>
+                <input type="text" id="sCity" value="Lahore">
+              </div>
+              <div class="form-group form-group--full">
+                <label for="sAbout">About your store</label>
+                <textarea id="sAbout">Genuine electronics and accessories at honest prices. Same-day dispatch in Lahore, nationwide delivery in 2-4 days.</textarea>
+              </div>
+            </div>
+            <div class="dash-form-actions">
+              <button type="button" class="btn btn-primary" onclick="showToast('Settings saved')">Save Changes</button>
+            </div>
+          </form>
+
+          <div class="dash-card">
+            <div class="dash-card-title" style="margin-bottom: 6px;">Preferences</div>
+            <div class="dash-field-row">
+              <span>
+                <span class="dash-field-row-label">Auto-accept orders</span>
+                <span class="dash-field-row-help">Accept new orders without manual review</span>
+              </span>
+              <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
+            </div>
+            <div class="dash-field-row">
+              <span>
+                <span class="dash-field-row-label">Listing alerts</span>
+                <span class="dash-field-row-help">Email me when a listing gets a new review</span>
+              </span>
+              <span class="dash-switch"><input type="checkbox" checked><span class="dash-switch-slider"></span></span>
+            </div>
+            <div class="dash-field-row">
+              <span>
+                <span class="dash-field-row-label">New review notifications</span>
+                <span class="dash-field-row-help">Notify me when a product gets a new review</span>
+              </span>
+              <span class="dash-switch"><input type="checkbox"><span class="dash-switch-slider"></span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -689,20 +830,57 @@
       var tbody = document.getElementById('productsBody');
       var row = tbody.querySelector('[data-edit="' + id + '"]');
       if (!row) return;
-      var cells = row.querySelectorAll('td');
-      if (!cells.length) return;
 
       document.getElementById('eProductId').value = id;
-      document.getElementById('eName').value = cells[0].textContent.trim();
-      document.getElementById('eCategory').value = (cells[1].textContent || '').trim();
-      document.getElementById('eCondition').value = (cells[2].textContent || '').trim();
-      document.getElementById('eLocation').value = (cells[3].textContent || '').trim();
-      document.getElementById('ePrice').value = '';
-      document.getElementById('eDesc').value = '';
-      document.getElementById('eFeatured').checked = false;
-      document.getElementById('eImagePreviewWrap').style.display = 'none';
 
-      openPanel('edit');
+      if (!token) {
+        showToast('Session expired. Please login again.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      fetch(API_BASE + '/products/' + id, {
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+        .then(function(res) {
+          if (res.status === 401 || res.status === 403) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+            throw new Error('Unauthorized');
+          }
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function(data) {
+          if (!data.success || !data.data) {
+            showToast('Product not found');
+            return;
+          }
+          var p = data.data;
+          document.getElementById('eName').value = p.name || '';
+          document.getElementById('eCategory').value = p.category || 'Electronics';
+          document.getElementById('eCondition').value = p.condition || 'New';
+          document.getElementById('eLocation').value = p.location || '';
+          document.getElementById('eBrand').value = p.brand || '';
+          document.getElementById('ePrice').value = p.price != null ? p.price : '';
+          document.getElementById('eDesc').value = p.description || '';
+          document.getElementById('eFeatured').checked = !!p.featured;
+          document.getElementById('eImagePreviewWrap').style.display = 'none';
+
+          if (p.image) {
+            var img = document.getElementById('eImagePreview');
+            img.src = p.image;
+            document.getElementById('eImagePreviewWrap').style.display = 'block';
+          }
+
+          openPanel('edit');
+        })
+        .catch(function(err) {
+          if (err.message === 'Unauthorized') return;
+          console.error('Failed to load product:', err);
+          showToast('Could not load product details: ' + (err.message || 'Network error'));
+        });
     }
 
     document.getElementById('editCancel').addEventListener('click', function() {

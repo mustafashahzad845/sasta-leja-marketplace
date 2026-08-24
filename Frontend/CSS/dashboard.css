@@ -724,6 +724,26 @@
   box-shadow: var(--shadow-accent);
 }
 
+/* Dropdown filters (condition / price sort) */
+
+.dash-filter-select {
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.dash-filter-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
 /* ============ Bars chart (earnings) ============ */
 
 .dash-bars {
