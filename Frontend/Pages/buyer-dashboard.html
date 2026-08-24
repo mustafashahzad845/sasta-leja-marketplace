@@ -292,8 +292,7 @@
 
     function setStatus(message) {
       if (!status) {
-        // Fallback: create status div if missing (for robustness)
-        var parent = grid.parentElement;
+        var parent = grid && grid.parentElement;
         if (parent) {
           var fallback = document.createElement('div');
           fallback.id = 'buyerProductsStatus';
@@ -305,8 +304,10 @@
           return;
         }
       }
-      status.textContent = message;
-      status.style.display = 'block';
+      if (status && status.style) {
+        status.textContent = message;
+        status.style.display = 'block';
+      }
     }
 
     // Category filter chips (same categories as the seller dashboard)
