@@ -660,6 +660,24 @@ body {
   white-space: nowrap;
 }
 
+/* Logged-in profile chip in the storefront navbar.
+ * Reuses the dashboard profile classes from dashboard.css. */
+.nav-profile {
+  position: relative;
+}
+
+.nav-profile .dash-user-chip {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-profile .dash-profile-popup {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--ink);

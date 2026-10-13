@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sasta Leja - Affordable Shopping Made Easy</title>
   <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/dashboard.css">
 </head>
 <body>
   <!-- Navbar -->
@@ -25,10 +26,38 @@
       <div class="navbar-actions">
         <a href="login.html" class="btn btn-ghost" id="navSignIn">Sign In</a>
         <a href="signup.html" class="btn btn-primary" id="navGetStarted">Get Started</a>
-        <span id="navUserInfo" style="display:none; align-items:center; gap:10px;">
-          <span id="navUserName" style="font-weight:600;"></span>
-          <button class="btn btn-ghost" id="navLogout">Logout</button>
-        </span>
+        <div class="nav-profile" id="navUserInfo" style="display:none;">
+          <button class="dash-user-chip" id="userChipBtn" aria-label="Account menu" aria-haspopup="true" aria-expanded="false">
+            <div class="dash-avatar" id="navAvatar">U</div>
+            <div class="dash-user-chip-info">
+              <div class="dash-user-chip-name" id="navUserName">User</div>
+              <div class="dash-user-chip-role" id="navUserRole">Member</div>
+            </div>
+          </button>
+          <div class="dash-profile-popup" id="profilePopup" aria-hidden="true">
+            <div class="dash-profile-popup-inner">
+              <div class="dash-profile-popup-header">
+                <div class="dash-avatar dash-profile-avatar" id="popupAvatar">U</div>
+                <div>
+                  <div class="dash-profile-popup-name" id="popupName">User</div>
+                  <div class="dash-profile-popup-role" id="popupRole">Member</div>
+                </div>
+              </div>
+              <div class="dash-profile-popup-body">
+                <div class="dash-profile-row">
+                  <span class="dash-profile-label">Email</span>
+                  <span class="dash-profile-value" id="popupEmail">—</span>
+                </div>
+                <div class="dash-profile-row">
+                  <span class="dash-profile-label">Member since</span>
+                  <span class="dash-profile-value" id="popupJoined">—</span>
+                </div>
+              </div>
+              <a class="btn btn-primary btn-sm" id="popupDashboard" href="#" style="display:none; width:100%;">Go to Dashboard</a>
+              <button class="btn btn-secondary btn-sm dash-profile-logout" id="popupLogout">Logout</button>
+            </div>
+          </div>
+        </div>
         <button class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"/>
@@ -354,51 +383,122 @@
     // ===================== AUTH STATE =====================
     var token = localStorage.getItem('token');
     var userStr = localStorage.getItem('user');
-    var user = null;
+    var storedUser = null;
     if (token && userStr) {
-      try { user = JSON.parse(userStr); } catch(e) {}
+      try { storedUser = JSON.parse(userStr); } catch (e) { storedUser = null; }
     }
 
-    if (token && user) {
-      (async function() {
-        try {
-          var response = await fetch('http://localhost:4000/api/me', {
-            headers: { 'Authorization': 'Bearer ' + token },
-          });
-          if (response.status === 401) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
-          }
-        } catch (e) {
-          // network error — stay on index page
-        }
-        updateNav();
-      })();
-    } else {
-      updateNav();
+    var userChipBtn = document.getElementById('userChipBtn');
+    var profilePopup = document.getElementById('profilePopup');
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      try { document.cookie = 'token=; path=/; max-age=0'; } catch (e) {}
+      window.location.href = 'login.html';
     }
 
-    function updateNav() {
-      var currentToken = localStorage.getItem('token');
-      var currentUserStr = localStorage.getItem('user');
-      var currentUser = null;
-      if (currentToken && currentUserStr) {
-        try { currentUser = JSON.parse(currentUserStr); } catch(e) {}
-      }
+    function roleLabel(role) {
+      var value = String(role || 'member');
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function updateNav(currentUser) {
       if (navSignIn) navSignIn.style.display = currentUser ? 'none' : '';
       if (navGetStarted) navGetStarted.style.display = currentUser ? 'none' : '';
       if (navUserInfo) navUserInfo.style.display = currentUser ? 'flex' : 'none';
-      if (navUserName) navUserName.textContent = (currentUser && currentUser.fullName) || (currentUser && currentUser.email) || 'User';
-      if (navLogout) {
-        navLogout.onclick = function() {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
-          window.location.reload();
-        };
+      if (!currentUser) return;
+
+      var displayName = currentUser.fullName || currentUser.email || 'User';
+      var label = roleLabel(currentUser.role);
+      var initial = String(displayName).trim().charAt(0).toUpperCase() || 'U';
+
+      document.getElementById('navAvatar').textContent = initial;
+      document.getElementById('popupAvatar').textContent = initial;
+      document.getElementById('navUserName').textContent = displayName;
+      document.getElementById('popupName').textContent = displayName;
+      document.getElementById('navUserRole').textContent = label;
+      document.getElementById('popupRole').textContent = label;
+      document.getElementById('popupEmail').textContent = currentUser.email || '—';
+      document.getElementById('popupJoined').textContent = currentUser.createdAt
+        ? new Date(currentUser.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
+        : '—';
+
+      var dashboardLink = document.getElementById('popupDashboard');
+      if (dashboardLink) {
+        if (currentUser.role === 'seller') {
+          dashboardLink.href = 'seller-dashboard.html';
+          dashboardLink.style.display = '';
+        } else if (currentUser.role === 'buyer') {
+          dashboardLink.href = 'buyer-dashboard.html';
+          dashboardLink.style.display = '';
+        } else {
+          dashboardLink.style.display = 'none';
+        }
       }
     }
+
+    function closeProfilePopup() {
+      if (!profilePopup) return;
+      profilePopup.classList.remove('show');
+      profilePopup.setAttribute('aria-hidden', 'true');
+      if (userChipBtn) userChipBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    if (userChipBtn && profilePopup) {
+      userChipBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (profilePopup.classList.contains('show')) {
+          closeProfilePopup();
+        } else {
+          profilePopup.classList.add('show');
+          profilePopup.setAttribute('aria-hidden', 'false');
+          userChipBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!profilePopup.contains(e.target) && !userChipBtn.contains(e.target)) {
+          closeProfilePopup();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeProfilePopup();
+      });
+    }
+
+    var popupLogoutBtn = document.getElementById('popupLogout');
+    if (popupLogoutBtn) popupLogoutBtn.addEventListener('click', logout);
+
+    (async function initAuthState() {
+      if (!token || !storedUser) {
+        updateNav(null);
+        return;
+      }
+
+      var resolvedUser = storedUser;
+      try {
+        var response = await fetch(API_BASE + '/me', {
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch (e) {}
+          updateNav(null);
+          return;
+        }
+        var data = await response.json();
+        if (data.success && data.data) {
+          resolvedUser = Object.assign({}, storedUser, data.data);
+          localStorage.setItem('user', JSON.stringify(resolvedUser));
+        }
+      } catch (e) {
+        // Network error — keep showing the cached user on the storefront.
+      }
+      updateNav(resolvedUser);
+    })();
   </script>
 </body>
 </html>
