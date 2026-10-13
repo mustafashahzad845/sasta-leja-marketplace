@@ -273,6 +273,25 @@ body {
   gap: 20px;
 }
 
+/* Shown on the OTP step of signup so users can confirm the destination inbox */
+.otp-sent-note {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  text-align: center;
+  padding: 14px 16px;
+  background: var(--paper-warm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.otp-sent-note strong {
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 700;
+  word-break: break-all;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;

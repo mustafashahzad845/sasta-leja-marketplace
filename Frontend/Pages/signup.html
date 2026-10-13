@@ -101,8 +101,12 @@
         </form>
 
         <form id="otpForm" class="auth-form" style="display: none;" novalidate>
+          <p class="otp-sent-note">
+            We sent a 6-digit verification code to
+            <strong id="otpEmail"></strong>
+          </p>
           <div class="form-group">
-            <label for="otp">Enter 6-digit OTP sent to your email</label>
+            <label for="otp">Enter the 6-digit code</label>
             <input type="text" id="otp" name="otp" maxlength="6" placeholder="123456" required>
           </div>
           <button type="submit" class="btn btn-primary" id="verifyBtn">Verify Email</button>
@@ -230,9 +234,10 @@
 
         if (data.success) {
           currentEmail = email;
+          document.getElementById('otpEmail').textContent = email;
           signupForm.style.display = 'none';
           otpForm.style.display = 'block';
-          showMessage('Account created! Please check your email for OTP.', true);
+          showMessage('Account created! Please check your email for the OTP.', true);
         } else {
           showMessage(data.message || 'Signup failed', false);
         }
