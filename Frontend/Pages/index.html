@@ -287,9 +287,13 @@
       status.style.display = 'block';
     }
 
+    // Number of products previewed on the home page. The remaining listings
+    // are reachable through the "View all" action.
+    var PRODUCT_PREVIEW_LIMIT = 8;
+
     async function loadProducts(category) {
       try {
-        var qs = '?limit=4';
+        var qs = '?limit=' + PRODUCT_PREVIEW_LIMIT;
         if (category && category !== 'all') {
           qs += '&category=' + encodeURIComponent(category);
         }
@@ -298,15 +302,32 @@
         var data = await response.json();
         var products = (data.data || []).filter(Boolean);
         if (!products.length) {
-          setStatus('No products found in this category.');
+          grid.innerHTML = '';
+          setStatus('No products found in this category. Try another category.');
+          updateViewAll();
           return;
         }
         status.style.display = 'none';
+        status.textContent = '';
         grid.innerHTML = products.map(productCard).join('');
         updateViewAll();
       } catch (error) {
+        grid.innerHTML = '';
         setStatus('Could not load products. Is the server running?');
+        updateViewAll();
       }
+    }
+
+    function activeCategory() {
+      var activeChip = document.querySelector('.category-chip.active');
+      return (activeChip && activeChip.dataset.category) || 'all';
+    }
+
+    function dashboardUrlWithCategory(base) {
+      var category = activeCategory();
+      return category && category !== 'all'
+        ? base + '?category=' + encodeURIComponent(category)
+        : base;
     }
 
     function updateViewAll() {
@@ -319,11 +340,19 @@
       var currentUser = null;
       try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
 
-      if (currentToken && currentUser && currentUser.role === 'buyer') {
+      var isBuyer = currentToken && currentUser && currentUser.role === 'buyer';
+      var isSeller = currentToken && currentUser && currentUser.role === 'seller';
+
+      if (isBuyer) {
         btn.textContent = 'View all products →';
-        btn.href = 'buyer-dashboard.html';
-        if (text) text.textContent = 'You are logged in — explore every product on Sasta Leja.';
-        if (viewAllLink) viewAllLink.href = 'buyer-dashboard.html';
+        btn.href = dashboardUrlWithCategory('buyer-dashboard.html');
+        if (text) text.textContent = 'Showing a preview — browse every product on Sasta Leja.';
+        if (viewAllLink) viewAllLink.href = dashboardUrlWithCategory('buyer-dashboard.html');
+      } else if (isSeller) {
+        btn.textContent = 'Manage your products →';
+        btn.href = 'seller-dashboard.html#panel-products';
+        if (text) text.textContent = 'Showing a preview of marketplace listings.';
+        if (viewAllLink) viewAllLink.href = 'seller-dashboard.html#panel-products';
       } else {
         btn.textContent = 'Login to see all products';
         btn.href = 'login.html';
