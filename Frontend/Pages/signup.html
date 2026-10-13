@@ -270,6 +270,7 @@
         if (data.success) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
           showMessage('Email verified! Please login to continue.', true);
           setTimeout(() => {
             window.location.href = 'login.html';

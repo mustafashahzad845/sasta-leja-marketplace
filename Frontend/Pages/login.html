@@ -150,60 +150,66 @@
       loginMessage.style.display = 'none';
     }
 
-    loginForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      hideMessage();
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        hideMessage();
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-      if (!email || !password) {
-        showMessage('Please enter email and password', false);
-        return;
-      }
-
-      loginBtn.disabled = true;
-      loginBtn.textContent = 'Signing In...';
-
-      try {
-        const response = await fetch(`${API_BASE}/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          if (data.data && data.data.token) {
-            localStorage.setItem('token', data.data.token);
-            localStorage.setItem('user', JSON.stringify(data.data.user));
-          }
-          showMessage('Login successful! Redirecting...', true);
-          setTimeout(() => {
-            var savedUser = data.data.user;
-            if (savedUser && savedUser.role === 'seller') {
-              window.location.href = 'seller-dashboard.html';
-            } else if (savedUser && savedUser.role === 'buyer') {
-              window.location.href = 'buyer-dashboard.html';
-            } else {
-              window.location.href = 'index.html';
-            }
-          }, 800);
-        } else {
-          if (data.data && data.data.email) {
-            showMessage(data.message + ' Please verify your email first.', false);
-          } else {
-            showMessage(data.message || 'Login failed', false);
-          }
+        if (!email || !password) {
+          showMessage('Please enter email and password', false);
+          return;
         }
-      } catch (error) {
-        showMessage('Network error. Please try again.', false);
-      } finally {
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Sign In';
-      }
-    });
+
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Signing In...';
+
+        try {
+          const response = await fetch(`${API_BASE}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            if (data.data && data.data.token) {
+              localStorage.setItem('token', data.data.token);
+              localStorage.setItem('user', JSON.stringify(data.data.user));
+              try {
+                document.cookie = 'token=' + encodeURIComponent(data.data.token) + '; path=/; max-age=' + (7 * 24 * 60 * 60);
+              } catch (cookieError) {
+                console.warn('Cookie storage failed, using localStorage only');
+              }
+            }
+            showMessage('Login successful! Redirecting...', true);
+            setTimeout(() => {
+              var savedUser = data.data.user;
+              if (savedUser && savedUser.role === 'seller') {
+                window.location.href = 'seller-dashboard.html';
+              } else if (savedUser && savedUser.role === 'buyer') {
+                window.location.href = 'buyer-dashboard.html';
+              } else {
+                window.location.href = 'index.html';
+              }
+            }, 800);
+          } else {
+            if (data.data && data.data.email) {
+              showMessage(data.message + ' Please verify your email first.', false);
+            } else {
+              showMessage(data.message || 'Login failed', false);
+            }
+          }
+        } catch (error) {
+          showMessage('Network error. Please try again.', false);
+        } finally {
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Sign In';
+        }
+      });
   </script>
 </body>
 </html>

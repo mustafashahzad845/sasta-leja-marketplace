@@ -368,6 +368,7 @@
           if (response.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
           }
         } catch (e) {
           // network error — stay on index page
@@ -393,6 +394,7 @@
         navLogout.onclick = function() {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
           window.location.reload();
         };
       }

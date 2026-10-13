@@ -473,6 +473,7 @@
         if (response.status === 401) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
           window.location.href = 'login.html';
           return;
         }
@@ -534,6 +535,7 @@
     popupLogout.addEventListener('click', function() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
       window.location.href = 'login.html';
     });
 
@@ -669,6 +671,7 @@
         if (response.status === 401) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
           window.location.href = 'login.html';
           return;
         }
@@ -867,6 +870,7 @@
           if (res.status === 401 || res.status === 403) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
             window.location.href = 'login.html';
             throw new Error('Unauthorized');
           }

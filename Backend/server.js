@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import dns from "node:dns";
+import { setServers } from "node:dns/promises";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import userModel from "./models/userModel.js";
@@ -14,14 +14,15 @@ import productModel from "./models/productModel.js";
 
 dotenv.config();
 
-// Fix: force Node's DNS resolver to use Google/Cloudflare public DNS.
-// On some systems the default resolver fails SRV lookups for Atlas with
-// "querySrv ECONNREFUSED", which breaks the mongodb+srv connection.
-dns.setServers(["8.8.8.8", "1.1.1.1"]);
+// Fix: force Node's DNS resolver to use public DNS servers.
+// This machine's default resolver is 127.0.0.1 (a local DNS/VPN proxy) which
+// refuses SRV lookups, breaking mongodb+srv connections with
+// "querySrv ECONNREFUSED". Public DNS resolves the Atlas SRV records correctly.
+setServers(["8.8.8.8", "8.8.4.4"]);
 
 const URI = process.env.MONGODB_URI ;
 const PORT = process.env.PORT || 4000;
-const JWT_SECRET = process.env.JWT_SECRET || "jwt_sign_sasta_leja_bhai";
+const JWT_SECRET = process.env.JWT_SECRET;
 const SMTP_EMAIL = process.env.SMTP_EMAIL ;
 const SMTP_APP_PASS = process.env.SMTP_APP_PASS
 const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDE_NAME;
@@ -64,7 +65,37 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+// CORS: the frontend runs from a different origin than this API and sends
+// credentials (cookies) on login. The wildcard "*" origin is rejected by the
+// browser whenever credentials are used, so we echo an explicit allowlisted
+// origin instead. Extra production origins can be set via CORS_ORIGINS
+// (comma separated).
+const configuredOrigins = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const localDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
+function isAllowedOrigin(origin) {
+  // No Origin header: same-origin, curl, Postman or server-to-server calls.
+  if (!origin) return true;
+  if (configuredOrigins.includes(origin)) return true;
+  if (process.env.NODE_ENV === "production") return false;
+  // Local dev only: pages opened from disk send "null", localhost any port.
+  if (origin === "null") return true;
+  return localDevOrigin.test(origin);
+}
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      callback(null, isAllowedOrigin(origin));
+    },
+    credentials: true,
+  })
+);
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -84,7 +115,10 @@ function generateToken(userId, role) {
 
 function authRequired(req, res, next) {
   const header = req.headers.authorization || "";
-  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
+  const bearerToken = header.startsWith("Bearer ") ? header.slice(7) : null;
+  const cookieToken = parseCookie(req.headers.cookie || "").token;
+
+  const token = bearerToken || cookieToken;
   if (!token) {
     return res.status(401).json({ success: false, message: "Not authenticated" });
   }
@@ -96,6 +130,18 @@ function authRequired(req, res, next) {
   } catch {
     return res.status(401).json({ success: false, message: "Invalid or expired token" });
   }
+}
+
+function parseCookie(cookieHeader) {
+  const result = {};
+  if (!cookieHeader) return result;
+  cookieHeader.split(";").forEach((part) => {
+    const [key, ...rest] = part.trim().split("=");
+    if (key) {
+      result[key] = decodeURIComponent(rest.join("="));
+    }
+  });
+  return result;
 }
 
 app.get("/", (req, res) => {
@@ -144,6 +190,13 @@ app.post("/api/signup", async (req, res) => {
     });
 
     const token = generateToken(user._id, user.role);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     const mailOptions = {
       from: SMTP_EMAIL,
@@ -363,6 +416,13 @@ app.post("/api/login", async (req, res) => {
 
     const token = generateToken(user._id, user.role);
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       success: true,
       message: "Login successful",
@@ -383,6 +443,11 @@ app.post("/api/login", async (req, res) => {
       message: "Server error during login",
     });
   }
+});
+
+app.post("/api/logout", (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ success: true, message: "Logged out successfully" });
 });
 
 // ===================== PRODUCT ROUTES (Seller) =====================
@@ -578,6 +643,22 @@ app.get("/api/products", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error while fetching products",
+    });
+  }
+});
+
+app.get("/api/get-all-products", async (req, res) => {
+  try {
+    const products = await listAllProducts(req);
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    console.error("Get all products error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching all products",
     });
   }
 });

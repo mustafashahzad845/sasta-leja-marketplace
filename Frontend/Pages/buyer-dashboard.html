@@ -136,7 +136,7 @@
     var currentUser = null;
     try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
 
-    if (!token || !currentUser || currentUser.role !== 'buyer') {
+    if (!token || !currentUser || String(currentUser.role || '').toLowerCase() !== 'buyer') {
       window.location.href = 'login.html';
     }
 
@@ -149,6 +149,7 @@
         if (response.status === 401) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
           window.location.href = 'login.html';
           return;
         }
@@ -210,6 +211,7 @@
     popupLogout.addEventListener('click', function() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      try { document.cookie = 'token=; path=/; max-age=0'; } catch(e) {}
       window.location.href = 'login.html';
     });
 
@@ -295,7 +297,7 @@
         var parent = grid && grid.parentElement;
         if (parent) {
           var fallback = document.createElement('div');
-          fallback.id = 'buyerProductsStatus';
+          fallback.id = 'buyerProductsStatusFallback';
           fallback.style.cssText = 'display:block; text-align:center; padding:24px; color:var(--muted); font-size:14px;';
           parent.insertBefore(fallback, grid);
           status = fallback;
@@ -310,41 +312,78 @@
       }
     }
 
-    // Category filter chips (same categories as the seller dashboard)
-    var currentCategory = 'all';
-    document.querySelectorAll('.dash-filter[data-category]').forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        document.querySelectorAll('.dash-filter[data-category]').forEach(function(c) { c.classList.remove('active'); });
-        this.classList.add('active');
-        currentCategory = this.dataset.category;
-        if (currentCategory === 'all') {
-          history.replaceState(null, '', window.location.pathname);
-        } else {
-          history.replaceState(null, '', '?category=' + encodeURIComponent(currentCategory));
-        }
-        loadProducts();
-      });
-    });
+    var conditionFilter = document.getElementById('conditionFilter');
+    var priceSort = document.getElementById('priceSort');
+    var searchInput = document.getElementById('productSearch');
 
-    // Restore category from URL on load (same behaviour as the seller dashboard)
-    (function() {
+    function buildQueryString() {
+      var cat = document.querySelector('.dash-filter[data-category].active');
+      var category = cat ? cat.dataset.category : 'all';
+      var condition = conditionFilter ? conditionFilter.value : 'all';
+      var sort = priceSort ? priceSort.value : 'default';
+      var search = searchInput ? (searchInput.value || '').trim() : '';
+
+      var queryParts = [];
+      if (category && category !== 'all') queryParts.push('category=' + encodeURIComponent(category));
+      if (condition && condition !== 'all') queryParts.push('condition=' + encodeURIComponent(condition));
+      if (sort && sort !== 'default') queryParts.push('sort=' + encodeURIComponent(sort));
+      if (search) queryParts.push('search=' + encodeURIComponent(search));
+      return queryParts.length ? '?' + queryParts.join('&') : '';
+    }
+
+    function syncURL() {
+      var qs = buildQueryString();
+      var url = window.location.pathname + qs;
+      history.replaceState(null, '', url);
+    }
+
+    function restoreFiltersFromURL() {
       var params = new URLSearchParams(window.location.search);
       var cat = params.get('category');
+      var cond = params.get('condition');
+      var sort = params.get('sort');
+      var search = params.get('search');
+
       if (cat) {
-        currentCategory = cat;
         var chip = document.querySelector('.dash-filter[data-category="' + cat + '"]');
         if (chip) {
           document.querySelectorAll('.dash-filter[data-category]').forEach(function(c) { c.classList.remove('active'); });
           chip.classList.add('active');
         }
       }
-    })();
+      if (cond && conditionFilter) {
+        conditionFilter.value = cond;
+      }
+      if (sort && priceSort) {
+        priceSort.value = sort;
+      }
+      if (search && searchInput) {
+        searchInput.value = search;
+      }
+    }
+
+    // Category filter chips (same categories as the seller dashboard)
+    document.querySelectorAll('.dash-filter[data-category]').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        document.querySelectorAll('.dash-filter[data-category]').forEach(function(c) { c.classList.remove('active'); });
+        this.classList.add('active');
+        syncURL();
+        loadProducts();
+      });
+    });
+
+    // Restore all filters from URL on load
+    restoreFiltersFromURL();
 
     // Condition + price-sort dropdowns
-    var conditionFilter = document.getElementById('conditionFilter');
-    var priceSort = document.getElementById('priceSort');
-    if (conditionFilter) conditionFilter.addEventListener('change', loadProducts);
-    if (priceSort) priceSort.addEventListener('change', loadProducts);
+    if (conditionFilter) conditionFilter.addEventListener('change', function() {
+      syncURL();
+      loadProducts();
+    });
+    if (priceSort) priceSort.addEventListener('change', function() {
+      syncURL();
+      loadProducts();
+    });
 
     async function loadProducts() {
       if (!status) {
@@ -359,21 +398,18 @@
         }
       }
       setStatus('Loading products...');
-      var searchInput = document.getElementById('productSearch');
-      var search = searchInput ? (searchInput.value || '').trim() : '';
-
-      var queryParts = [];
-      if (currentCategory && currentCategory !== 'all') queryParts.push('category=' + encodeURIComponent(currentCategory));
-      if (conditionFilter && conditionFilter.value && conditionFilter.value !== 'all') queryParts.push('condition=' + encodeURIComponent(conditionFilter.value));
-      if (priceSort && priceSort.value && priceSort.value !== 'default') queryParts.push('sort=' + encodeURIComponent(priceSort.value));
-      if (search) queryParts.push('search=' + encodeURIComponent(search));
-      var qs = queryParts.length ? '?' + queryParts.join('&') : '';
+      var qs = buildQueryString();
+      var fetchUrl = API_BASE + '/get-all-products' + qs;
+      console.log('Fetching products from:', fetchUrl);
 
       try {
-        var response = await fetch(API_BASE + '/products/all' + qs);
+        var response = await fetch(fetchUrl, {
+          headers: { 'Accept': 'application/json' },
+        });
+        console.log('Products API response status:', response.status);
         if (!response.ok) throw new Error('HTTP ' + response.status);
         var data = await response.json();
-        console.log('Buyer products API response:', data);
+        console.log('Products API response data:', data);
         var products = (data.data || []).filter(Boolean);
         if (!products.length) {
           grid.innerHTML = '';
@@ -382,6 +418,7 @@
         }
         status.style.display = 'none';
         grid.innerHTML = products.map(productCard).join('');
+        console.log('Rendered', products.length, 'product cards');
       } catch (error) {
         console.error('Failed to load products:', error);
         grid.innerHTML = '';
@@ -391,11 +428,13 @@
 
     // Search debounce (same pattern as the seller dashboard)
     var searchTimer = null;
-    var buyerSearchInput = document.getElementById('productSearch');
-    if (buyerSearchInput) {
-      buyerSearchInput.addEventListener('input', function() {
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
         clearTimeout(searchTimer);
-        searchTimer = setTimeout(loadProducts, 250);
+        searchTimer = setTimeout(function() {
+          syncURL();
+          loadProducts();
+        }, 250);
       });
     }
 
