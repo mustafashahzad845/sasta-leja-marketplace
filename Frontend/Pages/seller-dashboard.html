@@ -282,7 +282,6 @@
                 </span>
               </label>
             </div>
-          </div>
           <div class="dash-form-actions" id="editFormActions" style="display: none;">
             <button type="button" class="btn btn-secondary" id="editCancel">Cancel</button>
             <button type="submit" class="btn btn-primary" id="updateBtn">Update Product</button>
@@ -900,7 +899,7 @@
           }
 
           openPanel('edit');
-          document.getElementById('editFormActions').style.display = 'block';
+          document.getElementById('editFormActions').style.display = 'flex';
         })
         .catch(function(err) {
           if (err.message === 'Unauthorized') return;
@@ -918,7 +917,7 @@
             document.getElementById('eFeatured').checked = false;
             document.getElementById('eImagePreviewWrap').style.display = 'none';
             openPanel('edit');
-            document.getElementById('editFormActions').style.display = 'block';
+            document.getElementById('editFormActions').style.display = 'flex';
           } else {
             showToast('Could not load product details');
           }
