@@ -217,7 +217,8 @@
     // ===================== PRODUCTS (live from backend) =====================
     var API_BASE = 'http://localhost:4000/api';
     var grid = document.getElementById('productGrid');
-    var status = document.getElementById('productsStatus');
+    // Do not name this "status": window.status is a built-in string property.
+    var productsStatusEl = document.getElementById('productsStatus');
 
     function escapeHtml(str) {
       var div = document.createElement('div');
@@ -283,8 +284,9 @@
     }
 
     function setStatus(message) {
-      status.textContent = message;
-      status.style.display = 'block';
+      if (!productsStatusEl) return;
+      productsStatusEl.textContent = message;
+      productsStatusEl.style.display = 'block';
     }
 
     // Number of products previewed on the home page. The remaining listings
@@ -307,8 +309,8 @@
           updateViewAll();
           return;
         }
-        status.style.display = 'none';
-        status.textContent = '';
+        productsStatusEl.style.display = 'none';
+        productsStatusEl.textContent = '';
         grid.innerHTML = products.map(productCard).join('');
         updateViewAll();
       } catch (error) {

@@ -231,7 +231,10 @@
     // ===================== ALL PRODUCTS (live from backend) =====================
 
     var grid = document.getElementById('buyerProductGrid');
-    var status = document.getElementById('buyerProductsStatus');
+    // NOTE: do not name this "status" — window.status is a built-in string
+    // property, so a top-level `var status` silently coerces the element to a
+    // string and every .style access fails.
+    var productsStatusEl = document.getElementById('buyerProductsStatus');
 
     function escapeHtml(str) {
       var div = document.createElement('div');
@@ -293,23 +296,9 @@
     }
 
     function setStatus(message) {
-      if (!status) {
-        var parent = grid && grid.parentElement;
-        if (parent) {
-          var fallback = document.createElement('div');
-          fallback.id = 'buyerProductsStatusFallback';
-          fallback.style.cssText = 'display:block; text-align:center; padding:24px; color:var(--muted); font-size:14px;';
-          parent.insertBefore(fallback, grid);
-          status = fallback;
-        } else {
-          console.log('Status element not found, skipping message');
-          return;
-        }
-      }
-      if (status && status.style) {
-        status.textContent = message;
-        status.style.display = 'block';
-      }
+      if (!productsStatusEl) return;
+      productsStatusEl.textContent = message;
+      productsStatusEl.style.display = 'block';
     }
 
     var conditionFilter = document.getElementById('conditionFilter');
@@ -386,39 +375,24 @@
     });
 
     async function loadProducts() {
-      if (!status) {
-        var parent = grid.parentElement;
-        if (parent) {
-          status = document.createElement('div');
-          status.id = 'buyerProductsStatus';
-          status.style.cssText = 'display:none; text-align:center; padding:48px 20px; color:var(--muted);';
-          parent.insertBefore(status, grid);
-        } else {
-          status = { style: { display: 'none' }, textContent: '' };
-        }
-      }
       setStatus('Loading products...');
       var qs = buildQueryString();
       var fetchUrl = API_BASE + '/get-all-products' + qs;
-      console.log('Fetching products from:', fetchUrl);
 
       try {
         var response = await fetch(fetchUrl, {
           headers: { 'Accept': 'application/json' },
         });
-        console.log('Products API response status:', response.status);
         if (!response.ok) throw new Error('HTTP ' + response.status);
         var data = await response.json();
-        console.log('Products API response data:', data);
-        var products = (data.data || []).filter(Boolean);
+        var products = Array.isArray(data.data) ? data.data.filter(Boolean) : [];
         if (!products.length) {
           grid.innerHTML = '';
           setStatus('No products found. Try changing the filters.');
           return;
         }
-        status.style.display = 'none';
+        productsStatusEl.style.display = 'none';
         grid.innerHTML = products.map(productCard).join('');
-        console.log('Rendered', products.length, 'product cards');
       } catch (error) {
         console.error('Failed to load products:', error);
         grid.innerHTML = '';

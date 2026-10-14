@@ -291,7 +291,8 @@
     // ===================== PRODUCT DETAIL =====================
     var API_BASE = 'http://localhost:4000/api';
     var card = document.getElementById('detailCard');
-    var status = document.getElementById('detailStatus');
+    // Do not name this "status": window.status is a built-in string property.
+    var detailStatusEl = document.getElementById('detailStatus');
 
     function escapeHtml(str) {
       var div = document.createElement('div');
@@ -329,8 +330,8 @@
 
     function setStatus(message, withRetry) {
       card.style.display = 'none';
-      status.style.display = 'block';
-      status.innerHTML = message + (withRetry
+      detailStatusEl.style.display = 'block';
+      detailStatusEl.innerHTML = message + (withRetry
         ? '<br><a href="#" class="btn btn-primary retry-btn" onclick="loadProduct(); return false;">Try Again</a>'
         : '');
     }
@@ -430,7 +431,7 @@
         '</div>';
 
       card.style.display = 'grid';
-      status.style.display = 'none';
+      detailStatusEl.style.display = 'none';
 
       // Wire owner actions
       if (isOwner) {
