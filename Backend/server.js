@@ -253,7 +253,12 @@ app.post("/api/verify-email", async (req, res) => {
       });
     }
 
-    const otp = await otpModel.findOne({ email, code: verificationCode });
+    const otp = await otpModel.findOne({
+      email,
+      code: verificationCode,
+      // A password-reset code must never verify the signup flow.
+      purpose: { $ne: "password-reset" },
+    });
     if (!otp) {
       return res.status(400).json({
         success: false,
@@ -327,11 +332,12 @@ app.post("/api/resend-otp", async (req, res) => {
       });
     }
 
-    await otpModel.deleteMany({ email });
+    await otpModel.deleteMany({ email, purpose: { $ne: "password-reset" } });
 
     const otp = await otpModel.create({
       email,
       code: generateOTP(),
+      purpose: "email-verification",
       expiresAt: new Date(Date.now() + 10 * 60 * 1000),
     });
 
@@ -448,6 +454,147 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/logout", (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ success: true, message: "Logged out successfully" });
+});
+
+// ===================== PASSWORD RESET =====================
+
+// Step 1: request a reset code. The response is intentionally identical whether
+// or not the email exists, so the endpoint cannot be used to enumerate accounts.
+app.post("/api/forgot-password", async (req, res) => {
+  const genericMessage =
+    "If an account exists for that email, a password reset code has been sent.";
+
+  try {
+    const rawEmail = req.body ? req.body.email : "";
+    const email = typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : "";
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(200).json({ success: true, message: genericMessage });
+    }
+
+    // Only replace previous reset codes, leaving signup verification intact.
+    await otpModel.deleteMany({ email, purpose: "password-reset" });
+
+    const otp = await otpModel.create({
+      email,
+      code: generateOTP(),
+      purpose: "password-reset",
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    });
+
+    const mailOptions = {
+      from: SMTP_EMAIL,
+      to: email,
+      subject: "Reset Your Password - Sasta Leja",
+      html: `
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fffbf5; border-radius: 12px;">
+          <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: #f97316; margin: 0; font-size: 28px; font-weight: 800;">Sasta Leja</h1>
+            <p style="color: rgba(255,255,255,0.85); margin-top: 8px; font-weight: 500;">Password Reset Request</p>
+          </div>
+          <div style="background: #ffffff; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);">
+            <p style="color: #0f172a; font-size: 16px; line-height: 1.6;">Hi <strong>${user.fullName}</strong>,</p>
+            <p style="color: #1e293b; font-size: 15px; line-height: 1.6; margin-top: 12px;">We received a request to reset your password. Use the code below to choose a new one. This code will expire in <strong>10 minutes</strong>.</p>
+            <div style="background: #fff7ed; border: 2px dashed #f97316; border-radius: 8px; padding: 20px; text-align: center; margin: 25px 0;">
+              <p style="color: #64748b; font-size: 13px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Your Reset Code</p>
+              <p style="font-size: 36px; font-weight: 800; color: #f97316; letter-spacing: 8px; margin: 0;">${otp.code}</p>
+            </div>
+            <p style="color: #64748b; font-size: 13px; line-height: 1.5;">If you did not request a password reset, you can safely ignore this email — your password will not change.</p>
+          </div>
+          <p style="text-align: center; color: #94a3b8; font-size: 12px; margin-top: 20px;">&copy; 2026 Sasta Leja. All rights reserved.</p>
+        </div>
+      `,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (emailError) {
+      console.error("Password reset email error:", emailError);
+    }
+
+    res.status(200).json({ success: true, message: genericMessage });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while processing password reset request",
+    });
+  }
+});
+
+// Step 2: verify the reset code and store the new password.
+app.post("/api/reset-password", async (req, res) => {
+  try {
+    const { email, verificationCode, newPassword } = req.body || {};
+
+    if (!email || !verificationCode || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, verification code and new password are required",
+      });
+    }
+
+    if (String(newPassword).length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters",
+      });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+
+    const otp = await otpModel.findOne({
+      email: normalizedEmail,
+      code: String(verificationCode),
+      purpose: "password-reset",
+    });
+    if (!otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification code",
+      });
+    }
+
+    if (new Date() > otp.expiresAt) {
+      return res.status(400).json({
+        success: false,
+        message: "Verification code has expired",
+      });
+    }
+
+    const user = await userModel.findOne({ email: normalizedEmail });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Assigning the plain password lets the schema pre-save hook hash it.
+    user.password = newPassword;
+    await user.save();
+
+    await otpModel.deleteMany({ email: normalizedEmail, purpose: "password-reset" });
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successfully. You can now login with your new password.",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while resetting password",
+    });
+  }
 });
 
 // ===================== PRODUCT ROUTES (Seller) =====================
