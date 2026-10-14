@@ -530,7 +530,55 @@ app.post("/api/forgot-password", async (req, res) => {
   }
 });
 
-// Step 2: verify the reset code and store the new password.
+// Step 2: confirm the reset code before the UI reveals the new-password fields.
+// The code is intentionally NOT consumed here — reset-password validates it again,
+// so the password change always requires a genuine, unexpired code server-side.
+app.post("/api/verify-reset-code", async (req, res) => {
+  try {
+    const { email, verificationCode } = req.body || {};
+
+    if (!email || !verificationCode) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and verification code are required",
+      });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+
+    const otp = await otpModel.findOne({
+      email: normalizedEmail,
+      code: String(verificationCode),
+      purpose: "password-reset",
+    });
+    if (!otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification code",
+      });
+    }
+
+    if (new Date() > otp.expiresAt) {
+      return res.status(400).json({
+        success: false,
+        message: "Verification code has expired",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Code verified. You can now set a new password.",
+    });
+  } catch (error) {
+    console.error("Verify reset code error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while verifying code",
+    });
+  }
+});
+
+// Step 3: verify the reset code and store the new password.
 app.post("/api/reset-password", async (req, res) => {
   try {
     const { email, verificationCode, newPassword } = req.body || {};
