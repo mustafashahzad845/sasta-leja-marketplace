@@ -768,7 +768,11 @@ function listAllProducts(req) {
   if (sort === "price_desc") sortOptions = { price: -1 };
   else if (sort === "price_asc") sortOptions = { price: 1 };
 
-  const mongoQuery = productModel.find(query).sort(sortOptions);
+  // Include the seller's display name so buyers can see who listed each product.
+  const mongoQuery = productModel
+    .find(query)
+    .sort(sortOptions)
+    .populate("seller", "fullName");
 
   const parsedLimit = Number.parseInt(limit, 10);
   if (!Number.isNaN(parsedLimit) && parsedLimit > 0) {

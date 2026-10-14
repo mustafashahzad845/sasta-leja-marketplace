@@ -268,16 +268,15 @@
         ? '<span class="product-card-badge" style="background:' + (p.condition === 'Used' ? '#b45309' : '#10b981') + ';">' + escapeHtml(p.condition) + '</span>'
         : '';
 
+      var sellerName = (p.seller && p.seller.fullName) ? p.seller.fullName : 'Sasta Leja Seller';
+
       return (
         '<article class="product-card" tabindex="0" data-id="' + p._id + '">' +
-          '<div class="product-card-image">' + image + badge +
-            '<button class="product-card-wishlist" aria-label="Add to wishlist">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
-            '</button>' +
-          '</div>' +
+          '<div class="product-card-image">' + image + badge + '</div>' +
           '<div class="product-card-body">' +
             '<span class="product-card-category">' + escapeHtml(p.category) + '</span>' +
             '<h3 class="product-card-title">' + escapeHtml(p.name) + '</h3>' +
+            '<span class="product-card-seller">🏪 Sold by <strong>' + escapeHtml(sellerName) + '</strong></span>' +
             '<div class="product-card-meta">' +
               '<span>📍 ' + escapeHtml(p.location || 'N/A') + '</span>' +
               '<span>' + escapeHtml(p.condition || '') + '</span>' +
@@ -412,11 +411,11 @@
       });
     }
 
-    // Card click → product detail (ignore wishlist / add-to-cart clicks)
+    // Card click → product detail (ignore add-to-cart clicks)
     grid.addEventListener('click', function(e) {
       var card = e.target.closest('.product-card');
       if (!card) return;
-      if (e.target.closest('.product-card-wishlist') || e.target.closest('.product-card-add')) return;
+      if (e.target.closest('.product-card-add')) return;
       window.location.href = 'product.html?id=' + card.dataset.id;
     });
 
@@ -425,21 +424,6 @@
       if (e.key !== 'Enter') return;
       var card = e.target.closest('.product-card');
       if (card) window.location.href = 'product.html?id=' + card.dataset.id;
-    });
-
-    // Wishlist toggle (delegated)
-    grid.addEventListener('click', function(e) {
-      var btn = e.target.closest('.product-card-wishlist');
-      if (!btn) return;
-      e.stopPropagation();
-      var svg = btn.querySelector('svg');
-      if (btn.style.color === 'rgb(239, 68, 68)') {
-        btn.style.color = '';
-        svg.setAttribute('fill', 'none');
-      } else {
-        btn.style.color = '#ef4444';
-        svg.setAttribute('fill', 'currentColor');
-      }
     });
 
     // Add to cart feedback (delegated)

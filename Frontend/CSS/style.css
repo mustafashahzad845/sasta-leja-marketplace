@@ -988,6 +988,19 @@ body {
   }
 }
 
+.product-card-seller {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-card-seller strong {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
 .product-card-rating {
   display: flex;
   align-items: center;
