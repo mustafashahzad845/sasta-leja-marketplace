@@ -61,6 +61,47 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ============ PAGE TRANSITIONS ============ */
+/* Multi-page navigation previously flashed a blank frame between pages, which
+   read as a "crash". Cross-document View Transitions (when supported) cross-fade
+   old and new documents, and a short fade-in on load keeps older browsers calm. */
+@view-transition {
+  navigation: auto;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pageFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+body {
+  animation: pageFadeIn 240ms ease-out both;
+}
+
+::view-transition-old(root) {
+  animation: pageFadeOut 160ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: pageFadeIn 220ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 /* Focus ring */
 :focus-visible {
   outline: 2px solid var(--accent);
