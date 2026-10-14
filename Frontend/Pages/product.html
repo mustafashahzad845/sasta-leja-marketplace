@@ -206,6 +206,49 @@
       display: inline-block;
       margin-top: 16px;
     }
+
+    /* Layout-matching skeleton so the detail view never flashes blank */
+    .detail-skeleton-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .detail-skeleton-line {
+      display: block;
+      height: 16px;
+      border-radius: 8px;
+    }
+
+    .detail-skeleton-line.detail-skeleton-title {
+      height: 30px;
+    }
+
+    .detail-skeleton-line.detail-skeleton-price {
+      height: 34px;
+    }
+
+    /* Local toast for feedback (delete / errors) on this standalone page */
+    .detail-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--transition-slow);
+      z-index: 300;
+    }
+
+    .detail-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -288,6 +331,8 @@
     </div>
   </footer>
 
+  <div class="detail-toast" id="detailToast" role="status" aria-live="polite"></div>
+
   <script>
     // ===================== PRODUCT DETAIL =====================
     var API_BASE = 'http://localhost:4000/api';
@@ -316,6 +361,16 @@
       }
     }
 
+    var toastEl = document.getElementById('detailToast');
+    var toastTimer = null;
+    function showToast(message) {
+      if (!toastEl) return;
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toastEl.classList.remove('show'); }, 2500);
+    }
+
     function categoryEmoji(category) {
       var c = (category || '').toLowerCase();
       if (c.indexOf('electr') !== -1) return '📱';
@@ -337,7 +392,25 @@
         : '');
     }
 
+    // Show a skeleton that matches the final layout so the view never appears
+    // blank (which read as lag) while the product request is in flight.
+    function showSkeleton() {
+      detailStatusEl.style.display = 'none';
+      card.style.display = 'grid';
+      card.innerHTML =
+        '<div class="detail-image skeleton"></div>' +
+        '<div class="detail-skeleton-body">' +
+          '<span class="detail-skeleton-line skeleton" style="width:30%;"></span>' +
+          '<span class="detail-skeleton-line detail-skeleton-title skeleton" style="width:80%;"></span>' +
+          '<span class="detail-skeleton-line skeleton" style="width:50%;"></span>' +
+          '<span class="detail-skeleton-line detail-skeleton-price skeleton" style="width:42%;"></span>' +
+          '<span class="detail-skeleton-line skeleton" style="width:100%;"></span>' +
+          '<span class="detail-skeleton-line skeleton" style="width:88%;"></span>' +
+        '</div>';
+    }
+
     async function loadProduct() {
+      showSkeleton();
       var params = new URLSearchParams(window.location.search);
       var id = params.get('id');
 
