@@ -292,6 +292,55 @@ body {
   word-break: break-all;
 }
 
+/* ---- Password reset: smooth step + feedback animations ---- */
+/* Entrance animation for each step so the form does not snap in abruptly. */
+.auth-form-step {
+  animation: authStepIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes authStepIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Message (success / error) fade so feedback appears smoothly. */
+.auth-message {
+  animation: authStepIn 0.25s ease-out;
+}
+
+/* Inline loading spinner for buttons; currentColor keeps it readable on any button. */
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  vertical-align: -3px;
+  animation: btnSpin 0.7s linear infinite;
+}
+
+@keyframes btnSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-form-step,
+  .auth-message,
+  .btn-spinner {
+    animation: none;
+  }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
