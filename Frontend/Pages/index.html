@@ -115,6 +115,13 @@
 
   <!-- Products -->
   <section class="products-section" id="products" aria-label="Featured products">
+    <div class="search-bar home-search">
+      <span class="search-bar-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="search" id="productSearch" placeholder="Search products by name or brand..." aria-label="Search products">
+    </div>
+
     <div class="section-header">
       <h2>Trending deals</h2>
       <a href="#" class="view-all">View all →</a>
@@ -287,14 +294,26 @@
     }
 
     // Number of products previewed on the home page. The remaining listings
-    // are reachable through the "View all" action.
+    // are reachable through the "View all" action. Search results are given a
+    // larger window so a query is not silently clipped to the preview count.
     var PRODUCT_PREVIEW_LIMIT = 4;
+    var PRODUCT_SEARCH_LIMIT = 24;
+
+    var searchInput = document.getElementById('productSearch');
+
+    function currentSearch() {
+      return searchInput ? (searchInput.value || '').trim() : '';
+    }
 
     async function loadProducts(category) {
+      var search = currentSearch();
       try {
-        var qs = '?limit=' + PRODUCT_PREVIEW_LIMIT;
+        var qs = '?limit=' + (search ? PRODUCT_SEARCH_LIMIT : PRODUCT_PREVIEW_LIMIT);
         if (category && category !== 'all') {
           qs += '&category=' + encodeURIComponent(category);
+        }
+        if (search) {
+          qs += '&search=' + encodeURIComponent(search);
         }
         var response = await fetch(API_BASE + '/products' + qs);
         if (!response.ok) throw new Error('Bad response');
@@ -302,7 +321,9 @@
         var products = (data.data || []).filter(Boolean);
         if (!products.length) {
           grid.innerHTML = '';
-          setStatus('No products found in this category. Try another category.');
+          setStatus(search
+            ? 'No products match "' + search + '". Try a different search or category.'
+            : 'No products found in this category. Try another category.');
           updateViewAll();
           return;
         }
@@ -315,6 +336,17 @@
         setStatus('Could not load products. Is the server running?');
         updateViewAll();
       }
+    }
+
+    // Debounced search: update results as the shopper types.
+    var searchTimer = null;
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(function() {
+          loadProducts(activeCategory());
+        }, 250);
+      });
     }
 
     function activeCategory() {
