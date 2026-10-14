@@ -381,8 +381,18 @@
 
       try {
         var response = await fetch(fetchUrl, {
-          headers: { 'Accept': 'application/json' },
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
         });
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          try { document.cookie = 'token=; path=/; max-age=0'; } catch (e) {}
+          window.location.href = 'login.html';
+          return;
+        }
         if (!response.ok) throw new Error('HTTP ' + response.status);
         var data = await response.json();
         var products = Array.isArray(data.data) ? data.data.filter(Boolean) : [];

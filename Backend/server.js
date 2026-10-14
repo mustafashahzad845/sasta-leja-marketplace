@@ -846,7 +846,9 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-app.get("/api/get-all-products", async (req, res) => {
+// Buyer dashboard listing. Requires a valid JWT so the marketplace feed is not
+// publicly scrapeable; only authenticated users can call it.
+app.get("/api/get-all-products", authRequired, async (req, res) => {
   try {
     const products = await listAllProducts(req);
     res.status(200).json({
