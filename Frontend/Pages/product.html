@@ -252,6 +252,7 @@
       transform: translateX(-50%) translateY(0);
     }
   </style>
+  <script src="JS/api.js"></script>
 </head>
 <body>
   <!-- Navbar -->
@@ -337,7 +338,8 @@
 
   <script>
     // ===================== PRODUCT DETAIL =====================
-    var API_BASE = 'http://localhost:4000/api';
+    // Resolved by JS/api.js: localhost during development, the deployed API in production.
+    var API_BASE = window.SASTA_API_BASE;
     var card = document.getElementById('detailCard');
     // Do not name this "status": window.status is a built-in string property.
     var detailStatusEl = document.getElementById('detailStatus');
