@@ -30,7 +30,6 @@ setServers(["8.8.8.8", "8.8.4.4"]);
 
 const URI = process.env.MONGODB_URI ;
 const PORT = process.env.PORT || 4000;
-const API_BASE_URL = (process.env.API_BASE_URL || "http://localhost:4000/api").replace(/\/+$/, "");
 const JWT_SECRET = process.env.JWT_SECRET;
 const SMTP_EMAIL = process.env.SMTP_EMAIL ;
 const SMTP_APP_PASS = process.env.SMTP_APP_PASS
@@ -154,11 +153,7 @@ function parseCookie(cookieHeader) {
 }
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "Server is successfully running...",
-    status: true,
-    apiBaseUrl: API_BASE_URL,
-  });
+  res.json({ message: "Server is successfully running...", status: true });
 });
 
 app.post("/api/signup", async (req, res) => {

@@ -8,7 +8,6 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="favicon.ico">
   <link rel="stylesheet" href="CSS/style.css">
-  <script src="JS/env.js"></script>
   <script src="JS/api.js"></script>
 </head>
 <body>
@@ -105,8 +104,9 @@
       }
     })();
 
-    // Resolved by JS/env.js + JS/api.js from the project .env (API_BASE_URL).
-    const API_BASE = window.SASTA_API_BASE;
+    // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
+    let API_BASE = window.SASTA_API_BASE;
+    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
     const loginForm = document.getElementById('loginForm');
     const loginBtn = document.getElementById('loginBtn');
     const loginMessage = document.getElementById('loginMessage');

@@ -252,7 +252,6 @@
       transform: translateX(-50%) translateY(0);
     }
   </style>
-  <script src="JS/env.js"></script>
   <script src="JS/api.js"></script>
 </head>
 <body>
@@ -339,8 +338,9 @@
 
   <script>
     // ===================== PRODUCT DETAIL =====================
-    // Resolved by JS/env.js + JS/api.js from the project .env (API_BASE_URL).
+    // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
     var API_BASE = window.SASTA_API_BASE;
+    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
     var card = document.getElementById('detailCard');
     // Do not name this "status": window.status is a built-in string property.
     var detailStatusEl = document.getElementById('detailStatus');
@@ -544,7 +544,9 @@
       }
     }
 
-    loadProduct();
+    window.SASTA_API_READY.then(function () {
+      loadProduct();
+    });
 
     // ===================== AUTH STATE =====================
     var token = localStorage.getItem('token');

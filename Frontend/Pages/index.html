@@ -9,7 +9,6 @@
   <link rel="alternate icon" href="favicon.ico">
   <link rel="stylesheet" href="CSS/style.css">
   <link rel="stylesheet" href="CSS/dashboard.css">
-  <script src="JS/env.js"></script>
   <script src="JS/api.js"></script>
 </head>
 <body>
@@ -227,8 +226,9 @@
     });
 
     // ===================== PRODUCTS (live from backend) =====================
-    // Resolved by JS/env.js + JS/api.js from the project .env (API_BASE_URL).
+    // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
     var API_BASE = window.SASTA_API_BASE;
+    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
     var grid = document.getElementById('productGrid');
     // Do not name this "status": window.status is a built-in string property.
     var productsStatusEl = document.getElementById('productsStatus');
@@ -414,7 +414,9 @@
       if (card) window.location.href = 'product.html?id=' + card.dataset.id;
     });
 
-    loadProducts();
+    window.SASTA_API_READY.then(function () {
+      loadProducts();
+    });
 
     // ===================== AUTH STATE =====================
     var token = localStorage.getItem('token');

@@ -9,7 +9,6 @@
   <link rel="alternate icon" href="favicon.ico">
   <link rel="stylesheet" href="CSS/style.css">
   <link rel="stylesheet" href="CSS/dashboard.css">
-  <script src="JS/env.js"></script>
   <script src="JS/api.js"></script>
 </head>
 <body class="dash-page">
@@ -460,8 +459,9 @@
 
   <script>
     // Auth guard + profile for seller dashboard
-    // Resolved by JS/env.js + JS/api.js from the project .env (API_BASE_URL).
+    // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
     var API_BASE = window.SASTA_API_BASE;
+    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
     var token = localStorage.getItem('token');
     var currentUser = null;
     try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
@@ -508,7 +508,9 @@
       }
     }
 
-    loadUserProfile();
+    window.SASTA_API_READY.then(function () {
+      loadUserProfile();
+    });
 
     // Profile popup toggle
     var popup = document.getElementById('profilePopup');
@@ -1037,7 +1039,9 @@
       });
     }
 
-    loadProducts();
+    window.SASTA_API_READY.then(function () {
+      loadProducts();
+    });
   </script>
 </body>
 </html>
