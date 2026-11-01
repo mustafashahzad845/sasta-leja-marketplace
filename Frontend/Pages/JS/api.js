@@ -2,9 +2,9 @@
  * Resolves the backend API base URL from Frontend/.env.
  *
  * There is no bundler in this project, so the .env file is fetched once when
- * the page loads and parsed in the browser. The result is exposed as
- * window.SASTA_API_BASE, and window.SASTA_API_READY resolves with it so pages
- * can wait before sending their first request.
+ * the page loads and parsed in the browser. The value is exposed as
+ * window.API_BASE_URL, and window.API_BASE_READY resolves with it so pages can
+ * wait before sending their first request.
  *
  * If .env cannot be read (file:// pages, or a host that blocks dotfiles) the
  * loader keeps a safe fallback: the local API in development and
@@ -46,20 +46,20 @@
     ? "http://localhost:4000/api"
     : window.location.origin + "/api";
 
-  window.SASTA_API_BASE = trimmed(window.SASTA_API_BASE) || fallbackBase;
+  window.API_BASE_URL = trimmed(window.API_BASE_URL) || fallbackBase;
 
   // Pages live in Frontend/Pages/, so .env is one directory up.
-  window.SASTA_API_READY = fetch("../.env", { cache: "no-store" })
+  window.API_BASE_READY = fetch("../.env", { cache: "no-store" })
     .then(function (response) {
       if (!response.ok) throw new Error("Failed to load .env");
       return response.text();
     })
     .then(function (contents) {
       var configuredBase = trimmed(parseEnvFile(contents).API_BASE_URL);
-      if (configuredBase) window.SASTA_API_BASE = configuredBase;
-      return window.SASTA_API_BASE;
+      if (configuredBase) window.API_BASE_URL = configuredBase;
+      return window.API_BASE_URL;
     })
     .catch(function () {
-      return window.SASTA_API_BASE;
+      return window.API_BASE_URL;
     });
 })();

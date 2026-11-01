@@ -227,8 +227,8 @@
 
     // ===================== PRODUCTS (live from backend) =====================
     // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
-    var API_BASE = window.SASTA_API_BASE;
-    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
+    var API_BASE_URL = window.API_BASE_URL;
+    window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     var grid = document.getElementById('productGrid');
     // Do not name this "status": window.status is a built-in string property.
     var productsStatusEl = document.getElementById('productsStatus');
@@ -320,7 +320,7 @@
         if (search) {
           qs += '&search=' + encodeURIComponent(search);
         }
-        var response = await fetch(API_BASE + '/products' + qs);
+        var response = await fetch(API_BASE_URL + '/products' + qs);
         if (!response.ok) throw new Error('Bad response');
         var data = await response.json();
         var products = (data.data || []).filter(Boolean);
@@ -414,7 +414,7 @@
       if (card) window.location.href = 'product.html?id=' + card.dataset.id;
     });
 
-    window.SASTA_API_READY.then(function () {
+    window.API_BASE_READY.then(function () {
       loadProducts();
     });
 
@@ -517,7 +517,7 @@
 
       var resolvedUser = storedUser;
       try {
-        var response = await fetch(API_BASE + '/me', {
+        var response = await fetch(API_BASE_URL + '/me', {
           headers: { 'Authorization': 'Bearer ' + token },
         });
         if (response.status === 401) {

@@ -339,8 +339,8 @@
   <script>
     // ===================== PRODUCT DETAIL =====================
     // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
-    var API_BASE = window.SASTA_API_BASE;
-    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
+    var API_BASE_URL = window.API_BASE_URL;
+    window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     var card = document.getElementById('detailCard');
     // Do not name this "status": window.status is a built-in string property.
     var detailStatusEl = document.getElementById('detailStatus');
@@ -425,7 +425,7 @@
       }
 
       try {
-        var response = await fetch(API_BASE + '/products/' + id);
+        var response = await fetch(API_BASE_URL + '/products/' + id);
         var data = await response.json();
 
         if (response.status === 404 || !data.success) {
@@ -528,7 +528,7 @@
 
     async function deleteProductDirect(id) {
       try {
-        var response = await fetch(API_BASE + '/products/' + id, {
+        var response = await fetch(API_BASE_URL + '/products/' + id, {
           method: 'DELETE',
           headers: { 'Authorization': 'Bearer ' + token },
         });
@@ -544,7 +544,7 @@
       }
     }
 
-    window.SASTA_API_READY.then(function () {
+    window.API_BASE_READY.then(function () {
       loadProduct();
     });
 

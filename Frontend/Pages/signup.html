@@ -144,8 +144,8 @@
     })();
 
     // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
-    let API_BASE = window.SASTA_API_BASE;
-    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
+    let API_BASE_URL = window.API_BASE_URL;
+    window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     const signupForm = document.getElementById('signupForm');
     const otpForm = document.getElementById('otpForm');
     const signupBtn = document.getElementById('signupBtn');
@@ -208,7 +208,7 @@
       signupBtn.textContent = 'Creating account...';
 
       try {
-        const response = await fetch(`${API_BASE}/signup`, {
+        const response = await fetch(`${API_BASE_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ fullName, email, password, role }),
@@ -248,7 +248,7 @@
       verifyBtn.textContent = 'Verifying...';
 
       try {
-        const response = await fetch(`${API_BASE}/verify-email`, {
+        const response = await fetch(`${API_BASE_URL}/verify-email`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: currentEmail, verificationCode: otp }),
@@ -285,7 +285,7 @@
       resendOtpBtn.textContent = 'Sending...';
 
       try {
-        const response = await fetch(`${API_BASE}/resend-otp`, {
+        const response = await fetch(`${API_BASE_URL}/resend-otp`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: currentEmail }),

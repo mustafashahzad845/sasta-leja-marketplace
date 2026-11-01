@@ -460,8 +460,8 @@
   <script>
     // Auth guard + profile for seller dashboard
     // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
-    var API_BASE = window.SASTA_API_BASE;
-    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
+    var API_BASE_URL = window.API_BASE_URL;
+    window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     var token = localStorage.getItem('token');
     var currentUser = null;
     try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { currentUser = null; }
@@ -472,7 +472,7 @@
 
     async function loadUserProfile() {
       try {
-        var response = await fetch(API_BASE + '/me', {
+        var response = await fetch(API_BASE_URL + '/me', {
           headers: { 'Authorization': 'Bearer ' + token },
         });
         if (response.status === 401) {
@@ -508,7 +508,7 @@
       }
     }
 
-    window.SASTA_API_READY.then(function () {
+    window.API_BASE_READY.then(function () {
       loadUserProfile();
     });
 
@@ -569,7 +569,7 @@
       popup.classList.add('show');
       popup.setAttribute('aria-hidden', 'false');
 
-      fetch(API_BASE + '/products/' + id, {
+      fetch(API_BASE_URL + '/products/' + id, {
         headers: { 'Authorization': 'Bearer ' + token },
       })
         .then(function(res) { return res.json(); })
@@ -672,7 +672,7 @@
         if (currentCategory && currentCategory !== 'all') queryParts.push('category=' + encodeURIComponent(currentCategory));
         var qs = queryParts.length ? '?' + queryParts.join('&') : '';
 
-        var response = await fetch(API_BASE + '/products/my' + qs, {
+        var response = await fetch(API_BASE_URL + '/products/my' + qs, {
           headers: { 'Authorization': 'Bearer ' + token },
         });
         if (response.status === 401) {
@@ -719,7 +719,7 @@
     async function deleteProduct(id) {
       if (!window.confirm('Delete this product?')) return;
       try {
-        var response = await fetch(API_BASE + '/products/' + id, {
+        var response = await fetch(API_BASE_URL + '/products/' + id, {
           method: 'DELETE',
           headers: { 'Authorization': 'Bearer ' + token },
         });
@@ -802,7 +802,7 @@
             btn.textContent = 'Uploading image...';
             var fd = new FormData();
             fd.append('image', fileInput.files[0]);
-            var uploadRes = await fetch(API_BASE + '/products/upload', {
+            var uploadRes = await fetch(API_BASE_URL + '/products/upload', {
               method: 'POST',
               headers: { 'Authorization': 'Bearer ' + token },
               body: fd,
@@ -822,7 +822,7 @@
 
         var endpoint = '/products';
         var method = 'POST';
-        var response = await fetch(API_BASE + endpoint, {
+        var response = await fetch(API_BASE_URL + endpoint, {
           method: method,
           headers: {
             'Content-Type': 'application/json',
@@ -870,7 +870,7 @@
         return;
       }
 
-      fetch(API_BASE + '/products/' + id, {
+      fetch(API_BASE_URL + '/products/' + id, {
         headers: { 'Authorization': 'Bearer ' + token },
       })
         .then(function(res) {
@@ -993,7 +993,7 @@
             btn.textContent = 'Uploading image...';
             var fd = new FormData();
             fd.append('image', fileInput.files[0]);
-            var uploadRes = await fetch(API_BASE + '/products/upload', {
+            var uploadRes = await fetch(API_BASE_URL + '/products/upload', {
               method: 'POST',
               headers: { 'Authorization': 'Bearer ' + token },
               body: fd,
@@ -1008,7 +1008,7 @@
             payload.image = uploadData.data.imageUrl;
           }
 
-          var response = await fetch(API_BASE + '/products/' + id, {
+          var response = await fetch(API_BASE_URL + '/products/' + id, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -1039,7 +1039,7 @@
       });
     }
 
-    window.SASTA_API_READY.then(function () {
+    window.API_BASE_READY.then(function () {
       loadProducts();
     });
   </script>

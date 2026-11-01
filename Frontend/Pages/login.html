@@ -105,8 +105,8 @@
     })();
 
     // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
-    let API_BASE = window.SASTA_API_BASE;
-    window.SASTA_API_READY.then(function (base) { API_BASE = base; });
+    let API_BASE_URL = window.API_BASE_URL;
+    window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     const loginForm = document.getElementById('loginForm');
     const loginBtn = document.getElementById('loginBtn');
     const loginMessage = document.getElementById('loginMessage');
@@ -150,7 +150,7 @@
         loginBtn.textContent = 'Signing In...';
 
         try {
-          const response = await fetch(`${API_BASE}/login`, {
+          const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
