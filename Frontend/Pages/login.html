@@ -104,7 +104,7 @@
       }
     })();
 
-    // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
+    // Resolved by JS/api.js (local + production API URL).
     let API_BASE_URL = window.API_BASE_URL;
     window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     const loginForm = document.getElementById('loginForm');

@@ -135,7 +135,7 @@
 
   <script>
     // Auth guard for buyer dashboard
-    // Resolved by JS/api.js from Frontend/.env (API_BASE_URL).
+    // Resolved by JS/api.js (local + production API URL).
     var API_BASE_URL = window.API_BASE_URL;
     window.API_BASE_READY.then(function (base) { API_BASE_URL = base; });
     var token = localStorage.getItem('token');
