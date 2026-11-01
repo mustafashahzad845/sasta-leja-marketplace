@@ -2,10 +2,16 @@
 node_modules/
 package-lock.json
 
-# Environment variables
+# Environment variables / secrets
 .env
 .env.*
+Backend/.env
+Backend/.env.*
+Frontend/.env
+Frontend/.env.*
 !.env.example
+!Backend/.env.example
+!Frontend/.env.example
 
 # OS / editor junk
 .DS_Store

@@ -9,6 +9,7 @@
   <link rel="alternate icon" href="favicon.ico">
   <link rel="stylesheet" href="CSS/style.css">
   <link rel="stylesheet" href="CSS/dashboard.css">
+  <script src="JS/env.js"></script>
   <script src="JS/api.js"></script>
 </head>
 <body>
@@ -226,7 +227,7 @@
     });
 
     // ===================== PRODUCTS (live from backend) =====================
-    // Resolved by JS/api.js: localhost during development, the deployed API in production.
+    // Resolved by JS/env.js + JS/api.js from the project .env (API_BASE_URL).
     var API_BASE = window.SASTA_API_BASE;
     var grid = document.getElementById('productGrid');
     // Do not name this "status": window.status is a built-in string property.

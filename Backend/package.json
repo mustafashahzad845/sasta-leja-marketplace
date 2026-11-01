@@ -8,7 +8,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node ../scripts/generate-frontend-env.mjs && nodemon server.js",
+    "env:frontend": "node ../scripts/generate-frontend-env.mjs"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

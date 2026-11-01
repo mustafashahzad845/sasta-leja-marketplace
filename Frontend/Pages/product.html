@@ -252,6 +252,7 @@
       transform: translateX(-50%) translateY(0);
     }
   </style>
+  <script src="JS/env.js"></script>
   <script src="JS/api.js"></script>
 </head>
 <body>
@@ -338,7 +339,7 @@
 
   <script>
     // ===================== PRODUCT DETAIL =====================
-    // Resolved by JS/api.js: localhost during development, the deployed API in production.
+    // Resolved by JS/env.js + JS/api.js from the project .env (API_BASE_URL).
     var API_BASE = window.SASTA_API_BASE;
     var card = document.getElementById('detailCard');
     // Do not name this "status": window.status is a built-in string property.

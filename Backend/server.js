@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { setServers } from "node:dns/promises";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
@@ -12,7 +14,13 @@ import userModel from "./models/userModel.js";
 import otpModel from "./models/otpModel.js";
 import productModel from "./models/productModel.js";
 
-dotenv.config();
+const backendDir = path.dirname(fileURLToPath(import.meta.url));
+
+// The project root .env is the single source of truth for deployment values
+// (API_BASE_URL, PORT, CORS_ORIGINS). Backend/.env holds backend-only secrets.
+// dotenv does not override variables that are already set, so the root file wins.
+dotenv.config({ path: path.resolve(backendDir, "..", ".env") });
+dotenv.config({ path: path.resolve(backendDir, ".env") });
 
 // Fix: force Node's DNS resolver to use public DNS servers.
 // This machine's default resolver is 127.0.0.1 (a local DNS/VPN proxy) which
@@ -22,6 +30,7 @@ setServers(["8.8.8.8", "8.8.4.4"]);
 
 const URI = process.env.MONGODB_URI ;
 const PORT = process.env.PORT || 4000;
+const API_BASE_URL = (process.env.API_BASE_URL || "http://localhost:4000/api").replace(/\/+$/, "");
 const JWT_SECRET = process.env.JWT_SECRET;
 const SMTP_EMAIL = process.env.SMTP_EMAIL ;
 const SMTP_APP_PASS = process.env.SMTP_APP_PASS
@@ -145,7 +154,11 @@ function parseCookie(cookieHeader) {
 }
 
 app.get("/", (req, res) => {
-  res.json({ message: "Server is successfully running...", status: true });
+  res.json({
+    message: "Server is successfully running...",
+    status: true,
+    apiBaseUrl: API_BASE_URL,
+  });
 });
 
 app.post("/api/signup", async (req, res) => {
