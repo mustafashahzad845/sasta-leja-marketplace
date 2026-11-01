@@ -73,6 +73,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 // CORS: the frontend runs from a different origin than this API and sends
 // credentials (cookies) on login. The wildcard "*" origin is rejected by the
